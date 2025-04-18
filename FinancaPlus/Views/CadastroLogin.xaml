@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.CadastroLogin"
+             Title="CadastroLogin">
+    
+    <VerticalStackLayout       
+                        VerticalOptions="Center"
+                         Spacing="10"
+                         Padding="5">
+
+        <Label Text="Cadastro de Usuário"
+               HorizontalOptions="Center" />
+
+        <Label Text="Nome Usuário" />
+        <Entry x:Name="txt_NomeUsuario"  
+               Placeholder="Digite nome do usuário" />
+
+        <Label Text="E-mail" />
+        <Entry x:Name="txt_email"
+               Placeholder="Digite seu E-mail"/>
+
+            <Label Text="Senha"  />
+            <Entry x:Name="txt_senha" 
+                   Placeholder="Digite sua senha"/>
+
+        <Label Text="Confirma Senha" />
+        <Entry x:Name="Txt_confirmaSenha"
+               Placeholder="Digite sua senha novamente" />
+
+        <Button Text="Cadastrar" 
+                x:Name="BTN_cadastrar"
+                Clicked="BTN_cadastrar_Clicked" />
+
+        <Button Text="Voltar"
+                x:Name="BTN_voltar"
+                Clicked="BTN_voltar_Clicked" />
+
+
+    </VerticalStackLayout>
+</ContentPage>
+    
+    
