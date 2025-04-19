@@ -1,15 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinancaPlus.Views.TelaPrincipal"
-             Title="Tela Principal">
-
-    <!-- ToolbarItems (ícones de ação na barra superior) -->
+             Title="TelaPrincipal">
     
+    
+    
+    <StackLayout
+        Padding="20"
+        Spacing="5"
+        HorizontalOptions="StartAndExpand">
 
-    <VerticalStackLayout Padding="20">
-        <Label Text="Finanças Pessoais" FontSize="32" HorizontalOptions="Center"/>
-        <Button Text="Receitas" Clicked="BTN_receitas_Clicked"/>
-        <Button Text="Despesas" Clicked="BTN_despesas_Clicked"/>
-    </VerticalStackLayout>
+        <Label Text="Finanças Pessoais"
+               FontSize="32"
+               HorizontalOptions="Center" />
 
+        <Button Text="Receitas" 
+                x:Name="BTN_receitas"
+                Clicked="BTN_receitas_Clicked" />
+
+        <Button Text="Despesas"
+                x:Name="BTN_despesas"
+                Clicked ="BTN_despesas_Clicked" />
+
+        <Button Text="Definir Metas"
+                x:Name="BTN_definirMetas"
+                Clicked="BTN_definirMetas_Clicked" />
+
+        <Button Text="Relatórios"
+                x:Name="BTN_relatorios"
+                Clicked="BTN_relatorios_Clicked" />
+
+
+
+    </StackLayout>
 </ContentPage>
+    
+    
