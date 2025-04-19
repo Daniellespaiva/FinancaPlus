@@ -29,6 +29,15 @@ namespace FinancaPlus.Helpers
               u=> u.Email == email && u.Senha == senha);
         }
 
+        public Usuario GetUsuario(string email)
+        {
+            return _db.Table<Usuario>().FirstOrDefault(
+              u => u.Email == email );
+        }
+        public void UpdateUsuario(Usuario usuario) 
+        {
+            _db.Update(usuario);
+        }
 
     }
 }

@@ -2,9 +2,11 @@ namespace FinancaPlus.Views;
 
 public partial class TelaPrincipal : ContentPage
 {
+    private Entry txt_email;
 	public TelaPrincipal()
 	{
 		InitializeComponent();
+        txt_email = new Entry();
 	}
 
     private async void BTN_receitas_Clicked(object sender, EventArgs e)
@@ -55,5 +57,11 @@ public partial class TelaPrincipal : ContentPage
         {
 
         }
+    }
+
+    private async void perfil_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new Perfil(txt_email.Text));
+
     }
 }

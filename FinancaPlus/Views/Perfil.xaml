@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.Perfil"
+             Title="Perfil">
+
+    <Grid Padding="20" RowSpacing="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Text="Perfil do Usuário" FontSize="28" HorizontalOptions="Center" Grid.Row="0"/>
+
+        <Label Text="Nome" Grid.Row="1"/>
+        <Entry x:Name="txt_nome" Grid.Row="2"/>
+
+        <Label Text="E-mail" Grid.Row="3"/>
+        <Entry x:Name="txt_email" IsReadOnly="True" Grid.Row="4"/>
+
+        <Label Text="Nova Senha" Grid.Row="5"/>
+        <Entry x:Name="txt_senha" IsPassword="True" Grid.Row="6"/>
+
+        <Button Text="Atualizar Perfil"
+                x:Name="atualizarPerfil"
+                Clicked="atualizarPerfil_Clicked"
+                Grid.Row="7" />
+    </Grid>
+
+</ContentPage>

@@ -22,6 +22,7 @@ public partial class LoginPage : ContentPage
             }    
                 await DisplayAlert("Sucesso", "Login realizado com sucesso!", "Fechar");
                 await Navigation.PushAsync(new TelaPrincipal());
+                 
 
             if (txt_email.Text == null || txt_senha.Text == null)
             {
