@@ -59,20 +59,11 @@
                 <Label Text="Transporte - 20%" FontSize="16" TextColor="#3357FF" />
                     <Label Text="Outros - 25%" FontSize="16" TextColor="#FF33A5"/>
             </StackLayout>
-
-                   
-
-         
-     
-
         </HorizontalStackLayout>
 
         <Button Text="Gerar relatório"
                 x:Name="BTN_relatorios"
                 Clicked="BTN_relatorios_Clicked" />
-
-
-
     </StackLayout>
 </ContentPage>
     
