@@ -8,7 +8,11 @@ public partial class Perfil : ContentPage
 {
 	private SQLiteDatabaseHelpers db;
 	private Usuario usuarioAtual;
-	public Perfil(string email)
+
+	private Entry txt_nome;
+    private Entry txt_email;
+    private Entry txt_senha;
+    public Perfil(string email)
 	{
 		InitializeComponent();
 		db = new SQLiteDatabaseHelpers();
@@ -38,6 +42,31 @@ public partial class Perfil : ContentPage
 
 		}
 
+
+    }
+
+    private void BTN_editarPerfil_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void BTN_sair_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void BTN_alterarSenha_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void BTN_sair_Clicked_1(object sender, EventArgs e)
+    {
+
+    }
+
+    private void BTN_alterarImagem_Clicked(object sender, EventArgs e)
+    {
 
     }
 }

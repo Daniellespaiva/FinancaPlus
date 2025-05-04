@@ -9,27 +9,65 @@
     </ContentPage.ToolbarItems>
     
     <StackLayout
-        Padding="20"
+        Padding="10"
         Spacing="5"
         HorizontalOptions="StartAndExpand">
 
-        <Label Text="Finanças Pessoais"
-               FontSize="32"
-               HorizontalOptions="Center" />
+        <Label Text="Saldo disponivel: "
+               FontSize="20"
+               HorizontalOptions="StartAndExpand" />
 
-        <Button Text="Receitas" 
+        <Frame BorderColor="Black"
+               CornerRadius="8"
+               Padding="10"
+               BackgroundColor="LightGray"
+               HorizontalOptions="FillAndExpand">
+            <Label x:Name="LBL_saldo"
+                   Text="R$ 0,00"
+                   FontAttributes="Bold"
+                   HorizontalOptions="StartAndExpand" />
+        </Frame>
+
+       
+        <HorizontalStackLayout HorizontalOptions="FillAndExpand" Margin="5" Padding="5" Spacing="5">
+
+            <Button Text="Receitas" 
+                     BackgroundColor="Green"
                 x:Name="BTN_receitas"
                 Clicked="BTN_receitas_Clicked" />
 
-        <Button Text="Despesas"
+            <Button Text="Despesas"
+                    BackgroundColor="Red"
                 x:Name="BTN_despesas"
                 Clicked ="BTN_despesas_Clicked" />
 
-        <Button Text="Definir Metas"
+            <Button Text="Metas"
+                    BackgroundColor="Blue"
                 x:Name="BTN_definirMetas"
                 Clicked="BTN_definirMetas_Clicked" />
+        </HorizontalStackLayout>
 
-        <Button Text="Relatórios"
+        <Label Text="Gasto por categoria"
+               FontSize="20"
+               HorizontalOptions="StartAndExpand" />
+
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+            <!-- Lista de categorias à esquerda -->
+            <StackLayout VerticalOptions="Center" Spacing="5" HorizontalOptions="Start">
+                <Label Text="Moradia - 30%" FontSize="16" TextColor="#FF5733"/>
+                <Label Text="Alimento - 25%" FontSize="16" TextColor="#33FF57"/>
+                <Label Text="Transporte - 20%" FontSize="16" TextColor="#3357FF" />
+                    <Label Text="Outros - 25%" FontSize="16" TextColor="#FF33A5"/>
+            </StackLayout>
+
+                   
+
+         
+     
+
+        </HorizontalStackLayout>
+
+        <Button Text="Gerar relatório"
                 x:Name="BTN_relatorios"
                 Clicked="BTN_relatorios_Clicked" />
 
