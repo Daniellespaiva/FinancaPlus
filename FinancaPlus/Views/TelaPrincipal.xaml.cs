@@ -1,3 +1,5 @@
+using FinancaPlus.Helpers;
+using FinancaPlus.Models;
 using Microcharts;
 using Microcharts.Maui;
 using SkiaSharp;
@@ -8,14 +10,26 @@ public partial class TelaPrincipal : ContentPage
 {
     private Entry txt_email;
   
-	public TelaPrincipal()
+	public TelaPrincipal(string email)
 	{
 		InitializeComponent();
-         txt_email = new Entry();
-         
+         txt_email = new Entry();         
          CarregarGrafico();
+        BindingContext = new TelaPrincipalViewModel(email);
+
+    }
+
+    public class TelaPrincipalViewModel 
+    {
+        private readonly SQLiteDatabaseHelpers _dbHelpers;
+        public Usuario UsuarioLogado { get; set; }
+        public TelaPrincipalViewModel(string email)
+        {
+            _dbHelpers = new SQLiteDatabaseHelpers();
+            UsuarioLogado = _dbHelpers.GetUsuario(email);
+        }
        
-	}
+    }
      public void AtualizarSaldo()
     {
         decimal saldo = ObterSaldoDoBancoDeDados();

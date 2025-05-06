@@ -7,64 +7,87 @@
     <ContentPage.ToolbarItems >
         <ToolbarItem Text="Perfil" x:Name="perfil" Clicked="perfil_Clicked" />
     </ContentPage.ToolbarItems>
-    
-    <StackLayout
+
+    <VerticalStackLayout>
+
+        <HorizontalStackLayout VerticalOptions="Start">
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Olá, " />
+                        <Span Text="{Binding UsuarioLogado.Nome}" />
+                    </FormattedString>
+                </Label.FormattedText>
+                <Label.FontSize>24</Label.FontSize>
+                <Label.HorizontalOptions>Start</Label.HorizontalOptions>
+            </Label>
+
+            <Image Source="images_2.jpeg" 
+           HeightRequest="50" 
+           WidthRequest="50" 
+           Margin="10,0,0,0"/>
+        </HorizontalStackLayout>
+
+
+
+        <StackLayout
         Padding="10"
         Spacing="5"
         HorizontalOptions="StartAndExpand">
 
-        <Label Text="Saldo disponivel: "
+            <Label Text="Saldo disponivel: "
                FontSize="20"
                HorizontalOptions="StartAndExpand" />
 
-        <Frame BorderColor="Black"
+            <Frame BorderColor="Black"
                CornerRadius="8"
                Padding="10"
                BackgroundColor="LightGray"
                HorizontalOptions="FillAndExpand">
-            <Label x:Name="LBL_saldo"
+                <Label x:Name="LBL_saldo"
                    Text="R$ 0,00"
                    FontAttributes="Bold"
                    HorizontalOptions="StartAndExpand" />
-        </Frame>
+            </Frame>
 
-       
-        <HorizontalStackLayout HorizontalOptions="FillAndExpand" Margin="5" Padding="5" Spacing="5">
 
-            <Button Text="Receitas" 
+            <HorizontalStackLayout HorizontalOptions="FillAndExpand" Margin="5" Padding="5" Spacing="5">
+
+                <Button Text="Receitas" 
                      BackgroundColor="Green"
                 x:Name="BTN_receitas"
                 Clicked="BTN_receitas_Clicked" />
 
-            <Button Text="Despesas"
+                <Button Text="Despesas"
                     BackgroundColor="Red"
                 x:Name="BTN_despesas"
                 Clicked ="BTN_despesas_Clicked" />
 
-            <Button Text="Metas"
+                <Button Text="Metas"
                     BackgroundColor="Blue"
                 x:Name="BTN_definirMetas"
                 Clicked="BTN_definirMetas_Clicked" />
-        </HorizontalStackLayout>
+            </HorizontalStackLayout>
 
-        <Label Text="Gasto por categoria"
+            <Label Text="Gasto por categoria"
                FontSize="20"
                HorizontalOptions="StartAndExpand" />
 
-        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
-            <!-- Lista de categorias à esquerda -->
-            <StackLayout VerticalOptions="Center" Spacing="5" HorizontalOptions="Start">
-                <Label Text="Moradia - 30%" FontSize="16" TextColor="#FF5733"/>
-                <Label Text="Alimento - 25%" FontSize="16" TextColor="#33FF57"/>
-                <Label Text="Transporte - 20%" FontSize="16" TextColor="#3357FF" />
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                <!-- Lista de categorias à esquerda -->
+                <StackLayout VerticalOptions="Center" Spacing="5" HorizontalOptions="Start">
+                    <Label Text="Moradia - 30%" FontSize="16" TextColor="#FF5733"/>
+                    <Label Text="Alimento - 25%" FontSize="16" TextColor="#33FF57"/>
+                    <Label Text="Transporte - 20%" FontSize="16" TextColor="#3357FF" />
                     <Label Text="Outros - 25%" FontSize="16" TextColor="#FF33A5"/>
-            </StackLayout>
-        </HorizontalStackLayout>
+                </StackLayout>
+            </HorizontalStackLayout>
 
-        <Button Text="Gerar relatório"
+            <Button Text="Gerar relatório"
                 x:Name="BTN_relatorios"
                 Clicked="BTN_relatorios_Clicked" />
-    </StackLayout>
+        </StackLayout>
+    </VerticalStackLayout>
 </ContentPage>
     
     
