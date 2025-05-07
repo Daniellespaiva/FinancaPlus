@@ -7,9 +7,9 @@
     Shell.FlyoutBehavior="Disabled"
     Title="FinancaPlus">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!-- Botão de Menu com opções -->
+    <FlyoutItem Title="Menu">
+        <ShellContent ContentTemplate="{DataTemplate local:MenuPage}" />
+    </FlyoutItem>
 
 </Shell>
