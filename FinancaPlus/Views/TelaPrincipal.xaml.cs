@@ -8,12 +8,12 @@ namespace FinancaPlus.Views;
 
 public partial class TelaPrincipal : ContentPage
 {
-    private Entry txt_email;
+
   
 	public TelaPrincipal(string email)
 	{
 		InitializeComponent();
-         txt_email = new Entry();         
+                
          CarregarGrafico();
         BindingContext = new TelaPrincipalViewModel(email);
 
@@ -103,9 +103,10 @@ public partial class TelaPrincipal : ContentPage
         }
     }
 
-    private async void perfil_Clicked(object sender, EventArgs e)
+    
+    private void BTN_configuracoes_Clicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new Perfil(txt_email.Text));
-
+        // Redireciona para a página de configurações
+        Navigation.PushAsync(new ConfiguracaoPage());
     }
 }

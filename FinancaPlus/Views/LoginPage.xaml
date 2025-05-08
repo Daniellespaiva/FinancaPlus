@@ -2,31 +2,78 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinancaPlus.Views.LoginPage"
-             Title="LoginPage">
-    
-    <VerticalStackLayout
-         VerticalOptions="Center"
-        Spacing="10"
-        Padding="5">
+             BackgroundColor="WhiteSmoke"
+             NavigationPage.HasNavigationBar="False"
+             Title="Login">
 
-        <Label 
-            Text="Sistema de Login"
-        HorizontalOptions="Center" />
+    <VerticalStackLayout Padding="10" Spacing="10"
+                         VerticalOptions="CenterAndExpand"
+                         HorizontalOptions="Center">
 
-        <Label Text="E-mail" />
-            <Entry x:Name="txt_email" 
-            Placeholder="Digite seu e-mail"/>
+        <!-- Logo do App -->
+        <Label Text="FINANÇAPLUS +" 
+               FontSize="30"
+               FontAttributes="Bold"
+               TextColor="DarkBlue"
+               HorizontalOptions="Center"/>
 
-        <Label Text="Senha" />
-        <Entry x:Name="txt_senha" 
-               Placeholder="Digite sua senha"/>
+        <!-- Imagem do logo -->
+        <Image Source="img_logo.png"
+               HeightRequest="100"
+               WidthRequest="100"
+               HorizontalOptions="Center"/>
 
-        <Button Text="Entrar" x:Name="btn_entar" 
-                Clicked="btn_entar_Clicked" />
+        <!-- Título da Tela -->
+        <Label Text="Acesse sua conta"
+               FontSize="20"
+               FontAttributes="Bold"
+               TextColor="Black"
+               HorizontalOptions="Center"/>
 
+        <!-- Campo de E-mail -->
+        <Label Text="E-mail" FontSize="14"/>
+        <Entry x:Name="txt_email" Placeholder="Digite seu e-mail"
+               Keyboard="Email"
+               TextColor="Black"
+               BackgroundColor="White"/>
 
-        <Button Text="Registrar" x:Name="btn_registrar"
+        <!-- Campo de Senha -->
+        <Label Text="Senha" FontSize="14"/>
+        <Entry x:Name="txt_senha" Placeholder="Digite sua senha"
+               IsPassword="True"
+               TextColor="Black"
+               BackgroundColor="White"/>
+
+        <!-- Botão de Login -->
+        <Button Text="Entrar" 
+                x:Name="btn_entrar"
+                BackgroundColor="DarkBlue"
+                TextColor="White"
+                FontAttributes="Bold"
+               Clicked="btn_entar_Clicked" />
+
+        <!-- Botão de Registro -->
+        <Button Text="Criar Conta"
+                x:Name="btn_registrar"
+                BackgroundColor="Gray"
+                TextColor="White"
+                FontAttributes="Bold"
                 Clicked="btn_registrar_Clicked" />
+
+        <!-- Link para recuperação de senha -->
+        <Button Text="Esqueci minha senha"
+                x:Name="BTN_recuperarSenha"
+                BackgroundColor="Transparent"
+                TextColor="DarkBlue"
+                FontAttributes="Italic"
+                Clicked="BTN_recuperarSenha_Clicked"/>
 
     </VerticalStackLayout>
 </ContentPage>
+      
+                
+
+
+       
+                
+

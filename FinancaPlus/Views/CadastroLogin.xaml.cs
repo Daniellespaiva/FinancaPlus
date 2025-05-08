@@ -31,10 +31,10 @@ public partial class CadastroLogin : ContentPage
             {
                 Nome = txt_NomeUsuario.Text,
                 Email = txt_email.Text,
-                Senha = txt_senha.Text
+                SenhaHash = txt_senha.Text
             };
             var db = new SQLiteDatabaseHelpers();
-            db.AddUsuario(usuario);
+            db.AddUsuario(usuario, txt_senha.Text);
 
            await DisplayAlert("Sucesso", "Usuário cadastrado com sucesso!", "Fechar");
             await Navigation.PushAsync(new LoginPage());

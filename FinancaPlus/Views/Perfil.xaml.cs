@@ -30,7 +30,7 @@ public partial class Perfil : ContentPage
 		try 
 		{
 			usuarioAtual.Nome = txt_nome.Text;
-			usuarioAtual.Senha = txt_senha.Text;
+			usuarioAtual.SenhaHash = txt_senha.Text;
 
 			db.UpdateUsuario(usuarioAtual);
 			await DisplayAlert("Sucesso", "Perfil atualizado com sucesso", "OK");

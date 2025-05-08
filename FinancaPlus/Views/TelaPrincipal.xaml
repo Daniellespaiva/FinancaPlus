@@ -2,15 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinancaPlus.Views.TelaPrincipal"
+             NavigationPage.HasNavigationBar="False"
              Title="TelaPrincipal">
 
-    <ContentPage.ToolbarItems >
-        <ToolbarItem Text="Perfil" x:Name="perfil" Clicked="perfil_Clicked" />
-    </ContentPage.ToolbarItems>
-
+   
     <VerticalStackLayout>
 
-        <HorizontalStackLayout VerticalOptions="Start">
+        <HorizontalStackLayout VerticalOptions="Start" Margin="10" Padding="10" Spacing="40">
             <Label>
                 <Label.FormattedText>
                     <FormattedString>
@@ -26,67 +24,83 @@
            HeightRequest="50" 
            WidthRequest="50" 
            Margin="10,0,0,0"/>
+
+            <!-- Botão de Configurações ao lado da saudação -->
+            <Button Text="⚙" 
+            FontSize="20"
+            BackgroundColor="Transparent"
+             x:Name="BTN_configuracoes"
+                 
+             Clicked="BTN_configuracoes_Clicked"/>
+
+
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Padding="10" Spacing="50" Margin="1" HorizontalOptions="FillAndExpand">
+            <!-- Saldo inicial -->
+            <StackLayout HorizontalOptions="FillAndExpand">
+                <Label Text="Saldo inicial:" FontSize="20" HorizontalOptions="StartAndExpand"/>
+                <Frame BorderColor="Black" CornerRadius="10" Padding="10"  BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                         <!-- Label do saldo inicial -->
+                        <Label x:Name="LBL_saldoInicial" Text="R$ 0,00" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
+                 </Frame>
+            </StackLayout>
+
+            <!-- Saldo disponível -->
+            <StackLayout HorizontalOptions="FillAndExpand">
+                <Label Text="Saldo disponível:" FontSize="20" HorizontalOptions="StartAndExpand"/>
+                <Frame BorderColor="Black" CornerRadius="10" Padding="10" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Label x:Name="LBL_saldo" Text="R$ 0,00" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
+                </Frame>
+            </StackLayout>
         </HorizontalStackLayout>
 
 
 
-        <StackLayout
-        Padding="10"
-        Spacing="5"
-        HorizontalOptions="StartAndExpand">
 
-            <Label Text="Saldo disponivel: "
-               FontSize="20"
-               HorizontalOptions="StartAndExpand" />
+        <HorizontalStackLayout HorizontalOptions="FillAndExpand"  Margin="1" Padding="10" Spacing="5">
 
-            <Frame BorderColor="Black"
-               CornerRadius="8"
-               Padding="10"
-               BackgroundColor="LightGray"
-               HorizontalOptions="FillAndExpand">
-                <Label x:Name="LBL_saldo"
-                   Text="R$ 0,00"
-                   FontAttributes="Bold"
-                   HorizontalOptions="StartAndExpand" />
-            </Frame>
-
-
-            <HorizontalStackLayout HorizontalOptions="FillAndExpand" Margin="5" Padding="5" Spacing="5">
-
-                <Button Text="Receitas" 
+                    <Button Text="Adiciona Receitas" FontSize="12"
                      BackgroundColor="Green"
                 x:Name="BTN_receitas"
                 Clicked="BTN_receitas_Clicked" />
 
-                <Button Text="Despesas"
+                    <Button Text="Adicionar Despesas" FontSize="12"
                     BackgroundColor="Red"
                 x:Name="BTN_despesas"
                 Clicked ="BTN_despesas_Clicked" />
 
-                <Button Text="Metas"
+                    <Button Text="Adicionar Metas" FontSize="12"
                     BackgroundColor="Blue"
                 x:Name="BTN_definirMetas"
                 Clicked="BTN_definirMetas_Clicked" />
-            </HorizontalStackLayout>
+        </HorizontalStackLayout>
 
-            <Label Text="Gasto por categoria"
+                <Label Text="Gasto por categoria" Padding="10" Margin="5"
                FontSize="20"
-               HorizontalOptions="StartAndExpand" />
+               HorizontalOptions="FillAndExpand" />
 
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
-                <!-- Lista de categorias à esquerda -->
-                <StackLayout VerticalOptions="Center" Spacing="5" HorizontalOptions="Start">
-                    <Label Text="Moradia - 30%" FontSize="16" TextColor="#FF5733"/>
-                    <Label Text="Alimento - 25%" FontSize="16" TextColor="#33FF57"/>
-                    <Label Text="Transporte - 20%" FontSize="16" TextColor="#3357FF" />
-                    <Label Text="Outros - 25%" FontSize="16" TextColor="#FF33A5"/>
-                </StackLayout>
-            </HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="Start" Spacing="20" Padding="10">
+                    <!-- Lista de categorias à esquerda -->
+                    <StackLayout VerticalOptions="Center" Spacing="5" HorizontalOptions="End">
+                        <Label Text="Moradia - 30%" FontSize="16" TextColor="#FF5733"/>
+                        <Label Text="Alimento - 25%" FontSize="16" TextColor="#33FF57"/>
+                        <Label Text="Transporte - 20%" FontSize="16" TextColor="#3357FF" />
+                        <Label Text="Outros - 25%" FontSize="16" TextColor="#FF33A5"/>
+                    </StackLayout>
+                    
+                    
 
-            <Button Text="Gerar relatório"
+                </HorizontalStackLayout>
+
+        
+
+                <Button Text="Gerar relatório" BackgroundColor="RoyalBlue" Margin="40"  Padding="10"
                 x:Name="BTN_relatorios"
+                        HorizontalOptions="CenterAndExpand"
                 Clicked="BTN_relatorios_Clicked" />
-        </StackLayout>
+          
+        
     </VerticalStackLayout>
 </ContentPage>
     

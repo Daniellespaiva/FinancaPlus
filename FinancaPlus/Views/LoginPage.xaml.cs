@@ -51,5 +51,13 @@ public partial class LoginPage : ContentPage
         }
 
     }
+
+    private async void BTN_recuperarSenha_Clicked(object sender, EventArgs e)
+    {
+        string emailUsuario = txt_email.Text;
+        await Navigation.PushAsync(new RecuperarSenha(emailUsuario));
+    }
+
 }
+
 

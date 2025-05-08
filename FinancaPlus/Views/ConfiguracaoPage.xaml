@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.ConfiguracaoPage"
+             Title="Configurações">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20">
+
+            <Label Text="Configurações" FontSize="24" HorizontalOptions="Center"/>
+
+            <!-- Botão para editar perfil -->
+            <Button Text="Editar Perfil" x:Name="perfil" BackgroundColor="DarkBlue" TextColor="White"
+                    Clicked="perfil_Clicked"/>
+
+            <!-- Botão para trocar senha -->
+            <Button Text="Trocar Senha" x:Name="BTN_trocarSenha"  BackgroundColor="DarkGreen" TextColor="White"
+                    Clicked="BTN_trocarSenha_Clicked"/>
+
+            <!-- Campo para definir saldo inicial -->
+            <Label Text="Saldo inicial da carteira" FontSize="20"/>
+            <Entry x:Name="EntrySaldo" Placeholder="Digite o valor inicial"/>
+
+            <!-- Botão para salvar saldo inicial -->
+            <Button Text="Salvar Saldo Inicial" x:Name="BTN_salvarSaldo" BackgroundColor="DarkOrange" TextColor="White"
+                    Clicked="BTN_salvarSaldo_Clicked"/>
+
+            <!-- Botão para fazer logout -->
+            <Button Text="Logout" x:Name="BTN_logout"  BackgroundColor="DarkRed" TextColor="White"
+                    Clicked="BTN_logout_Clicked"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
