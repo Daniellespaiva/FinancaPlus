@@ -20,8 +20,10 @@ private async void perfil_Clicked(object sender, EventArgs e)
 
     }
 
-    private void BTN_trocarSenha_Clicked(object sender, EventArgs e)
+    private async void BTN_trocarSenha_Clicked(object sender, EventArgs e)
     {
+        string emailUsuario = txt_email.Text;
+        await Navigation.PushAsync(new RecuperarSenha(emailUsuario));
 
     }
 
@@ -53,8 +55,10 @@ private async void perfil_Clicked(object sender, EventArgs e)
 
 
 
-    private void BTN_logout_Clicked(object sender, EventArgs e)
+    private async void BTN_logout_Clicked(object sender, EventArgs e)
     {
+
+        await Navigation.PopToRootAsync();
 
     }
 }

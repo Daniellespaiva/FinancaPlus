@@ -22,6 +22,17 @@ public partial class TelaPrincipal : ContentPage
         BindingContext = _viewModel;
 
         CarregarGrafico();
+        NavigationPage.SetHasBackButton(this,false);
+    }
+    protected override void OnNavigatingFrom(NavigatingFromEventArgs args)
+    {
+        base.OnNavigatingFrom(args);
+
+        // Evita que o usuário volte para a tela de login
+        if (Navigation.NavigationStack.Count > 0)
+        {
+            Navigation.RemovePage(Navigation.NavigationStack[0]);
+        }
     }
 
     private void CarregarGrafico()
