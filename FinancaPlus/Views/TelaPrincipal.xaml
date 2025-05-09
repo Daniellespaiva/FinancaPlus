@@ -8,7 +8,7 @@
    
     <VerticalStackLayout>
 
-        <HorizontalStackLayout VerticalOptions="Start" Margin="10" Padding="10" Spacing="40">
+        <HorizontalStackLayout VerticalOptions="Start" Margin="10" Padding="10" Spacing="4">
             <Label>
                 <Label.FormattedText>
                     <FormattedString>
@@ -25,6 +25,15 @@
            WidthRequest="50" 
            Margin="10,0,0,0"/>
 
+
+
+            <!-- Texto "Configuração" ao lado do botão -->
+            <Label Text="Configuração"
+               FontSize="11"
+               FontAttributes="Bold"
+               VerticalOptions="Center"/>
+
+
             <!-- Botão de Configurações ao lado da saudação -->
             <Button Text="⚙" 
             FontSize="20"
@@ -39,18 +48,32 @@
         <HorizontalStackLayout Padding="10" Spacing="50" Margin="1" HorizontalOptions="FillAndExpand">
             <!-- Saldo inicial -->
             <StackLayout HorizontalOptions="FillAndExpand">
-                <Label Text="Saldo inicial:" FontSize="20" HorizontalOptions="StartAndExpand"/>
-                <Frame BorderColor="Black" CornerRadius="10" Padding="10"  BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                         <!-- Label do saldo inicial -->
-                        <Label x:Name="LBL_saldoInicial" Text="R$ 0,00" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
-                 </Frame>
+                <Label Text="Saldo Adicionado:" FontSize="20" HorizontalOptions="StartAndExpand"/>
+                <Frame BorderColor="Black" CornerRadius="10" Padding="10" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                <Label FontSize="12" >
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="R$ " FontAttributes="Bold"/>
+                            <Span Text="{Binding SaldoInicial, StringFormat='{0:N2}'}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                </Frame>
+
             </StackLayout>
 
             <!-- Saldo disponível -->
             <StackLayout HorizontalOptions="FillAndExpand">
                 <Label Text="Saldo disponível:" FontSize="20" HorizontalOptions="StartAndExpand"/>
                 <Frame BorderColor="Black" CornerRadius="10" Padding="10" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Label x:Name="LBL_saldo" Text="R$ 0,00" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
+                    <Label FontSize="12" >
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="R$ " FontAttributes="Bold"/>
+                                <Span Text="{Binding Saldo, StringFormat='{0:N2}'}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
                 </Frame>
             </StackLayout>
         </HorizontalStackLayout>
@@ -58,44 +81,48 @@
 
 
 
-        <HorizontalStackLayout HorizontalOptions="FillAndExpand"  Margin="1" Padding="10" Spacing="5">
+        <HorizontalStackLayout HorizontalOptions="FillAndExpand"  Margin="1" Padding="10" Spacing="10">
 
-                    <Button Text="Adiciona Receitas" FontSize="12"
+                    <Button Text="Receitas" FontSize="12"
                      BackgroundColor="Green"
-                x:Name="BTN_receitas"
-                Clicked="BTN_receitas_Clicked" />
+                      x:Name="BTN_receitas"
+                            HorizontalOptions="FillAndExpand"
+                            WidthRequest="100"
+                     Clicked="BTN_receitas_Clicked" />
 
-                    <Button Text="Adicionar Despesas" FontSize="12"
+                    <Button Text="Despesas" FontSize="12"
                     BackgroundColor="Red"
-                x:Name="BTN_despesas"
-                Clicked ="BTN_despesas_Clicked" />
+                    x:Name="BTN_despesas"
+                            HorizontalOptions="FillAndExpand"
+WidthRequest="100"
+                     Clicked ="BTN_despesas_Clicked" />
 
-                    <Button Text="Adicionar Metas" FontSize="12"
+                    <Button Text="Metas" FontSize="12"
                     BackgroundColor="Blue"
                 x:Name="BTN_definirMetas"
+                            HorizontalOptions="FillAndExpand"
+WidthRequest="100"
                 Clicked="BTN_definirMetas_Clicked" />
         </HorizontalStackLayout>
 
                 <Label Text="Gasto por categoria" Padding="10" Margin="5"
-               FontSize="20"
+               FontSize="20" FontAttributes="Bold"
                HorizontalOptions="FillAndExpand" />
-
-                <HorizontalStackLayout HorizontalOptions="Start" Spacing="20" Padding="10">
-                    <!-- Lista de categorias à esquerda -->
-                    <StackLayout VerticalOptions="Center" Spacing="5" HorizontalOptions="End">
-                        <Label Text="Moradia - 30%" FontSize="16" TextColor="#FF5733"/>
-                        <Label Text="Alimento - 25%" FontSize="16" TextColor="#33FF57"/>
-                        <Label Text="Transporte - 20%" FontSize="16" TextColor="#3357FF" />
-                        <Label Text="Outros - 25%" FontSize="16" TextColor="#FF33A5"/>
-                    </StackLayout>
-                    
-                    
-
-                </HorizontalStackLayout>
-
         
+                <!-- Lista de categorias à esquerda -->
+        <HorizontalStackLayout HorizontalOptions="Start" Spacing="20" Padding="10">
+            <StackLayout VerticalOptions="Center" Spacing="5" HorizontalOptions="End">
+                <Label Text="{Binding Gastos.GastosPorCategoria[Moradia], StringFormat='Moradia - {0}%'}" FontSize="16" TextColor="#FF5733"/>
+                <Label Text="{Binding Gastos.GastosPorCategoria[Alimento], StringFormat='Alimento - {0}%'}" FontSize="16" TextColor="#33FF57"/>
+                <Label Text="{Binding Gastos.GastosPorCategoria[Transporte], StringFormat='Transporte - {0}%'}" FontSize="16" TextColor="#3357FF"/>
+                <Label Text="{Binding Gastos.GastosPorCategoria[Outros], StringFormat='Outros - {0}%'}" FontSize="16" TextColor="#FF33A5"/>
+            </StackLayout>
+        </HorizontalStackLayout>
 
-                <Button Text="Gerar relatório" BackgroundColor="RoyalBlue" Margin="40"  Padding="10"
+
+
+
+        <Button Text="Gerar relatório" BackgroundColor="RoyalBlue" Margin="40"  Padding="10"
                 x:Name="BTN_relatorios"
                         HorizontalOptions="CenterAndExpand"
                 Clicked="BTN_relatorios_Clicked" />

@@ -2,31 +2,77 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinancaPlus.Views.ConfiguracaoPage"
+             NavigationPage.HasNavigationBar="False"
              Title="Configurações">
 
+
     <ScrollView>
-        <VerticalStackLayout Padding="20">
+        <VerticalStackLayout Padding="20" Spacing="15">
 
-            <Label Text="Configurações" FontSize="24" HorizontalOptions="Center"/>
+            <!-- Título da tela -->
+            <Label Text="Configurações"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="DarkBlue"
+                   Margin="10"/>
+            <Frame BorderColor="Black" CornerRadius="10" Padding="15"
+                   BackgroundColor="LightGray">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Adicionar Saldo"
+               FontSize="18"
+               FontAttributes="Bold"/>
 
-            <!-- Botão para editar perfil -->
-            <Button Text="Editar Perfil" x:Name="perfil" BackgroundColor="DarkBlue" TextColor="White"
-                    Clicked="perfil_Clicked"/>
+                    <Entry x:Name="EntrySaldo" Placeholder="Digite o saldo inicial"
+               Keyboard="Numeric"
+               TextColor="Black"
+               BackgroundColor="White"/>
 
-            <!-- Botão para trocar senha -->
-            <Button Text="Trocar Senha" x:Name="BTN_trocarSenha"  BackgroundColor="DarkGreen" TextColor="White"
-                    Clicked="BTN_trocarSenha_Clicked"/>
+                    <!-- Exibir o saldo formatado -->
+                    <Label x:Name="LBL_saldo"
+               FontSize="18"
+               FontAttributes="Bold"
+               Text="Saldo: R$ 0,00"
+               TextColor="Black"/>
 
-            <!-- Campo para definir saldo inicial -->
-            <Label Text="Saldo inicial da carteira" FontSize="20"/>
-            <Entry x:Name="EntrySaldo" Placeholder="Digite o valor inicial"/>
+                    <Button Text="Salvar Saldo Inicial"
+                x:Name="BTN_salvarSaldo"
+                BackgroundColor="DarkOrange"
+                TextColor="White"
+                Clicked="BTN_salvarSaldo_Clicked"/>
+                </VerticalStackLayout>
+            </Frame>
 
-            <!-- Botão para salvar saldo inicial -->
-            <Button Text="Salvar Saldo Inicial" x:Name="BTN_salvarSaldo" BackgroundColor="DarkOrange" TextColor="White"
-                    Clicked="BTN_salvarSaldo_Clicked"/>
 
-            <!-- Botão para fazer logout -->
-            <Button Text="Logout" x:Name="BTN_logout"  BackgroundColor="DarkRed" TextColor="White"
+            <!-- Seção: Conta do usuário -->
+            <Frame BorderColor="Black" CornerRadius="10" Padding="15"
+                   BackgroundColor="White">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Gerenciar Conta"
+                           FontSize="18"
+                           FontAttributes="Bold"/>
+
+                    <Button Text="Editar Perfil"
+                            x:Name="perfil"
+                            BackgroundColor="DarkBlue"
+                            TextColor="White"
+                            Clicked="perfil_Clicked"/>
+
+                    <Button Text="Trocar Senha"
+                            x:Name="BTN_trocarSenha"
+                            BackgroundColor="DarkGreen"
+                            TextColor="White"
+                            Clicked="BTN_trocarSenha_Clicked"/>                    
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Botão de Logout -->
+            <Button Text="Logout"
+                    x:Name="BTN_logout"
+                    BackgroundColor="DarkRed"
+                    TextColor="White"
+                    FontAttributes="Bold"                  
+                    CornerRadius="10"
                     Clicked="BTN_logout_Clicked"/>
 
         </VerticalStackLayout>
