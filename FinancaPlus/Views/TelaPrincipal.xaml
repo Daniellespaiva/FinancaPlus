@@ -111,13 +111,21 @@ WidthRequest="100"
                HorizontalOptions="FillAndExpand" />
         
                 <!-- Lista de categorias à esquerda -->
-        <HorizontalStackLayout HorizontalOptions="Start" Spacing="20" Padding="10">
-            <StackLayout VerticalOptions="Center" Spacing="5" HorizontalOptions="End">
-                <Label Text="{Binding Gastos.GastosPorCategoria[Moradia], StringFormat='Moradia - {0}%'}" FontSize="16" TextColor="#FF5733"/>
-                <Label Text="{Binding Gastos.GastosPorCategoria[Alimento], StringFormat='Alimento - {0}%'}" FontSize="16" TextColor="#33FF57"/>
-                <Label Text="{Binding Gastos.GastosPorCategoria[Transporte], StringFormat='Transporte - {0}%'}" FontSize="16" TextColor="#3357FF"/>
-                <Label Text="{Binding Gastos.GastosPorCategoria[Outros], StringFormat='Outros - {0}%'}" FontSize="16" TextColor="#FF33A5"/>
+        <HorizontalStackLayout HorizontalOptions="Start" Spacing="0" Padding="5">
+            <StackLayout Padding="10" Spacing="0" HorizontalOptions="Start">
+                <Label Text="Moradia" FontSize="16" FontAttributes="Bold" TextColor="#FF5733"/>
+                <Label Text="{Binding Gastos.GastosPorCategoria[Moradia], StringFormat='{0}%'}" FontSize="16" TextColor="#FF5733"/>
+
+                <Label Text="Alimento" FontSize="16" FontAttributes="Bold" TextColor="#33FF57"/>
+                <Label Text="{Binding Gastos.GastosPorCategoria[Alimento], StringFormat='{0}%'}" FontSize="16" TextColor="#33FF57"/>
+
+                <Label Text="Transporte" FontSize="16" FontAttributes="Bold" TextColor="#3357FF"/>
+                <Label Text="{Binding Gastos.GastosPorCategoria[Transporte], StringFormat='{0}%'}" FontSize="16" TextColor="#3357FF"/>
+
+                <Label Text="Outros" FontSize="16" FontAttributes="Bold" TextColor="#FF33A5"/>
+                <Label Text="{Binding Gastos.GastosPorCategoria[Outros], StringFormat='{0}%'}" FontSize="16" TextColor="#FF33A5"/>
             </StackLayout>
+
         </HorizontalStackLayout>
 
 

@@ -10,7 +10,7 @@ namespace FinancaPlus.Views;
 public partial class TelaPrincipal : ContentPage
 {
     private readonly TelaPrincipalViewModel _viewModel;
-
+    private Label LBL_NomeUsuario;
     public TelaPrincipal(string email)
     {
         InitializeComponent();
@@ -20,10 +20,23 @@ public partial class TelaPrincipal : ContentPage
         _viewModel.SaldoInicial = decimal.Parse(Preferences.Get("SaldoInicial", 0m.ToString()));
 
         BindingContext = _viewModel;
-
+        
         CarregarGrafico();
-        NavigationPage.SetHasBackButton(this,false);
+         NavigationPage.SetHasBackButton(this,false);
     }
+
+    private void CarregarNomeUsuario()
+    {
+        if (_viewModel.UsuarioLogado != null)
+        {
+            LBL_NomeUsuario.Text = $"Bem-vindo, {_viewModel.UsuarioLogado.Nome}!";
+        }
+        else
+        {
+            LBL_NomeUsuario.Text = "Bem-vindo!";
+        }
+    }
+
     protected override void OnNavigatingFrom(NavigatingFromEventArgs args)
     {
         base.OnNavigatingFrom(args);
@@ -42,7 +55,7 @@ public partial class TelaPrincipal : ContentPage
             new ChartEntry(30) { Label = "Moradia", ValueLabel = "0%", Color = SKColor.Parse("#FF5733") },
             new ChartEntry(25) { Label = "Alimento", ValueLabel = "0%", Color = SKColor.Parse("#33FF57") },
             new ChartEntry(20) { Label = "Transporte", ValueLabel = "0%", Color = SKColor.Parse("#3357FF") },
-            new ChartEntry(25) { Label = "Outros", ValueLabel = "%", Color = SKColor.Parse("#FF33A5") }
+            new ChartEntry(25) { Label = "Outros", ValueLabel = "0%", Color = SKColor.Parse("#FF33A5") }
         };
     }
 
@@ -54,10 +67,10 @@ public partial class TelaPrincipal : ContentPage
         private decimal _totalDespesas = 0m;
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        // Propriedade para armazenar o saldo inicial
         public Usuario UsuarioLogado { get; set; }
-        public AdicionarDespesas Gastos { get; set; } // Instância do GastoViewModel
-
+       
+        public Gasto Gasto { get; set; } // Propriedade para armazenar os gastos
         public decimal SaldoInicial
         {
             get => _saldoInicial;
@@ -89,17 +102,17 @@ public partial class TelaPrincipal : ContentPage
             SaldoInicial = ObterSaldoDoBancoDeDados();
             TotalDespesas = ObterTotalDespesas();
 
-            Gastos = new AdicionarDespesas(); // Inicializa os gastos
+            Gasto = new Gasto(); // Inicializa os gastos
         }
 
         private decimal ObterSaldoDoBancoDeDados()
         {
-            return 1500.75m; // Pegue saldo real do banco
+            return 0m; // Pegue saldo real do banco
         }
 
         private decimal ObterTotalDespesas()
         {
-            return 500.00m; // Pegue despesas reais do banco
+            return 0m; // Pegue despesas reais do banco
         }
 
         protected void OnPropertyChanged(string propertyName)
@@ -148,7 +161,7 @@ public partial class TelaPrincipal : ContentPage
     {
         try 
         {
-            await Navigation.PushAsync(new GerarRelatorios());
+            await Navigation.PushAsync(new GerarRelatorio());
 
         }
         catch 

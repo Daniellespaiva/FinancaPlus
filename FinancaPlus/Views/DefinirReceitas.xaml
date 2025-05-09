@@ -4,9 +4,6 @@
              x:Class="FinancaPlus.Views.DefinirReceitas"
              Title="DefinirReceitas">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+     
     </VerticalStackLayout>
 </ContentPage>

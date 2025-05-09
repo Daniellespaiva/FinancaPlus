@@ -4,9 +4,7 @@
              x:Class="FinancaPlus.Views.DefinirMetas"
              Title="DefinirMetas">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+      
+          
     </VerticalStackLayout>
 </ContentPage>

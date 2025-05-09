@@ -84,7 +84,7 @@
 	  <MauiXaml Update="Views\DefinirReceitas.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\GerarRelatorios.xaml">
+	  <MauiXaml Update="Views\GerarRelatorio.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\LoginPage.xaml">
