@@ -1,7 +1,6 @@
 using FinancaPlus.Helpers;
 using FinancaPlus.Models;
 using Microcharts;
-using Microcharts.Maui;
 using SkiaSharp;
 using System.ComponentModel;
 
@@ -11,6 +10,11 @@ public partial class TelaPrincipal : ContentPage
 {
     private readonly TelaPrincipalViewModel _viewModel;
     private Label LBL_NomeUsuario;
+
+    // Propriedade para armazenar o gráfico
+    public Chart GraficoGastos { get; set; }
+
+
     public TelaPrincipal(string email)
     {
         InitializeComponent();
@@ -22,7 +26,7 @@ public partial class TelaPrincipal : ContentPage
         BindingContext = _viewModel;
         
         CarregarGrafico();
-         NavigationPage.SetHasBackButton(this,false);
+        
     }
 
     private void CarregarNomeUsuario()
@@ -37,27 +41,41 @@ public partial class TelaPrincipal : ContentPage
         }
     }
 
-    protected override void OnNavigatingFrom(NavigatingFromEventArgs args)
-    {
-        base.OnNavigatingFrom(args);
+   // protected override void OnNavigatingFrom(NavigatingFromEventArgs args)
+   // {
+    //    base.OnNavigatingFrom(args);
 
         // Evita que o usuário volte para a tela de login
-        if (Navigation.NavigationStack.Count > 0)
-        {
-            Navigation.RemovePage(Navigation.NavigationStack[0]);
-        }
-    }
+    //    if (Navigation.NavigationStack.Count > 0)
+     //   {
+     //       Navigation.RemovePage(Navigation.NavigationStack[0]);
+    //    }
+  //  }
 
     private void CarregarGrafico()
     {
-        var entrada = new[]
+        try
         {
-            new ChartEntry(30) { Label = "Moradia", ValueLabel = "0%", Color = SKColor.Parse("#FF5733") },
-            new ChartEntry(25) { Label = "Alimento", ValueLabel = "0%", Color = SKColor.Parse("#33FF57") },
-            new ChartEntry(20) { Label = "Transporte", ValueLabel = "0%", Color = SKColor.Parse("#3357FF") },
-            new ChartEntry(25) { Label = "Outros", ValueLabel = "0%", Color = SKColor.Parse("#FF33A5") }
+            var entries = new[]
+            {
+            new ChartEntry(30) { Label = "Moradia", ValueLabel = "30%", Color = SKColor.Parse("#FF5733") },
+            new ChartEntry(25) { Label = "Alimento", ValueLabel = "25%", Color = SKColor.Parse("#33FF57") },
+            new ChartEntry(20) { Label = "Transporte", ValueLabel = "20%", Color = SKColor.Parse("#3357FF") },
+            new ChartEntry(25) { Label = "Outros", ValueLabel = "25%", Color = SKColor.Parse("#FF33A5") }
         };
+
+            // Atribui o gráfico à propriedade
+            GraficoGastos = new PieChart { Entries = entries };
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar o gráfico: {ex.Message}");
+        }
+
     }
+
+
+
 
 
     public class TelaPrincipalViewModel : INotifyPropertyChanged
@@ -94,6 +112,7 @@ public partial class TelaPrincipal : ContentPage
         }
 
         public decimal Saldo => SaldoInicial - TotalDespesas;
+        public Dictionary<string, float> GastosPorCategoria { get; set; }
 
         public TelaPrincipalViewModel(string email)
         {
@@ -103,6 +122,16 @@ public partial class TelaPrincipal : ContentPage
             TotalDespesas = ObterTotalDespesas();
 
             Gasto = new Gasto(); // Inicializa os gastos
+
+            GastosPorCategoria = new Dictionary<string, float>
+    {
+        { "Moradia", 40f },
+        { "Alimento", 25f },
+        { "Transporte", 20f },
+        { "Outros", 15f }
+    };
+
+
         }
 
         private decimal ObterSaldoDoBancoDeDados()
@@ -175,5 +204,22 @@ public partial class TelaPrincipal : ContentPage
     {
         // Redireciona para a página de configurações
         Navigation.PushAsync(new ConfiguracaoPage());
+    }
+
+    private void BTN_voltar_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void BTN_menu_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    
+
+    private void BTN_perfil_Clicked(object sender, EventArgs e)
+    {
+
     }
 }

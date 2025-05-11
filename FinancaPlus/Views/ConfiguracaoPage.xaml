@@ -6,6 +6,18 @@
              Title="Configurações">
 
 
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Voltar"
+                 x:Name="BTN_voltar"
+             IconImageSource="back_icon.png"
+             Order="Primary"
+             Priority="0"
+            Clicked="BTN_voltar_Clicked"/>
+       
+    </ContentPage.ToolbarItems>
+
+
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
@@ -40,7 +52,7 @@
                 BackgroundColor="DarkOrange"
                 TextColor="White"
                 Clicked="BTN_salvarSaldo_Clicked"/>
-                </VerticalStackLayout>
+             </VerticalStackLayout>
             </Frame>
 
 

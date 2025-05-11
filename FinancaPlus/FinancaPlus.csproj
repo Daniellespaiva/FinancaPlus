@@ -57,6 +57,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\NovaPasta\icon1.png" />
+	  <None Remove="Resources\NovaPasta\icon2.png" />
+	  <None Remove="Resources\NovaPasta\icon3.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
 		<PackageReference Include="Microcharts.Maui" Version="1.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
@@ -99,6 +105,10 @@
 	  <MauiXaml Update="Views\TelaPrincipal.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\NovaPasta\" />
 	</ItemGroup>
 
 </Project>

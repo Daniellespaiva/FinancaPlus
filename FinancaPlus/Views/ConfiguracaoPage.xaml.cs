@@ -61,4 +61,9 @@ private async void perfil_Clicked(object sender, EventArgs e)
         await Navigation.PopToRootAsync();
 
     }
+
+    private void BTN_voltar_Clicked(object sender, EventArgs e)
+    {
+        Navigation.PopAsync();
+    }
 }
