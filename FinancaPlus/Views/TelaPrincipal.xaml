@@ -9,39 +9,13 @@
 
     <ContentPage.Content>
         <VerticalStackLayout >
-            <!-- Barra de Navegação + Menu Lateral -->
+           
             <Frame BackgroundColor="RoyalBlue" HeightRequest="89">
-                <Grid Margin="0" Padding="8" ColumnDefinitions="50, *, 60">
+                <Grid Padding="8" ColumnDefinitions="*, *, *">
 
-                    <!-- Menu Lateral -->
-                    <Frame x:Name="MenuLateralFrame"
-                           BackgroundColor="Gray"
-                           WidthRequest="250"
-                           IsVisible="False"
-                           HorizontalOptions="Start"
-                           VerticalOptions="Fill">
-                        <StackLayout Padding="10">
-                            <Button Text="Tela Principal" Clicked="IrParaTelaPrincipal_Clicked"/>
-                            <Button Text="Configurações" Clicked="IrParaConfig_Clicked"/>
-                            <Button Text="Sair" Clicked="Logout_Clicked"/>
-                        </StackLayout>
-                    </Frame>
-
-                    <!-- Botão para abrir/fechar menu -->
-                    <Button Text="☰"
-                            FontSize="20"
-                            FontAttributes="Bold"
-                            TextColor="White"
-                            BackgroundColor="Transparent"
-                            ImageSource="menu_icon.png"
-                            x:Name="BTN_AbriMenu"
-                            Clicked="BTN_AbriMenu_Clicked"
-                            Grid.Column="0"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"/>
-
+                   
                     <!-- Saudação com Nome do Usuário -->
-                    <Label FontSize="16" TextColor="White" Grid.Column="1" HorizontalOptions="Center">
+                    <Label FontSize="16" TextColor="White" Grid.Column="0" VerticalOptions="End" HorizontalOptions="Start">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="Olá, " TextColor="White"/>
@@ -51,12 +25,12 @@
                     </Label>
 
                     <!-- Botão de Perfil -->
-                    <Button ImageSource="icon3.png"
+                    <Button Text="👤 Perfil"
                             x:Name="BTN_perfil"
                             BackgroundColor="Transparent"
                             Clicked="BTN_perfil_Clicked"
-                            Grid.Column="2"
-                            HorizontalOptions="End"
+                            Grid.Column="2"                            
+                            HorizontalOptions="Start"
                             VerticalOptions="Center"/>
                 </Grid>
             </Frame>
@@ -155,6 +129,43 @@
                     x:Name="BTN_relatorios"
                     HorizontalOptions="CenterAndExpand"
                     Clicked="BTN_relatorios_Clicked" />
+
+
+
+            <!-- Menu Lateral -->
+            <Frame x:Name="MenuLateralFrame"
+BackgroundColor="Gray"
+WidthRequest="250"
+IsVisible="False"
+HorizontalOptions="Start"
+VerticalOptions="Fill">
+                <StackLayout Padding="10">
+                    <Label Text="Menu de Navegação" FontSize="18" FontAttributes="Bold" TextColor="White" Padding="5"/>
+
+                    <Button Text="📌 Tela Principal" Clicked="IrParaTelaPrincipal_Clicked"/>
+                    <Button Text="👤 Editar Perfil" x:Name="IrParaEditarPerfil" Clicked="IrParaEditarPerfil_Clicked"/>
+                    <Button Text="📊 Relatórios" x:Name="IrParaRelatorios" Clicked="IrParaRelatorios_Clicked"/>
+                    <Button Text="🎯 Metas" x:Name="IrParaMetas"  Clicked="IrParaMetas_Clicked"/>
+                    <Button Text="⚙️ Configurações" x:Name="IrParaConfig" Clicked="IrParaConfig_Clicked_1"/>
+                    <Button Text="🚪 Sair" x:Name="IrParaLogout"  Clicked="IrParaLogout_Clicked"/>
+                </StackLayout>
+            </Frame>
+
+
+            <!-- Botão para abrir/fechar menu -->
+            <Button Text="☰"
+                     FontSize="20"
+                     FontAttributes="Bold"
+                     TextColor="White"
+                     BackgroundColor="Transparent"
+                     ImageSource="menu_icon.png"
+                     x:Name="BTN_AbriMenu"
+                     Clicked="BTN_AbriMenu_Clicked"
+                     Grid.Column="0"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"/>
+
+
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

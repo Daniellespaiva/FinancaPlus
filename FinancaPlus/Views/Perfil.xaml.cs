@@ -18,10 +18,14 @@ public partial class Perfil : ContentPage
 		db = new SQLiteDatabaseHelpers();
 		usuarioAtual = db.GetUsuario(email);
 
-		if (usuarioAtual != null)
+        txt_nome = new Entry(); 
+        txt_email = new Entry();
+        txt_senha = new Entry { IsPassword = true};
+
+        if (usuarioAtual != null)
 		{
 			txt_nome.Text = usuarioAtual.Nome;
-			txt_email.Text = usuarioAtual.Email;
+            txt_email.Text = usuarioAtual.Email;
 		}
 	}
 

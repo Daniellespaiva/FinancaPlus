@@ -1,10 +1,5 @@
 ﻿using FinancaPlus.Models;
 using SQLite;
-using System;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-using BCrypt.Net;
 
 namespace FinancaPlus.Helpers
 {

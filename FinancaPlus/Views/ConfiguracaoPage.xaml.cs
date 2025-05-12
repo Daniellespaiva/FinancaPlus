@@ -14,11 +14,7 @@ public partial class ConfiguracaoPage : ContentPage
 
     
  
-private async void perfil_Clicked(object sender, EventArgs e)
-    {   // Aqui você pode navegar para a página de perfil
-        await Navigation.PushAsync(new Perfil(txt_email.Text));
 
-    }
 
     private async void BTN_trocarSenha_Clicked(object sender, EventArgs e)
     {

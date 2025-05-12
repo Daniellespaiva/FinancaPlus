@@ -90,6 +90,9 @@
 	  <MauiXaml Update="Views\DefinirReceitas.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\EditarPerfil.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\GerarRelatorio.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

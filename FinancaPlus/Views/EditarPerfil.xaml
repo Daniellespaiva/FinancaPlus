@@ -1,0 +1,24 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.EditarPerfil"
+             Title="Editar Perfil">
+    <ContentPage.Content>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Imagem de Perfil -->
+            <Frame CornerRadius="100" BorderColor="Gray" HeightRequest="120" WidthRequest="120" HorizontalOptions="Center">
+                <Image x:Name="IMG_Perfil" Source="default_profile.png" HeightRequest="100" WidthRequest="100"/>
+            </Frame>
+            <Button Text="Alterar Imagem" Clicked="AlterarImagem_Clicked" HorizontalOptions="Center"/>
+
+            <!-- Campos de edição -->
+            <Entry x:Name="EntryNome" Placeholder="Nome Completo"/>
+            <Entry x:Name="EntryTelefone" Placeholder="Telefone" Keyboard="Telephone"/>
+            <Entry x:Name="EntryEmail" Placeholder="Email" Keyboard="Email"/>
+
+            <!-- Botão Salvar -->
+            <Button Text="Salvar" BackgroundColor="RoyalBlue" TextColor="White" Clicked="SalvarPerfil_Clicked"/>
+
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>

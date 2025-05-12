@@ -35,9 +35,7 @@
                     x:Name="BTN_alterarImagem"
                     Clicked="BTN_alterarImagem_Clicked"/>
 
-            <Button Text="Alterar Senha" 
-                    x:Name="BTN_alterarSenha"
-                    Clicked="BTN_alterarSenha_Clicked"/>
+           
 
             <Button Text="Sair" 
                     x:Name="BTN_sair" 

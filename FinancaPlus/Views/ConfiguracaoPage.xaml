@@ -64,12 +64,6 @@
                            FontSize="18"
                            FontAttributes="Bold"/>
 
-                    <Button Text="Editar Perfil"
-                            x:Name="perfil"
-                            BackgroundColor="DarkBlue"
-                            TextColor="White"
-                            Clicked="perfil_Clicked"/>
-
                     <Button Text="Trocar Senha"
                             x:Name="BTN_trocarSenha"
                             BackgroundColor="DarkGreen"

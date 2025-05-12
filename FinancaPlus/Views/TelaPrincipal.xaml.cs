@@ -216,15 +216,18 @@ public partial class TelaPrincipal : ContentPage
 
     }
 
+    private void Logout_Clicked(object sender, EventArgs e)
+    {
+        Navigation.PopToRootAsync();
+    }
 
 
 
 
-
-    private void BTN_perfil_Clicked(object sender, EventArgs e)
+    private async void BTN_perfil_Clicked(object sender, EventArgs e)
     {
         string emailUsuario = _viewModel.UsuarioLogado?.Email ?? "email@exemplo.com";
-        Navigation.PushAsync(new Perfil(emailUsuario));
+        await Navigation.PushAsync(new Perfil(emailUsuario)); // Abre edição de perfil
     }
 
 
@@ -237,16 +240,8 @@ public partial class TelaPrincipal : ContentPage
         Navigation.PushAsync(new ConfiguracaoPage());
     }
 
-    private void Logout_Clicked(object sender, EventArgs e)
-    {
-        Navigation.PopToRootAsync();
-    }
 
-    private void IrParaTelaPrincipal_Clicked(object sender, EventArgs e)
-    {
-        string emailUsuario = _viewModel.UsuarioLogado?.Email ?? "email@exemplo.com";
-        Navigation.PushAsync(new TelaPrincipal(emailUsuario));
-    }
+
 
     private void BTN_AbriMenu_Clicked(object sender, EventArgs e)
     {
@@ -260,18 +255,51 @@ public partial class TelaPrincipal : ContentPage
         }
 
     }
+    private async void IrParaTelaPrincipal_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new TelaPrincipal("email@exemplo.com")); // Abre a tela principal
+    }
+
+    private async void IrParaEditarPerfil_Clicked(object sender, EventArgs e)
+    {
+        string emailUsuario = _viewModel.UsuarioLogado?.Email ?? "email@exemplo.com";
+        await Navigation.PushAsync(new Perfil(emailUsuario)); // Abre edição de perfil
+    }
+
+    private async void IrParaRelatorios_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new GerarRelatorio()); // Abre tela de relatórios
+    }
+
+    private async void IrParaMetas_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new DefinirMetas()); // Abre metas
+    }
+
+
+
+    private async void IrParaLogout_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PopToRootAsync(); // Faz logout e retorna à tela inicial
+    }
+
+    private async void IrParaConfig_Clicked_1(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new ConfiguracaoPage()); // Abre configurações
+    }
 }
-   // private void BTN_FecharMenu_Clicked(object sender, EventArgs e)
-   // {
-     //   if (MenuLateralFrame != null)
-    //    {
-          //  MenuLateralFrame.IsVisible = false; // Fecha o menu
-    //    }
-    //    else
-    //    {
-    //        Debug.WriteLine("Erro: MenuLateral está null! Verifique se foi inicializado corretamente.");
-    //    }
- //   }
+
+// private void BTN_FecharMenu_Clicked(object sender, EventArgs e)
+// {
+//   if (MenuLateralFrame != null)
+//    {
+//  MenuLateralFrame.IsVisible = false; // Fecha o menu
+//    }
+//    else
+//    {
+//        Debug.WriteLine("Erro: MenuLateral está null! Verifique se foi inicializado corretamente.");
+//    }
+//   }
 
 
 
