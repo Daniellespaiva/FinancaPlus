@@ -3,8 +3,10 @@ using FinancaPlus.Models;
 using Microcharts;
 using SkiaSharp;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace FinancaPlus.Views;
+
 
 public partial class TelaPrincipal : ContentPage
 {
@@ -14,7 +16,7 @@ public partial class TelaPrincipal : ContentPage
     // Propriedade para armazenar o gráfico
     public Chart GraficoGastos { get; set; }
 
-
+    private StackLayout _menuLateralFrame;
     public TelaPrincipal(string email)
     {
         InitializeComponent();
@@ -24,9 +26,10 @@ public partial class TelaPrincipal : ContentPage
         _viewModel.SaldoInicial = decimal.Parse(Preferences.Get("SaldoInicial", 0m.ToString()));
 
         BindingContext = _viewModel;
-        
+
+        _menuLateralFrame = this.FindByName<StackLayout>("MenuLateralFrame");
         CarregarGrafico();
-        
+
     }
 
     private void CarregarNomeUsuario()
@@ -41,16 +44,16 @@ public partial class TelaPrincipal : ContentPage
         }
     }
 
-   // protected override void OnNavigatingFrom(NavigatingFromEventArgs args)
-   // {
+    // protected override void OnNavigatingFrom(NavigatingFromEventArgs args)
+    // {
     //    base.OnNavigatingFrom(args);
 
-        // Evita que o usuário volte para a tela de login
+    // Evita que o usuário volte para a tela de login
     //    if (Navigation.NavigationStack.Count > 0)
-     //   {
-     //       Navigation.RemovePage(Navigation.NavigationStack[0]);
+    //   {
+    //       Navigation.RemovePage(Navigation.NavigationStack[0]);
     //    }
-  //  }
+    //  }
 
     private void CarregarGrafico()
     {
@@ -72,6 +75,8 @@ public partial class TelaPrincipal : ContentPage
             Console.WriteLine($"Erro ao carregar o gráfico: {ex.Message}");
         }
 
+
+
     }
 
 
@@ -87,7 +92,7 @@ public partial class TelaPrincipal : ContentPage
         public event PropertyChangedEventHandler PropertyChanged;
         // Propriedade para armazenar o saldo inicial
         public Usuario UsuarioLogado { get; set; }
-       
+
         public Gasto Gasto { get; set; } // Propriedade para armazenar os gastos
         public decimal SaldoInicial
         {
@@ -151,12 +156,12 @@ public partial class TelaPrincipal : ContentPage
     }
     private async void BTN_receitas_Clicked(object sender, EventArgs e)
     {
-        try 
+        try
         {
             await Navigation.PushAsync(new DefinirReceitas());
 
         }
-        catch 
+        catch
         {
 
         }
@@ -164,11 +169,11 @@ public partial class TelaPrincipal : ContentPage
 
     private async void BTN_despesas_Clicked(object sender, EventArgs e)
     {
-        try 
+        try
         {
             await Navigation.PushAsync(new AdicionarDespesas());
         }
-        catch 
+        catch
         {
 
         }
@@ -176,11 +181,11 @@ public partial class TelaPrincipal : ContentPage
 
     private async void BTN_definirMetas_Clicked(object sender, EventArgs e)
     {
-        try 
+        try
         {
             await Navigation.PushAsync(new DefinirMetas());
         }
-        catch 
+        catch
         {
 
         }
@@ -188,18 +193,18 @@ public partial class TelaPrincipal : ContentPage
 
     private async void BTN_relatorios_Clicked(object sender, EventArgs e)
     {
-        try 
+        try
         {
             await Navigation.PushAsync(new GerarRelatorio());
 
         }
-        catch 
+        catch
         {
 
         }
     }
 
-    
+
     private void BTN_configuracoes_Clicked(object sender, EventArgs e)
     {
         // Redireciona para a página de configurações
@@ -211,15 +216,62 @@ public partial class TelaPrincipal : ContentPage
 
     }
 
-    private void BTN_menu_Clicked(object sender, EventArgs e)
-    {
 
-    }
 
-    
+
+
 
     private void BTN_perfil_Clicked(object sender, EventArgs e)
     {
+        string emailUsuario = _viewModel.UsuarioLogado?.Email ?? "email@exemplo.com";
+        Navigation.PushAsync(new Perfil(emailUsuario));
+    }
+
+
+
+
+
+
+    private void IrParaConfig_Clicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new ConfiguracaoPage());
+    }
+
+    private void Logout_Clicked(object sender, EventArgs e)
+    {
+        Navigation.PopToRootAsync();
+    }
+
+    private void IrParaTelaPrincipal_Clicked(object sender, EventArgs e)
+    {
+        string emailUsuario = _viewModel.UsuarioLogado?.Email ?? "email@exemplo.com";
+        Navigation.PushAsync(new TelaPrincipal(emailUsuario));
+    }
+
+    private void BTN_AbriMenu_Clicked(object sender, EventArgs e)
+    {
+        if (MenuLateralFrame != null)
+        {
+            MenuLateralFrame.IsVisible = !MenuLateralFrame.IsVisible; // Alterna a visibilidade do menu
+        }
+        else
+        {
+            Debug.WriteLine("Erro: MenuLateral está null! Verifique se foi inicializado corretamente.");
+        }
 
     }
 }
+   // private void BTN_FecharMenu_Clicked(object sender, EventArgs e)
+   // {
+     //   if (MenuLateralFrame != null)
+    //    {
+          //  MenuLateralFrame.IsVisible = false; // Fecha o menu
+    //    }
+    //    else
+    //    {
+    //        Debug.WriteLine("Erro: MenuLateral está null! Verifique se foi inicializado corretamente.");
+    //    }
+ //   }
+
+
+

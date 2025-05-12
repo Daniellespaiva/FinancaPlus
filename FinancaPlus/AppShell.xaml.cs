@@ -7,7 +7,12 @@ namespace FinancaPlus
         public AppShell()
         {
             InitializeComponent();
-            
+          
         }
+
     }
+       
+    
 }
+
+
