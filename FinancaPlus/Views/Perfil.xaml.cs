@@ -1,6 +1,5 @@
 using FinancaPlus.Helpers;
 using FinancaPlus.Models;
-using System.Threading.Tasks;
 
 namespace FinancaPlus.Views;
 
@@ -58,10 +57,6 @@ public partial class Perfil : ContentPage
     {
 
     }
-
-    private void BTN_alterarSenha_Clicked(object sender, EventArgs e)
-    {
-
     }
 
     private void BTN_sair_Clicked_1(object sender, EventArgs e)
