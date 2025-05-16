@@ -30,19 +30,19 @@
 
         <!-- Botão para enviar recuperação -->
         <Button Text="Alterar Senha"
-            x:Name="BTN_alterarSenha"
+            x:Name="BTN_AlterarSenha"
             BackgroundColor="DarkBlue"
             TextColor="White"
             FontAttributes="Bold"
-            Clicked="BTN_alterarSenha_Clicked"/>
+            Clicked="BTN_AlterarSenha_Clicked"/>
 
         <!-- Botão de Cancelar -->
         <Button Text="Cancelar"
-            x:Name="BTN_cancelar"
+            x:Name="BTN_Cancelar"
             BackgroundColor="Gray"
             TextColor="White"
             FontAttributes="Bold"
-                Clicked="BTN_cancelar_Clicked"/>
+                Clicked="BTN_Cancelar_Clicked"/>
 
          
     </VerticalStackLayout>

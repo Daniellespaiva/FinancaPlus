@@ -1,171 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinancaPlus.Views.TelaPrincipal"
+             BackgroundColor="#F5F5F5"
              NavigationPage.HasNavigationBar="False"
-             NavigationPage.HasBackButton="False"
-             Title="TelaPrincipal">
+             Title="Tela Principal">
 
-   
+    <Grid RowDefinitions="Auto, *, Auto">
 
-    <ContentPage.Content>
-        <VerticalStackLayout >
-           
-            <Frame BackgroundColor="RoyalBlue" HeightRequest="89">
-                <Grid Padding="8" ColumnDefinitions="*, *, *">
-
-                   
-                    <!-- Saudação com Nome do Usuário -->
-                    <Label FontSize="16" TextColor="White" Grid.Column="0" VerticalOptions="End" HorizontalOptions="Start">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="Olá, " TextColor="White"/>
-                                <Span Text="{Binding UsuarioLogado.Nome}" FontAttributes="Bold" TextColor="White"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-
-                    <!-- Botão de Perfil -->
-                    <Button Text="👤 Perfil"
-                            x:Name="BTN_perfil"
-                            BackgroundColor="Transparent"
-                            Clicked="BTN_perfil_Clicked"
-                            Grid.Column="2"                            
-                            HorizontalOptions="Start"
-                            VerticalOptions="Center"/>
-                </Grid>
-            </Frame>
-
-
-
-            <!-- Conteúdo abaixo -->
-
-
-            <HorizontalStackLayout Padding="10" Spacing="35" Margin="1" HorizontalOptions="FillAndExpand">
-                <!-- Saldo inicial -->
-                <StackLayout HorizontalOptions="FillAndExpand">
-                    <Label Text="Saldo Adicionado:" FontSize="20" HorizontalOptions="StartAndExpand" />
-                    <Frame BorderColor="Black" CornerRadius="10" Padding="10" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                        <Label FontSize="12">
-                            <Label.FormattedText>
-                                <FormattedString >
-                                    <Span Text="R$ " FontAttributes="Bold" />
-                                    <Span Text="{Binding SaldoInicial, StringFormat='{0:N2}'}" />
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </Frame>
-                </StackLayout>
-
-                <!-- Saldo disponível -->
-                <StackLayout HorizontalOptions="FillAndExpand">
-                    <Label Text="Despesas:" FontSize="20" HorizontalOptions="StartAndExpand" />
-                    <Frame BorderColor="Black" CornerRadius="10" Padding="10" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                        <Label FontSize="12">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="R$ " FontAttributes="Bold" />
-                                    <Span Text="{Binding Saldo, StringFormat='{0:N2}'}" TextColor="Red"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </Frame>
-                </StackLayout>
+        <!-- Cabeçalho -->
+        <VerticalStackLayout Padding="20">
+            <Label x:Name="LBL_NomeUsuario" Text="Olá, Usuário!" FontSize="22" FontAttributes="Bold"/>
+            <HorizontalStackLayout Spacing="30">
+                <Label x:Name="LBL_Saldo" Text="Saldo: R$ 0,00" FontSize="18" TextColor="DarkGreen"/>
+                <Label x:Name="LBL_Despesas" Text="Despesas: R$ 0,00" FontSize="18" TextColor="DarkRed"/>
             </HorizontalStackLayout>
-
-            <HorizontalStackLayout HorizontalOptions="FillAndExpand" Margin="1" Padding="10" Spacing="10">
-                <Button Text="Receitas" FontSize="12"
-                        BackgroundColor="Green"
-                        x:Name="BTN_receitas"
-                        HorizontalOptions="FillAndExpand"
-                        WidthRequest="100"
-                        Clicked="BTN_receitas_Clicked" />
-
-                <Button Text="Despesas" FontSize="12"
-                        BackgroundColor="Red"
-                        x:Name="BTN_despesas"
-                        HorizontalOptions="FillAndExpand"
-                        WidthRequest="100"
-                        Clicked="BTN_despesas_Clicked" />
-
-                <Button Text="Metas" FontSize="12"
-                        BackgroundColor="Blue"
-                        x:Name="BTN_definirMetas"
-                        HorizontalOptions="FillAndExpand"
-                        WidthRequest="100"
-                        Clicked="BTN_definirMetas_Clicked" />
-            </HorizontalStackLayout>
-
-            <Label Text="Gastos por Categoria"
-                   Padding="10" Margin="5"
-                   FontSize="20" FontAttributes="Bold"
-                   HorizontalOptions="FillAndExpand" />
-
-            <Grid Padding="10" Margin="5"
-                  RowDefinitions="30, 30, 30, 30,30"
-                  ColumnDefinitions="*, *">
-
-                <!-- Cabeçalhos -->
-                <Label Grid.Row="0" Grid.Column="0" Text="Categoria" FontAttributes="Bold" />
-                <Label Grid.Row="0" Grid.Column="1" Text="Porcentagem (%)" FontAttributes="Bold" />
-
-                <!-- Moradia -->
-                <Label Grid.Row="1" Grid.Column="0" Text="Moradia" TextColor="#FF5733" />
-                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Gastos.GastosPorCategoria[Moradia], StringFormat='{0}%'}" TextColor="#FF5733" />
-
-                <!-- Alimento -->
-                <Label Grid.Row="2" Grid.Column="0" Text="Alimento" TextColor="#33FF57" />
-                <Label Grid.Row="2" Grid.Column="1" Text="{Binding Gastos.GastosPorCategoria[Alimento], StringFormat='{0}%'}" TextColor="#33FF57" />
-
-                <!-- Transporte -->
-                <Label Grid.Row="3" Grid.Column="0" Text="Transporte" TextColor="#3357FF" />
-                <Label Grid.Row="3" Grid.Column="1" Text="{Binding Gastos.GastosPorCategoria[Transporte], StringFormat='{0}%'}" TextColor="#3357FF" />
-
-                <!-- Outros -->
-                <Label Grid.Row="4" Grid.Column="0" Text="Outros" TextColor="#FF33A5" />
-                <Label Grid.Row="4" Grid.Column="1" Text="{Binding Gastos.GastosPorCategoria[Outros], StringFormat='{0}%'}" TextColor="#FF33A5" />
-            </Grid>
-
-            <Button Text="Gerar relatório" BackgroundColor="RoyalBlue" Margin="10" Padding="10"
-                    x:Name="BTN_relatorios"
-                    HorizontalOptions="CenterAndExpand"
-                    Clicked="BTN_relatorios_Clicked" />
-
-
-
-            <!-- Menu Lateral -->
-            <Frame x:Name="MenuLateralFrame"
-BackgroundColor="Gray"
-WidthRequest="250"
-IsVisible="False"
-HorizontalOptions="Start"
-VerticalOptions="Fill">
-                <StackLayout Padding="10">
-                    <Label Text="Menu de Navegação" FontSize="18" FontAttributes="Bold" TextColor="White" Padding="5"/>
-
-                    <Button Text="📌 Tela Principal" Clicked="IrParaTelaPrincipal_Clicked"/>
-                    <Button Text="👤 Editar Perfil" x:Name="IrParaEditarPerfil" Clicked="IrParaEditarPerfil_Clicked"/>
-                    <Button Text="📊 Relatórios" x:Name="IrParaRelatorios" Clicked="IrParaRelatorios_Clicked"/>
-                    <Button Text="🎯 Metas" x:Name="IrParaMetas"  Clicked="IrParaMetas_Clicked"/>
-                    <Button Text="⚙️ Configurações" x:Name="IrParaConfig" Clicked="IrParaConfig_Clicked_1"/>
-                    <Button Text="🚪 Sair" x:Name="IrParaLogout"  Clicked="IrParaLogout_Clicked"/>
-                </StackLayout>
-            </Frame>
-
-
-            <!-- Botão para abrir/fechar menu -->
-            <Button Text="☰"
-                     FontSize="20"
-                     FontAttributes="Bold"
-                     TextColor="White"
-                     BackgroundColor="Transparent"
-                     ImageSource="menu_icon.png"
-                     x:Name="BTN_AbriMenu"
-                     Clicked="BTN_AbriMenu_Clicked"
-                     Grid.Column="0"
-                     HorizontalOptions="Center"
-                     VerticalOptions="Center"/>
-
-
         </VerticalStackLayout>
-    </ContentPage.Content>
+
+        <!-- Conteúdo Principal -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="15">
+
+                <!-- Botões de ação -->
+                <HorizontalStackLayout Spacing="10">
+                    <Button Text="Receitas" BackgroundColor="DarkGreen" TextColor="White" Clicked="BTN_receitas_Clicked"/>
+                    <Button Text="Despesas" BackgroundColor="DarkRed" TextColor="White" Clicked="BTN_despesas_Clicked"/>
+                    <Button Text="Metas" BackgroundColor="Purple" TextColor="White" Clicked="BTN_definirMetas_Clicked"/>
+                </HorizontalStackLayout>
+
+                <!-- Gráfico de Gastos -->
+                <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" BackgroundColor="White">
+                    <Image x:Name="GraficoGastos" HeightRequest="200"/>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Rodapé com barra de navegação -->
+        <Grid Grid.Row="2" Padding="10" BackgroundColor="Navy">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
+                <Button Text="👤 Editar Perfil"  BackgroundColor="Transparent"  WidthRequest="40" HeightRequest="40" Clicked="IrParaPerfil_Clicked"/>
+                <Button Text="📊 Relatórios" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaRelatorios_Clicked"/>
+                <Button Text="⚙️ Configurações"  BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaConfig_Clicked"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+    </Grid>
 </ContentPage>

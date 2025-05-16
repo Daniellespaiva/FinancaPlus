@@ -7,7 +7,7 @@
              Title="Login">
 
     <VerticalStackLayout Padding="10" Spacing="10"
-                         VerticalOptions="CenterAndExpand"
+                         VerticalOptions="Center"
                          HorizontalOptions="Center">
 
         <!-- Logo do App -->
@@ -46,27 +46,27 @@
 
         <!-- Botão de Login -->
         <Button Text="Entrar" 
-                x:Name="btn_entrar"
+                x:Name="BTN_Entrar"
                 BackgroundColor="DarkBlue"
                 TextColor="White"
                 FontAttributes="Bold"
-               Clicked="btn_entar_Clicked" />
+               Clicked="BTN_Entrar_Clicked" />
 
         <!-- Botão de Registro -->
         <Button Text="Criar Conta"
-                x:Name="btn_registrar"
+                x:Name="BTN_Registrar"
                 BackgroundColor="Gray"
                 TextColor="White"
                 FontAttributes="Bold"
-                Clicked="btn_registrar_Clicked" />
+                Clicked="BTN_Registrar_Clicked" />
 
         <!-- Link para recuperação de senha -->
         <Button Text="Esqueci minha senha"
-                x:Name="BTN_recuperarSenha"
+                x:Name="BTN_RecuperarSenha"
                 BackgroundColor="Transparent"
                 TextColor="DarkBlue"
                 FontAttributes="Italic"
-                Clicked="BTN_recuperarSenha_Clicked"/>
+                Clicked="BTN_RecuperarSenha_Clicked"/>
 
     </VerticalStackLayout>
 </ContentPage>

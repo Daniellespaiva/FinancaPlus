@@ -7,7 +7,7 @@ namespace FinancaPlus
         public MainPage()
         {
             InitializeComponent();
-            Application.Current.MainPage = new NavigationPage(new TelaPrincipal("email@exemplo.com")); // Ativa a navegação
+            
         }
 
     }

@@ -7,5 +7,8 @@ public partial class DefinirMetas : ContentPage
 		InitializeComponent();
 	}
 
+    private void BTN_AdicionarMeta_Clicked(object sender, EventArgs e)
+    {
 
+    }
 }

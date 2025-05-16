@@ -6,4 +6,9 @@ public partial class GerarRelatorio : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void BTN_GerarRelatorio_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }

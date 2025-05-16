@@ -8,23 +8,35 @@ namespace FinancaPlus.Models
         public int Id { get; set; }
         public string Nome { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        public string Telefone { get; set; } = string.Empty;
         public string SenhaHash { get; set; } = string.Empty;
+               
 
         public Usuario() { }
 
-        // Método para definir senha com hashing
+        // Método para definir senha com hashing seguro
         public void DefinirSenha(string senha)
-        {  //Foi instalodo uma biblioteca BCrypt para protege o banco de dados contra ataques
-            SenhaHash = BCrypt.Net.BCrypt.HashPassword(senha);
+        {
+            if (string.IsNullOrWhiteSpace(senha))
+                throw new ArgumentException("A senha não pode estar vazia.");
+
+            SenhaHash = BCrypt.Net.BCrypt.HashPassword(senha); // Agora criptografa corretamente
         }
 
         // Método para verificar senha
-        public bool VerificarSenha(string senha)
+        public bool VerificarSenha(string senhaDigitada)
         {
-            return BCrypt.Net.BCrypt.Verify(senha, SenhaHash);
+            if (string.IsNullOrWhiteSpace(senhaDigitada) || string.IsNullOrWhiteSpace(SenhaHash))
+                return false;
+
+            return BCrypt.Net.BCrypt.Verify(senhaDigitada, SenhaHash);
         }
     }
+
 }
+
+        
+
 
 
 

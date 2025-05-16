@@ -2,83 +2,36 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinancaPlus.Views.ConfiguracaoPage"
-             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#F5F5F5"
              Title="Configurações">
-
-
-
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Voltar"
-                 x:Name="BTN_voltar"
-             IconImageSource="back_icon.png"
-             Order="Primary"
-             Priority="0"
-            Clicked="BTN_voltar_Clicked"/>
-       
-    </ContentPage.ToolbarItems>
-
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <!-- Título da tela -->
-            <Label Text="Configurações"
-                   FontSize="28"
+            <!-- Título -->
+            <Label Text="Configurações da Conta"
+                   FontSize="22"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
-                   TextColor="DarkBlue"
-                   Margin="10"/>
-            <Frame BorderColor="Black" CornerRadius="10" Padding="15"
-                   BackgroundColor="LightGray">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Adicionar Saldo"
-               FontSize="18"
-               FontAttributes="Bold"/>
+                   Margin="0,10,0,10"/>
 
-                    <Entry x:Name="EntrySaldo" Placeholder="Digite o saldo inicial"
-               Keyboard="Numeric"
-               TextColor="Black"
-               BackgroundColor="White"/>
+            
 
-                    <!-- Exibir o saldo formatado -->
-                    <Label x:Name="LBL_saldo"
-               FontSize="18"
-               FontAttributes="Bold"
-               Text="Saldo: R$ 0,00"
-               TextColor="Black"/>
-
-                    <Button Text="Salvar Saldo Inicial"
-                x:Name="BTN_salvarSaldo"
-                BackgroundColor="DarkOrange"
-                TextColor="White"
-                Clicked="BTN_salvarSaldo_Clicked"/>
-             </VerticalStackLayout>
-            </Frame>
-
-
-            <!-- Seção: Conta do usuário -->
-            <Frame BorderColor="Black" CornerRadius="10" Padding="15"
-                   BackgroundColor="White">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Gerenciar Conta"
-                           FontSize="18"
-                           FontAttributes="Bold"/>
-
-                    <Button Text="Trocar Senha"
-                            x:Name="BTN_trocarSenha"
-                            BackgroundColor="DarkGreen"
-                            TextColor="White"
-                            Clicked="BTN_trocarSenha_Clicked"/>                    
-                </VerticalStackLayout>
-            </Frame>
-
-            <!-- Botão de Logout -->
-            <Button Text="Logout"
-                    x:Name="BTN_logout"
+            <!-- Botão para trocar senha -->
+            <Button Text="Trocar Senha"
                     BackgroundColor="DarkRed"
                     TextColor="White"
-                    FontAttributes="Bold"                  
-                    CornerRadius="10"
+                    FontSize="16"
+                    CornerRadius="20"
+                    Clicked="BTN_trocarSenha_Clicked"/>
+
+
+            <!-- Botão de Logout -->
+            <Button Text="Sair da Conta"
+                    BackgroundColor="DarkBlue"
+                    TextColor="White"
+                    FontSize="18"
+                    CornerRadius="20"
                     Clicked="BTN_logout_Clicked"/>
 
         </VerticalStackLayout>

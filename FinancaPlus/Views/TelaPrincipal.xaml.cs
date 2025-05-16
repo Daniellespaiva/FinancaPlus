@@ -4,156 +4,104 @@ using Microcharts;
 using SkiaSharp;
 using System.ComponentModel;
 using System.Diagnostics;
+using Microsoft.Maui.Controls;
 
 namespace FinancaPlus.Views;
-
-
 public partial class TelaPrincipal : ContentPage
 {
     private readonly TelaPrincipalViewModel _viewModel;
-    private Label LBL_NomeUsuario;
+    private readonly SQLiteDatabaseHelpers _dbHelpers;   
+   
+        
+    public TelaPrincipal(string email) 
+    {     
 
-    // Propriedade para armazenar o gráfico
-    public Chart GraficoGastos { get; set; }
-
-    private StackLayout _menuLateralFrame;
-    public TelaPrincipal(string email)
-    {
         InitializeComponent();
+        _dbHelpers = new SQLiteDatabaseHelpers();
         _viewModel = new TelaPrincipalViewModel(email);
 
-        // Se o saldo inicial não estiver salvo, começa em 0
-        _viewModel.SaldoInicial = decimal.Parse(Preferences.Get("SaldoInicial", 0m.ToString()));
+        // Inicializa o usuário e saldo inicial
+        _viewModel.UsuarioLogado = _dbHelpers.GetUsuario(email) ?? new Usuario();
+        _viewModel.SaldoInicial = decimal.TryParse(Preferences.Get("SaldoInicial", "0"), out decimal saldo) ? saldo : 0m;
 
         BindingContext = _viewModel;
 
-        _menuLateralFrame = this.FindByName<StackLayout>("MenuLateralFrame");
-        CarregarGrafico();
+         
+        LBL_NomeUsuario = this.FindByName<Label>("LBL_NomeUsuario");
 
+        CarregarNomeUsuario();
+        CarregarGrafico();
     }
+
+
 
     private void CarregarNomeUsuario()
     {
-        if (_viewModel.UsuarioLogado != null)
+        if (LBL_NomeUsuario != null && _viewModel.UsuarioLogado != null)
         {
             LBL_NomeUsuario.Text = $"Bem-vindo, {_viewModel.UsuarioLogado.Nome}!";
         }
         else
         {
-            LBL_NomeUsuario.Text = "Bem-vindo!";
+            Debug.WriteLine("Erro: Nome do usuário não pôde ser carregado.");
         }
     }
-
-    // protected override void OnNavigatingFrom(NavigatingFromEventArgs args)
-    // {
-    //    base.OnNavigatingFrom(args);
-
-    // Evita que o usuário volte para a tela de login
-    //    if (Navigation.NavigationStack.Count > 0)
-    //   {
-    //       Navigation.RemovePage(Navigation.NavigationStack[0]);
-    //    }
-    //  }
 
     private void CarregarGrafico()
     {
         try
         {
-            var entries = new[]
+            var entries = new List<ChartEntry>
             {
-            new ChartEntry(30) { Label = "Moradia", ValueLabel = "30%", Color = SKColor.Parse("#FF5733") },
-            new ChartEntry(25) { Label = "Alimento", ValueLabel = "25%", Color = SKColor.Parse("#33FF57") },
-            new ChartEntry(20) { Label = "Transporte", ValueLabel = "20%", Color = SKColor.Parse("#3357FF") },
-            new ChartEntry(25) { Label = "Outros", ValueLabel = "25%", Color = SKColor.Parse("#FF33A5") }
-        };
+                new ChartEntry(30) { Label = "Moradia", ValueLabel = "30%", Color = SKColor.Parse("#FF5733") },
+                new ChartEntry(25) { Label = "Alimento", ValueLabel = "25%", Color = SKColor.Parse("#33FF57") },
+                new ChartEntry(20) { Label = "Transporte", ValueLabel = "20%", Color = SKColor.Parse("#3357FF") },
+                new ChartEntry(25) { Label = "Outros", ValueLabel = "25%", Color = SKColor.Parse("#FF33A5") }
+            };
 
-            // Atribui o gráfico à propriedade
-            GraficoGastos = new PieChart { Entries = entries };
+            
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Erro ao carregar o gráfico: {ex.Message}");
+            Debug.WriteLine($"Erro ao carregar o gráfico: {ex.Message}");
         }
+    }
 
+    
 
+    private async void IrParaPerfil_Clicked(object sender, EventArgs e)
+    {
+        string emailUsuario = _viewModel.UsuarioLogado?.Email ?? "email@exemplo.com";
+        await Navigation.PushAsync(new Perfil(emailUsuario));
+    }
 
+    private void IrParaConfig_Clicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new ConfiguracaoPage());
+    }
+
+    private async void IrParaTelaPrincipal_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new TelaPrincipal("email@exemplo.com")); // Abre a tela principal
     }
 
 
 
-
-
-    public class TelaPrincipalViewModel : INotifyPropertyChanged
+    private async void IrParaRelatorios_Clicked(object sender, EventArgs e)
     {
-        private readonly SQLiteDatabaseHelpers _dbHelpers;
-        private decimal _saldoInicial = 0m;
-        private decimal _totalDespesas = 0m;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        // Propriedade para armazenar o saldo inicial
-        public Usuario UsuarioLogado { get; set; }
-
-        public Gasto Gasto { get; set; } // Propriedade para armazenar os gastos
-        public decimal SaldoInicial
-        {
-            get => _saldoInicial;
-            set
-            {
-                _saldoInicial = value;
-                OnPropertyChanged(nameof(SaldoInicial));
-                OnPropertyChanged(nameof(Saldo));
-            }
-        }
-
-        public decimal TotalDespesas
-        {
-            get => _totalDespesas;
-            set
-            {
-                _totalDespesas = value;
-                OnPropertyChanged(nameof(TotalDespesas));
-                OnPropertyChanged(nameof(Saldo));
-            }
-        }
-
-        public decimal Saldo => SaldoInicial - TotalDespesas;
-        public Dictionary<string, float> GastosPorCategoria { get; set; }
-
-        public TelaPrincipalViewModel(string email)
-        {
-            _dbHelpers = new SQLiteDatabaseHelpers();
-            UsuarioLogado = _dbHelpers.GetUsuario(email);
-            SaldoInicial = ObterSaldoDoBancoDeDados();
-            TotalDespesas = ObterTotalDespesas();
-
-            Gasto = new Gasto(); // Inicializa os gastos
-
-            GastosPorCategoria = new Dictionary<string, float>
-    {
-        { "Moradia", 40f },
-        { "Alimento", 25f },
-        { "Transporte", 20f },
-        { "Outros", 15f }
-    };
-
-
-        }
-
-        private decimal ObterSaldoDoBancoDeDados()
-        {
-            return 0m; // Pegue saldo real do banco
-        }
-
-        private decimal ObterTotalDespesas()
-        {
-            return 0m; // Pegue despesas reais do banco
-        }
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        await Navigation.PushAsync(new GerarRelatorio()); // Abre tela de relatórios
     }
+
+    private async void IrParaMetas_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new DefinirMetas()); // Abre metas
+    }
+
+    private async void IrParaLogout_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PopToRootAsync(); // Faz logout e retorna à tela inicial
+    }
+
     private async void BTN_receitas_Clicked(object sender, EventArgs e)
     {
         try
@@ -204,102 +152,75 @@ public partial class TelaPrincipal : ContentPage
         }
     }
 
-
-    private void BTN_configuracoes_Clicked(object sender, EventArgs e)
-    {
-        // Redireciona para a página de configurações
-        Navigation.PushAsync(new ConfiguracaoPage());
-    }
-
-    private void BTN_voltar_Clicked(object sender, EventArgs e)
-    {
-
-    }
-
     private void Logout_Clicked(object sender, EventArgs e)
     {
         Navigation.PopToRootAsync();
     }
-
-
-
-
-    private async void BTN_perfil_Clicked(object sender, EventArgs e)
-    {
-        string emailUsuario = _viewModel.UsuarioLogado?.Email ?? "email@exemplo.com";
-        await Navigation.PushAsync(new Perfil(emailUsuario)); // Abre edição de perfil
-    }
-
-
-
-
-
-
-    private void IrParaConfig_Clicked(object sender, EventArgs e)
-    {
-        Navigation.PushAsync(new ConfiguracaoPage());
-    }
-
-
-
-
-    private void BTN_AbriMenu_Clicked(object sender, EventArgs e)
-    {
-        if (MenuLateralFrame != null)
-        {
-            MenuLateralFrame.IsVisible = !MenuLateralFrame.IsVisible; // Alterna a visibilidade do menu
-        }
-        else
-        {
-            Debug.WriteLine("Erro: MenuLateral está null! Verifique se foi inicializado corretamente.");
-        }
-
-    }
-    private async void IrParaTelaPrincipal_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new TelaPrincipal("email@exemplo.com")); // Abre a tela principal
-    }
-
-    private async void IrParaEditarPerfil_Clicked(object sender, EventArgs e)
-    {
-        string emailUsuario = _viewModel.UsuarioLogado?.Email ?? "email@exemplo.com";
-        await Navigation.PushAsync(new Perfil(emailUsuario)); // Abre edição de perfil
-    }
-
-    private async void IrParaRelatorios_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new GerarRelatorio()); // Abre tela de relatórios
-    }
-
-    private async void IrParaMetas_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new DefinirMetas()); // Abre metas
-    }
-
-
-
-    private async void IrParaLogout_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PopToRootAsync(); // Faz logout e retorna à tela inicial
-    }
-
-    private async void IrParaConfig_Clicked_1(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new ConfiguracaoPage()); // Abre configurações
-    }
 }
 
-// private void BTN_FecharMenu_Clicked(object sender, EventArgs e)
-// {
-//   if (MenuLateralFrame != null)
-//    {
-//  MenuLateralFrame.IsVisible = false; // Fecha o menu
-//    }
-//    else
-//    {
-//        Debug.WriteLine("Erro: MenuLateral está null! Verifique se foi inicializado corretamente.");
-//    }
-//   }
 
+    public partial class TelaPrincipalViewModel : INotifyPropertyChanged
+    {
+        private readonly SQLiteDatabaseHelpers _dbHelpers;
+        private decimal _saldoInicial = 0m;
+        private decimal _totalDespesas = 0m;
 
+        public event PropertyChangedEventHandler? PropertyChanged;
 
+    // Propriedade não anulável inicializada no construtor
+    public Usuario UsuarioLogado { get; set; } = new Usuario();
+
+    public Gasto Gasto { get; set; } = new Gasto(); // Inicializa os gastos
+    public decimal SaldoInicial
+    {
+            get => _saldoInicial;
+            set
+            {
+                _saldoInicial = value;
+                OnPropertyChanged(nameof(SaldoInicial));
+                OnPropertyChanged(nameof(Saldo));
+            }
+        }
+
+        public decimal TotalDespesas
+        {
+            get => _totalDespesas;
+            set
+            {
+                _totalDespesas = value;
+                OnPropertyChanged(nameof(TotalDespesas));
+                OnPropertyChanged(nameof(Saldo));
+            }
+        }
+
+        public decimal Saldo => SaldoInicial - TotalDespesas;
+        public Dictionary<string, float> GastosPorCategoria { get; set; }
+
+    public TelaPrincipalViewModel(string email)
+    {
+        _dbHelpers = new SQLiteDatabaseHelpers();
+        UsuarioLogado = _dbHelpers.GetUsuario(email) ?? new Usuario
+        {
+            Nome = string.Empty,
+            Email = string.Empty
+        };
+        SaldoInicial = ObterSaldoDoBancoDeDados();
+        TotalDespesas = ObterTotalDespesas();
+        GastosPorCategoria = new Dictionary<string, float>();
+    }    
+
+    private static decimal ObterSaldoDoBancoDeDados()
+        {
+            return 0m; // Pegue saldo real do banco
+        }
+
+        private static decimal ObterTotalDespesas()
+        {
+            return 0m; // Pegue despesas reais do banco
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }  

@@ -6,4 +6,9 @@ public partial class AdicionarDespesas : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void BTN_AdicionarDespesa_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }
