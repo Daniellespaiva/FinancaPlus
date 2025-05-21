@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.DefinirMetas"
+             BackgroundColor="#F5F5F5"
+             Title="Minhas Metas">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Título -->
+            <Label Text="Definir Nova Meta"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,10" />
+
+            <!-- Campo Nome da Meta -->
+            <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
+                <Entry x:Name="EntryNomeMeta" Placeholder="Nome da Meta" FontSize="16"/>
+            </Frame>
+
+            <!-- Campo Valor da Meta -->
+            <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
+                <Entry x:Name="EntryValorMeta" Placeholder="Valor (R$)" Keyboard="Numeric" FontSize="16"/>
+            </Frame>
+
+            <!-- Seletor de Categoria -->
+            <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
+                <Picker x:Name="PickerCategoria" Title="Escolha uma categoria">
+                    <Picker.Items>
+                        <x:String>Viagem</x:String>
+                        <x:String>Casa</x:String>
+                        <x:String>Carro</x:String>
+                        <x:String>Investimento</x:String>
+                        <x:String>Outros</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Frame>
+
+            <!-- Seletor de Data de Conclusão -->
+            <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
+                <DatePicker x:Name="PickerDataMeta" Format="dd/MM/yyyy"/>
+            </Frame>
+
+            <!-- Botão para adicionar meta -->
+            <Button Text="Adicionar Meta"
+                    x:Name="BTN_AdicionarMeta"
+                    BackgroundColor="DarkGreen"
+                    TextColor="White"
+                    FontSize="18"
+                    CornerRadius="20"
+                    Padding="10"
+                    Clicked="BTN_AdicionarMeta_Clicked"/>
+
+            <!-- Lista de metas cadastradas -->
+            <Label Text="Metas Definidas"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,20,0,10" />
+
+            <CollectionView x:Name="MetasListView">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" BorderColor="LightGray" CornerRadius="10">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold"/>
+                                <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"/>
+                                <Label Text="{Binding Categoria}" FontSize="14" TextColor="Gray"/>
+                                <Label Text="{Binding DataConclusao, StringFormat='{0:dd/MM/yyyy}'}" FontSize="14" TextColor="Gray"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

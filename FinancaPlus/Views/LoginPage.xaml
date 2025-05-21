@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.LoginPage"
+             BackgroundColor="WhiteSmoke"
+             NavigationPage.HasNavigationBar="False"
+             Title="Login">
+
+    <VerticalStackLayout Padding="10" Spacing="10"
+                         VerticalOptions="Center"
+                         HorizontalOptions="Center">
+
+        <!-- Logo do App -->
+        <Label Text="FINANÇAPLUS +" 
+               FontSize="30"
+               FontAttributes="Bold"
+               TextColor="DarkBlue"
+               HorizontalOptions="Center"/>
+
+        <!-- Imagem do logo -->
+        <Image Source="img_logo.png"
+               HeightRequest="100"
+               WidthRequest="100"
+               HorizontalOptions="Center"/>
+
+        <!-- Título da Tela -->
+        <Label Text="Acesse sua conta"
+               FontSize="20"
+               FontAttributes="Bold"
+               TextColor="Black"
+               HorizontalOptions="Center"/>
+
+        <!-- Campo de E-mail -->
+        <Label Text="E-mail" FontSize="14"/>
+        <Entry x:Name="txt_email" Placeholder="Digite seu e-mail"
+               Keyboard="Email"
+               TextColor="Black"
+               BackgroundColor="White"/>
+
+        <!-- Campo de Senha -->
+        <Label Text="Senha" FontSize="14"/>
+        <Entry x:Name="txt_senha" Placeholder="Digite sua senha"
+               IsPassword="True"
+               TextColor="Black"
+               BackgroundColor="White"/>
+
+        <!-- Botão de Login -->
+        <Button Text="Entrar" 
+                x:Name="BTN_Entrar"
+                BackgroundColor="DarkBlue"
+                TextColor="White"
+                FontAttributes="Bold"
+               Clicked="BTN_Entrar_Clicked" />
+
+        <!-- Botão de Registro -->
+        <Button Text="Criar Conta"
+                x:Name="BTN_Registrar"
+                BackgroundColor="Gray"
+                TextColor="White"
+                FontAttributes="Bold"
+                Clicked="BTN_Registrar_Clicked" />
+
+        <!-- Link para recuperação de senha -->
+        <Button Text="Esqueci minha senha"
+                x:Name="BTN_RecuperarSenha"
+                BackgroundColor="Transparent"
+                TextColor="DarkBlue"
+                FontAttributes="Italic"
+                Clicked="BTN_RecuperarSenha_Clicked"/>
+
+    </VerticalStackLayout>
+</ContentPage>
+      
+                
+
+
+       
+                
+

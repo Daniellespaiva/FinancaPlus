@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.TelaPrincipal"
+             BackgroundColor="#F5F5F5"
+             NavigationPage.HasNavigationBar="False"
+             Title="Tela Principal">
+
+    <Grid RowDefinitions="Auto, *, Auto">
+
+        <!-- Cabeçalho -->
+        <VerticalStackLayout Padding="20">
+            <Label x:Name="LBL_NomeUsuario" Text="Olá, Usuário!" FontSize="22" FontAttributes="Bold"/>
+            <HorizontalStackLayout Spacing="30">
+                <Label x:Name="LBL_Saldo" Text="Saldo: R$ 0,00" FontSize="18" TextColor="DarkGreen"/>
+                <Label x:Name="LBL_Despesas" Text="Despesas: R$ 0,00" FontSize="18" TextColor="DarkRed"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <!-- Conteúdo Principal -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="15">
+
+                <!-- Botões de ação -->
+                <HorizontalStackLayout Spacing="10">
+                    <Button Text="Receitas" BackgroundColor="DarkGreen" TextColor="White" Clicked="BTN_receitas_Clicked"/>
+                    <Button Text="Despesas" BackgroundColor="DarkRed" TextColor="White" Clicked="BTN_despesas_Clicked"/>
+                    <Button Text="Metas" BackgroundColor="Purple" TextColor="White" Clicked="BTN_definirMetas_Clicked"/>
+                </HorizontalStackLayout>
+
+                <!-- Gráfico de Gastos -->
+                <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" BackgroundColor="White">
+                    <Image x:Name="GraficoGastos" HeightRequest="200"/>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Rodapé com barra de navegação -->
+        <Grid Grid.Row="2" Padding="10" BackgroundColor="Navy">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
+                <Button Text="👤 Editar Perfil"  BackgroundColor="Transparent"  WidthRequest="40" HeightRequest="40" Clicked="IrParaPerfil_Clicked"/>
+                <Button Text="📊 Relatórios" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaRelatorios_Clicked"/>
+                <Button Text="⚙️ Configurações"  BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaConfig_Clicked"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+    </Grid>
+</ContentPage>

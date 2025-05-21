@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.DefinirReceitas"
+             BackgroundColor="#F5F5F5"
+             Title="Minhas Receitas">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Título -->
+            <Label Text="Adicionar Nova Receita"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,10" />
+
+            <!-- Campo de Nome da Receita -->
+            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
+                <Entry x:Name="EntryNomeReceita" Placeholder="Nome da Receita" FontSize="16"/>
+            </Border>
+
+            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
+                <Entry x:Name="EntryValorReceita" Placeholder="Valor (R$)" Keyboard="Numeric" FontSize="16"/>
+            </Border>
+
+            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
+                <Picker x:Name="PickerCategoria" Title="Escolha uma categoria">
+                    <Picker.Items>
+                        <x:String>Salário</x:String>
+                        <x:String>Freelance</x:String>
+                        <x:String>Investimentos</x:String>
+                        <x:String>Outros</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Border>
+
+            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="10">
+                <VerticalStackLayout>
+                    <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold"/>
+                    <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"/>
+                    <Label Text="{Binding Categoria}" FontSize="14" TextColor="Gray"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Botão para adicionar receita -->
+            <Button Text="Adicionar Receita"
+                    x:Name="BTN_AdicionarReceita"
+                    BackgroundColor="RoyalBlue"
+                    TextColor="White"
+                    FontSize="18"
+                    CornerRadius="20"
+                    Padding="10"
+                    Clicked="BTN_AdicionarReceita_Clicked"/>
+
+            <!-- Lista de receitas cadastradas -->
+            <Label Text="Minhas Receitas"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,20,0,10" />
+
+            <CollectionView x:Name="ReceitasListView">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="10" Stroke="LightGray" StrokeShape="RoundRectangle10">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold"/>
+                                <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"/>
+                                <Label Text="{Binding Categoria}" FontSize="14" TextColor="Gray"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

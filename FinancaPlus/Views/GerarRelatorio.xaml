@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.GerarRelatorio"
+             BackgroundColor="#F5F5F5"
+             Title="Relatórios Financeiros">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Título -->
+            <Label Text="Relatório de Finanças"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,10"/>
+
+            <!-- Seletor de Período -->
+            <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
+                <HorizontalStackLayout>
+                    <Label Text="Período:" FontSize="16"/>
+                    <Picker x:Name="PickerPeriodo" Title="Escolha um período">
+                        <Picker.Items>
+                            <x:String>Últimos 7 dias</x:String>
+                            <x:String>Último mês</x:String>
+                            <x:String>Últimos 3 meses</x:String>
+                            <x:String>Último ano</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Gráfico de Relatório -->
+            <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" BackgroundColor="White">
+                <Image x:Name="GraficoRelatorio" HeightRequest="200"/>
+            </Frame>
+
+            <!-- Lista de Transações -->
+            <Label Text="Detalhamento de Transações"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,20,0,10"/>
+
+            <CollectionView x:Name="TransacoesListView">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" BorderColor="LightGray" CornerRadius="10">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Tipo}" FontSize="18" FontAttributes="Bold"/>
+                                <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"/>
+                                <Label Text="{Binding Data, StringFormat='{0:dd/MM/yyyy}'}" FontSize="14" TextColor="Gray"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Botão para gerar relatório -->
+            <Button Text="Gerar Relatório"
+                    x:Name="BTN_GerarRelatorio"
+                    BackgroundColor="DarkBlue"
+                    TextColor="White"
+                    FontSize="18"
+                    CornerRadius="20"
+                    Padding="10"
+                    Clicked="BTN_GerarRelatorio_Clicked"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

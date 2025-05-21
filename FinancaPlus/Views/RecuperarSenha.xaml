@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.RecuperarSenha"
+             Title="Recuperar Senha">
+
+    <VerticalStackLayout Padding="30" Spacing="20"
+                     VerticalOptions="CenterAndExpand"
+                     HorizontalOptions="Center">
+
+        <!-- Título -->
+        <Label Text="Recuperação de Senha"
+           FontSize="22"
+           FontAttributes="Bold"
+           HorizontalOptions="Center"/>
+
+        <!-- Campo de E-mail -->
+        <Label Text="Digite seu e-mail para redefinir a senha" FontSize="14"/>
+        <Entry x:Name="EntryEmail" Placeholder="Digite seu e-mail"
+           Keyboard="Email"
+           TextColor="Black"
+           BackgroundColor="White"/>
+
+        <!-- Campo para nova senha -->
+        <Label Text="Nova Senha" FontSize="14"/>
+        <Entry x:Name="EntryNovaSenha" Placeholder="Digite sua nova senha"
+           IsPassword="True"
+           TextColor="Black"
+           BackgroundColor="White"/>
+
+        <!-- Botão para enviar recuperação -->
+        <Button Text="Alterar Senha"
+            x:Name="BTN_AlterarSenha"
+            BackgroundColor="DarkBlue"
+            TextColor="White"
+            FontAttributes="Bold"
+            Clicked="BTN_AlterarSenha_Clicked"/>
+
+        <!-- Botão de Cancelar -->
+        <Button Text="Cancelar"
+            x:Name="BTN_Cancelar"
+            BackgroundColor="Gray"
+            TextColor="White"
+            FontAttributes="Bold"
+                Clicked="BTN_Cancelar_Clicked"/>
+
+         
+    </VerticalStackLayout>
+</ContentPage>
