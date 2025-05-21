@@ -90,8 +90,30 @@ namespace FinancaPlus.Helpers
             return _db.Table<Receita>().ToList();
         }
 
+        // Adicionando o método GetDespesas
+        public List<Gasto> GetDespesas()
+        {
+            return _db.Table<Gasto>().ToList();
+        }
 
+        // Adicionando o método AddDespesa
+        public void AddDespesa(Gasto despesa)
+        {
+            _db.Insert(despesa);
+        }
 
+        // Outros métodos existentes...
+
+        public void RemoverReceita(Receita receita)
+        {
+            if (_db == null)
+                throw new InvalidOperationException("Banco de dados não inicializado.");
+
+            if (receita == null)
+                throw new ArgumentException("Receita inválida!");
+
+            _db.Delete(receita);
+        }
 
         // Atualizar senha do usuário
         public void AtualizarSenha(string email, string novaSenha)

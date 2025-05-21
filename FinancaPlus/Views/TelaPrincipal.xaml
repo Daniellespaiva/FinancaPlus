@@ -12,9 +12,10 @@
         <VerticalStackLayout Padding="20">
             <Label x:Name="LBL_NomeUsuario" Text="Olá, Usuário!" FontSize="22" FontAttributes="Bold"/>
             <HorizontalStackLayout Spacing="30">
-                <Label x:Name="LBL_Saldo" Text="Saldo: R$ 0,00" FontSize="18" TextColor="DarkGreen"/>
-                <Label x:Name="LBL_Despesas" Text="Despesas: R$ 0,00" FontSize="18" TextColor="DarkRed"/>
+                <Label x:Name="LBL_Saldo" Text="{Binding SaldoInicial, StringFormat='Saldo: R$ {0:N2}'}" FontSize="18" TextColor="DarkGreen"/>
+                <Label x:Name="LBL_Despesas" Text="{Binding TotalDespesas, StringFormat='Despesas: R$ {0:N2}'}" FontSize="18" TextColor="DarkRed"/>
             </HorizontalStackLayout>
+
         </VerticalStackLayout>
 
         <!-- Conteúdo Principal -->
@@ -28,10 +29,7 @@
                     <Button Text="Metas" BackgroundColor="Purple" TextColor="White" Clicked="BTN_definirMetas_Clicked"/>
                 </HorizontalStackLayout>
 
-                <!-- Gráfico de Gastos -->
-                <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" BackgroundColor="White">
-                    <Image x:Name="GraficoGastos" HeightRequest="200"/>
-                </Frame>
+               
 
             </VerticalStackLayout>
         </ScrollView>

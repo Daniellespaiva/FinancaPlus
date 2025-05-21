@@ -1,38 +1,51 @@
 using FinancaPlus.Helpers;
 using FinancaPlus.Models;
-using Microcharts;
-using SkiaSharp;
+using MauiAppFinancaPlus.Moldes;
 using System.ComponentModel;
 using System.Diagnostics;
-using Microsoft.Maui.Controls;
-using MauiAppFinancaPlus.Moldes;
 
 namespace FinancaPlus.Views;
 public partial class TelaPrincipal : ContentPage
 {
     private readonly TelaPrincipalViewModel _viewModel;
-    private readonly SQLiteDatabaseHelpers _dbHelpers;   
-   
-        
-    public TelaPrincipal(string email) 
-    {     
+    private readonly SQLiteDatabaseHelpers _dbHelpers;
 
+
+    public TelaPrincipal(string email)
+    {
         InitializeComponent();
         _dbHelpers = new SQLiteDatabaseHelpers();
         _viewModel = new TelaPrincipalViewModel(email);
 
-        // Inicializa o usuário e saldo inicial
         _viewModel.UsuarioLogado = _dbHelpers.GetUsuario(email) ?? new Usuario();
         _viewModel.SaldoInicial = decimal.TryParse(Preferences.Get("SaldoInicial", "0"), out decimal saldo) ? saldo : 0m;
 
         BindingContext = _viewModel;
 
-         
+        // Certifique-se de que os nomes das Labels correspondem aos IDs definidos no arquivo XAML
         LBL_NomeUsuario = this.FindByName<Label>("LBL_NomeUsuario");
+        LBL_Saldo = this.FindByName<Label>("LBL_Saldo"); // Adiciona a referência correta para LBL_Saldo
+        LBL_Despesas = this.FindByName<Label>("LBL_Despesas"); // Adiciona a referência correta para LBL_Despesas
 
         CarregarNomeUsuario();
-        CarregarGrafico();
+        // **Atualiza a Label automaticamente quando o saldo for modificado**
+        _viewModel.PropertyChanged += (sender, e) =>
+        {
+            if (e.PropertyName == nameof(_viewModel.SaldoInicial))
+            {
+                LBL_Saldo.Text = $"Saldo: R$ {_viewModel.SaldoInicial:N2}";
+            }
+            else if (e.PropertyName == nameof(_viewModel.TotalDespesas))
+            {
+                LBL_Despesas.Text = $"Despesas: R$ {_viewModel.TotalDespesas:N2}";
+            }
+        };
+
+
     }
+
+
+
 
 
 
@@ -48,25 +61,7 @@ public partial class TelaPrincipal : ContentPage
         }
     }
 
-    private void CarregarGrafico()
-    {
-        try
-        {
-            var entries = new List<ChartEntry>
-            {
-                new ChartEntry(30) { Label = "Moradia", ValueLabel = "30%", Color = SKColor.Parse("#FF5733") },
-                new ChartEntry(25) { Label = "Alimento", ValueLabel = "25%", Color = SKColor.Parse("#33FF57") },
-                new ChartEntry(20) { Label = "Transporte", ValueLabel = "20%", Color = SKColor.Parse("#3357FF") },
-                new ChartEntry(25) { Label = "Outros", ValueLabel = "25%", Color = SKColor.Parse("#FF33A5") }
-            };
-
-            
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Erro ao carregar o gráfico: {ex.Message}");
-        }
-    }
+    
 
     
 
@@ -158,45 +153,44 @@ public partial class TelaPrincipal : ContentPage
         Navigation.PopToRootAsync();
     }
 }
+ 
+public partial class TelaPrincipalViewModel : INotifyPropertyChanged
+{
+    private readonly SQLiteDatabaseHelpers _dbHelpers;
+    private decimal _saldoInicial = 0m;
+    private decimal _totalDespesas = 0m;
 
-
-    public partial class TelaPrincipalViewModel : INotifyPropertyChanged
-    {
-        private readonly SQLiteDatabaseHelpers _dbHelpers;
-        private decimal _saldoInicial = 0m;
-        private decimal _totalDespesas = 0m;
-
-        public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     // Propriedade não anulável inicializada no construtor
     public Usuario UsuarioLogado { get; set; } = new Usuario();
-
     public Gasto Gasto { get; set; } = new Gasto(); // Inicializa os gastos
+    public Dictionary<string, float> GastosPorCategoria { get; set; }
+
     public decimal SaldoInicial
     {
-            get => _saldoInicial;
-            set
-            {
-                _saldoInicial = value;
-                OnPropertyChanged(nameof(SaldoInicial));
-                OnPropertyChanged(nameof(Saldo));
-            }
-        }
-
-        public decimal TotalDespesas
+        get => _saldoInicial;
+        set
         {
-            get => _totalDespesas;
-            set
-            {
-                _totalDespesas = value;
-                OnPropertyChanged(nameof(TotalDespesas));
-                OnPropertyChanged(nameof(Saldo));
-            }
+            _saldoInicial = value;
+            OnPropertyChanged(nameof(SaldoInicial)); // Notifica a UI
+            OnPropertyChanged(nameof(Saldo));
         }
+    }
 
-        public decimal Saldo => SaldoInicial - TotalDespesas;
-        public Dictionary<string, float> GastosPorCategoria { get; set; }
+    public decimal TotalDespesas
+    {
+        get => _totalDespesas;
+        set
+        {
+            _totalDespesas = value;
+            OnPropertyChanged(nameof(TotalDespesas)); // Notifica a UI
+            OnPropertyChanged(nameof(Saldo));
+        }
+    }
 
+    public decimal Saldo => SaldoInicial - TotalDespesas;
+   
     public TelaPrincipalViewModel(string email)
     {
         _dbHelpers = new SQLiteDatabaseHelpers();
@@ -208,20 +202,36 @@ public partial class TelaPrincipal : ContentPage
         SaldoInicial = ObterSaldoDoBancoDeDados();
         TotalDespesas = ObterTotalDespesas();
         GastosPorCategoria = new Dictionary<string, float>();
-    }    
+
+        // **Inscrição para atualizar saldo via MessagingCenter**
+        MessagingCenter.Subscribe<DefinirReceitas, decimal>(this, "AtualizarSaldo", (sender, valorReceita) =>
+        {
+            SaldoInicial += valorReceita;
+            Preferences.Set("SaldoInicial", SaldoInicial.ToString());
+            OnPropertyChanged(nameof(SaldoInicial)); // Atualiza a UI
+        });
+
+        MessagingCenter.Subscribe<AdicionarDespesas, decimal>(this, "AtualizarDespesas", (sender, valorDespesa) =>
+        {
+            TotalDespesas += valorDespesa;
+            Preferences.Set("TotalDespesas", TotalDespesas.ToString());
+            OnPropertyChanged(nameof(TotalDespesas)); // Atualiza a UI
+        });        
+
+    }
 
     private static decimal ObterSaldoDoBancoDeDados()
-        {
-            return 0m; // Pegue saldo real do banco
-        }
+    {
+        return 0m; // Pegue saldo real do banco
+    }
 
-        private static decimal ObterTotalDespesas()
-        {
-            return 0m; // Pegue despesas reais do banco
-        }
+    private static decimal ObterTotalDespesas()
+    {
+        return 0m; // Pegue despesas reais do banco
+    }
 
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }  
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+}

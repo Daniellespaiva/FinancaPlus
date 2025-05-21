@@ -1,7 +1,9 @@
+using CommunityToolkit.Mvvm.Messaging;
 using FinancaPlus.Helpers;
 using FinancaPlus.Models;
-using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Windows.Input;
 
 namespace FinancaPlus.Views;
 
@@ -10,22 +12,23 @@ public partial class DefinirReceitas : ContentPage
     private readonly SQLiteDatabaseHelpers _dbHelpers;
     public ObservableCollection<Receita> ListaReceitas { get; set; } = new ObservableCollection<Receita>();
 
+    // Comando para excluir uma receita
+    public ICommand DeleteCommand { get; private set; } = null!;
 
     public DefinirReceitas()
     {
+        _dbHelpers = new SQLiteDatabaseHelpers(); // Inicialização do campo _dbHelpers
         try
         {
-            _dbHelpers = new SQLiteDatabaseHelpers(); // Inicialização do campo _dbHelpers
-            ListaReceitas = new ObservableCollection<Receita>(_dbHelpers.GetReceitas()); // Inicialização da propriedade ListaReceitas
-
+            ListaReceitas = new ObservableCollection<Receita>(_dbHelpers.GetReceitas());
+            DeleteCommand = new Command<Receita>(ExcluirReceita);
 
             InitializeComponent();
 
-
-            
             EntryNomeReceita = this.FindByName<Entry>("EntryNomeReceita");
             EntryValorReceita = this.FindByName<Entry>("EntryValorReceita");
             PickerCategoria = this.FindByName<Picker>("PickerCategoria");
+           
 
             if (ReceitasListView != null)
             {
@@ -46,12 +49,6 @@ public partial class DefinirReceitas : ContentPage
     {
         try
         {
-            if (EntryNomeReceita == null || EntryValorReceita == null || PickerCategoria == null)
-            {
-                await DisplayAlert("Erro", "Os controles da interface não foram encontrados. Verifique seu XAML.", "Fechar");
-                return;
-            }
-
             if (string.IsNullOrWhiteSpace(EntryNomeReceita.Text) || string.IsNullOrWhiteSpace(EntryValorReceita.Text) || PickerCategoria.SelectedItem == null)
             {
                 await DisplayAlert("Erro", "Preencha todos os campos!", "Fechar");
@@ -64,8 +61,8 @@ public partial class DefinirReceitas : ContentPage
                 return;
             }
 
-            var selectedCategoria = PickerCategoria.SelectedItem?.ToString();
-            if (string.IsNullOrEmpty(selectedCategoria))
+            var categoriaSelecionada = PickerCategoria.SelectedItem?.ToString();
+            if (categoriaSelecionada == null)
             {
                 await DisplayAlert("Erro", "Selecione uma categoria válida!", "Fechar");
                 return;
@@ -75,13 +72,15 @@ public partial class DefinirReceitas : ContentPage
             {
                 Nome = EntryNomeReceita.Text,
                 Valor = valorReceita,
-                Categoria = selectedCategoria
+                Categoria = categoriaSelecionada
             };
 
             _dbHelpers.AddReceita(novaReceita);
             ListaReceitas.Add(novaReceita);
 
-            await DisplayAlert("Sucesso", $"Receita '{novaReceita.Nome}' adicionada com sucesso no valor de R$ {novaReceita.Valor:N2}!", "OK");
+            // **Envia mensagem para atualizar o saldo na TelaPrincipal**
+            WeakReferenceMessenger.Default.Send(new AtualizarSaldoMessage(valorReceita));
+            await DisplayAlert("Sucesso", $"Receita '{novaReceita.Nome}' adicionada!", "OK");
 
             EntryNomeReceita.Text = string.Empty;
             EntryValorReceita.Text = string.Empty;
@@ -93,6 +92,35 @@ public partial class DefinirReceitas : ContentPage
         {
             await DisplayAlert("Erro", $"Ocorreu um erro ao adicionar a receita: {ex.Message}", "OK");
         }
+
+    }
+
+    // Crie uma classe para encapsular a mensagem
+    public class AtualizarSaldoMessage
+    {
+        public decimal Valor { get; }
+
+        public AtualizarSaldoMessage(decimal valor)
+        {
+            Valor = valor;
+        }
+    }
+
+
+    // **Método para excluir receita**
+    private void ExcluirReceita(Receita receita)
+    {
+        if (receita != null)
+        {
+            Debug.WriteLine($"Tentando excluir receita: {receita.Nome}");
+
+            _dbHelpers.RemoverReceita(receita);
+            ListaReceitas.Remove(receita);
+
+            MessagingCenter.Send(this, "AtualizarSaldo", -receita.Valor);
+        }
     }
 }
+
+
 

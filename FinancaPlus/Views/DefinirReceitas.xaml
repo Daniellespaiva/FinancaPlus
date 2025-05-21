@@ -33,15 +33,12 @@
                         <x:String>Outros</x:String>
                     </Picker.Items>
                 </Picker>
-            </Border>
-
-            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="10">
+            </Border>            
                 <VerticalStackLayout>
                     <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold"/>
                     <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"/>
                     <Label Text="{Binding Categoria}" FontSize="14" TextColor="Gray"/>
-                </VerticalStackLayout>
-            </Border>
+                </VerticalStackLayout>            
 
             <!-- Botão para adicionar receita -->
             <Button Text="Adicionar Receita"
@@ -51,6 +48,7 @@
                     FontSize="18"
                     CornerRadius="20"
                     Padding="10"
+                    Margin="0"
                     Clicked="BTN_AdicionarReceita_Clicked"/>
 
             <!-- Lista de receitas cadastradas -->
@@ -60,16 +58,21 @@
                    HorizontalOptions="Center"
                    Margin="0,20,0,10" />
 
-            <CollectionView x:Name="ReceitasListView">
+            <CollectionView x:Name="ReceitasListView" BackgroundColor="#F0F0F5">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border Padding="10" Stroke="LightGray" StrokeShape="RoundRectangle10">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold"/>
-                                <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"/>
-                                <Label Text="{Binding Categoria}" FontSize="14" TextColor="Gray"/>
-                            </VerticalStackLayout>
-                        </Border>
+                        <Frame BackgroundColor="White" CornerRadius="10" Padding="10" BorderColor="LightGray" HasShadow="True">
+                            <HorizontalStackLayout Spacing="10">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Nome}" FontSize="14" FontAttributes="Bold" TextColor="DarkSlateGray"/>
+                                    <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="14" TextColor="Green"/>
+                                    <Label Text="{Binding Categoria}" FontSize="12" TextColor="Gray"/>
+                                </VerticalStackLayout>
+                                <Button Text="❌" FontSize="12" BackgroundColor="Transparent" TextColor="Red"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCommand}"
+                                         CommandParameter="{Binding .}" />
+                            </HorizontalStackLayout>
+                        </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

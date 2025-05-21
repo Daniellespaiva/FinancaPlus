@@ -12,6 +12,7 @@ namespace FinancaPlus.Models
         public decimal TotalDespesas { get; set; }
         public decimal Saldo => SaldoInicial - TotalDespesas;
         public string Categoria { get; set; } = string.Empty;
-        public decimal GastoPorGateria { get; set; }    
+        public decimal GastoPorGateria { get; set; }   
+        public DateTime Data { get; set; } = DateTime.Now;
     }
 }
