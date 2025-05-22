@@ -1,8 +1,10 @@
+using CommunityToolkit.Mvvm.Messaging;
 using FinancaPlus.Helpers;
 using FinancaPlus.Models;
 using MauiAppFinancaPlus.Moldes;
 using System.ComponentModel;
 using System.Diagnostics;
+
 
 namespace FinancaPlus.Views;
 public partial class TelaPrincipal : ContentPage
@@ -41,14 +43,7 @@ public partial class TelaPrincipal : ContentPage
             }
         };
 
-
     }
-
-
-
-
-
-
     private void CarregarNomeUsuario()
     {
         if (LBL_NomeUsuario != null && _viewModel.UsuarioLogado != null)
@@ -173,8 +168,9 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         set
         {
             _saldoInicial = value;
-            OnPropertyChanged(nameof(SaldoInicial)); // Notifica a UI
-            OnPropertyChanged(nameof(Saldo));
+            Preferences.Set("SaldoInicial", _saldoInicial.ToString());
+            OnPropertyChanged(nameof(SaldoInicial));
+            OnPropertyChanged(nameof(Saldo)); // Atualiza o saldo total
         }
     }
 
@@ -184,8 +180,9 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         set
         {
             _totalDespesas = value;
-            OnPropertyChanged(nameof(TotalDespesas)); // Notifica a UI
-            OnPropertyChanged(nameof(Saldo));
+            Preferences.Set("TotalDespesas", _totalDespesas.ToString());
+            OnPropertyChanged(nameof(TotalDespesas));
+            OnPropertyChanged(nameof(Saldo)); // Atualiza o saldo total
         }
     }
 
@@ -203,22 +200,29 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         TotalDespesas = ObterTotalDespesas();
         GastosPorCategoria = new Dictionary<string, float>();
 
-        // **Inscrição para atualizar saldo via MessagingCenter**
-        MessagingCenter.Subscribe<DefinirReceitas, decimal>(this, "AtualizarSaldo", (sender, valorReceita) =>
+        WeakReferenceMessenger.Default.Register<AtualizarSaldoMessage>(this, (recipient, msg) =>
         {
-            SaldoInicial += valorReceita;
-            Preferences.Set("SaldoInicial", SaldoInicial.ToString());
-            OnPropertyChanged(nameof(SaldoInicial)); // Atualiza a UI
+            if (recipient is TelaPrincipalViewModel viewModel)
+            {
+                viewModel.SaldoInicial += msg.Value; // Usa `msg.Value` corretamente
+                Preferences.Set("SaldoInicial", viewModel.SaldoInicial.ToString());
+                viewModel.OnPropertyChanged(nameof(viewModel.SaldoInicial)); // Atualiza a UI automaticamente
+            }
         });
 
-        MessagingCenter.Subscribe<AdicionarDespesas, decimal>(this, "AtualizarDespesas", (sender, valorDespesa) =>
+        WeakReferenceMessenger.Default.Register<AtualizarDespesasMessage>(this, (recipient, msg) =>
         {
-            TotalDespesas += valorDespesa;
-            Preferences.Set("TotalDespesas", TotalDespesas.ToString());
-            OnPropertyChanged(nameof(TotalDespesas)); // Atualiza a UI
-        });        
+            if (recipient is TelaPrincipalViewModel viewModel)
+            {
+                viewModel.TotalDespesas += msg.Value; // Usa `msg.Value` corretamente
+                Preferences.Set("TotalDespesas", viewModel.TotalDespesas.ToString());
+                viewModel.OnPropertyChanged(nameof(viewModel.TotalDespesas)); // Atualiza a UI automaticamente
+            }
+        });
 
+       
     }
+    
 
     private static decimal ObterSaldoDoBancoDeDados()
     {

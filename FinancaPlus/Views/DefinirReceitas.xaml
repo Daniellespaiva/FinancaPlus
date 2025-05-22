@@ -15,7 +15,7 @@
                    HorizontalOptions="Center"
                    Margin="0,10,0,10" />
 
-            <!-- Campo de Nome da Receita -->
+            <!-- Campos de entrada -->
             <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
                 <Entry x:Name="EntryNomeReceita" Placeholder="Nome da Receita" FontSize="16"/>
             </Border>
@@ -33,12 +33,7 @@
                         <x:String>Outros</x:String>
                     </Picker.Items>
                 </Picker>
-            </Border>            
-                <VerticalStackLayout>
-                    <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold"/>
-                    <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"/>
-                    <Label Text="{Binding Categoria}" FontSize="14" TextColor="Gray"/>
-                </VerticalStackLayout>            
+            </Border>
 
             <!-- Botão para adicionar receita -->
             <Button Text="Adicionar Receita"
@@ -48,8 +43,54 @@
                     FontSize="18"
                     CornerRadius="20"
                     Padding="10"
-                    Margin="0"
                     Clicked="BTN_AdicionarReceita_Clicked"/>
+
+            <!-- Seção de gerenciamento de saldo e histórico -->
+            <Label Text="Gerenciar Saldo e Histórico"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="20,10,0,10"/>
+
+            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
+                <Picker x:Name="PickerCategoriaReset" Title="Escolha uma categoria para resetar saldo">
+                    <Picker.Items>
+                        <x:String>Salário</x:String>
+                        <x:String>Freelance</x:String>
+                        <x:String>Investimentos</x:String>
+                        <x:String>Outros</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Border>
+
+            <Button Text="Resetar Saldo por Categoria"
+                    x:Name="BTN_ResetarSaldoCategoria"
+                    BackgroundColor="Orange"
+                    TextColor="White"
+                    FontSize="18"
+                    CornerRadius="20"
+                    Padding="10"
+                    Clicked="BTN_ResetarSaldoCategoria_Clicked"/>
+
+            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
+                <Picker x:Name="PickerCategoriaExcluir" Title="Escolha uma categoria para excluir">
+                    <Picker.Items>
+                        <x:String>Salário</x:String>
+                        <x:String>Freelance</x:String>
+                        <x:String>Investimentos</x:String>
+                        <x:String>Outros</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Border>
+
+            <Button Text="Apagar Histórico por Categoria"
+                    x:Name="BTN_ApagarHistoricoCategoria"
+                    BackgroundColor="Red"
+                    TextColor="White"
+                    FontSize="18"
+                    CornerRadius="20"
+                    Padding="10"
+                    Clicked="BTN_ApagarHistoricoCategoria_Clicked"/>
 
             <!-- Lista de receitas cadastradas -->
             <Label Text="Minhas Receitas"
@@ -68,9 +109,6 @@
                                     <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="14" TextColor="Green"/>
                                     <Label Text="{Binding Categoria}" FontSize="12" TextColor="Gray"/>
                                 </VerticalStackLayout>
-                                <Button Text="❌" FontSize="12" BackgroundColor="Transparent" TextColor="Red"
-                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCommand}"
-                                         CommandParameter="{Binding .}" />
                             </HorizontalStackLayout>
                         </Frame>
                     </DataTemplate>

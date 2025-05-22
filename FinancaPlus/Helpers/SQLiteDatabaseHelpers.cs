@@ -7,13 +7,14 @@ namespace FinancaPlus.Helpers
     public class SQLiteDatabaseHelpers
     {
         private readonly SQLiteConnection _db;
+        private readonly string _dbPath; // Adicionado para armazenar o caminho do banco de dados
+
 
         public SQLiteDatabaseHelpers()
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "usuarios.db3");
-            _db = new SQLiteConnection(path);
+            _dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "usuarios.db3");
+            _db = new SQLiteConnection(_dbPath);
             _db.CreateTable<Usuario>(); // Certifique-se de que a classe Usuario está definida no namespace correto
-            _db.CreateTable<Receita>(); // Criando a tabela de receitas
         }
 
         // Adicionar usuário com senha criptografada
@@ -90,6 +91,13 @@ namespace FinancaPlus.Helpers
             return _db.Table<Receita>().ToList();
         }
 
+        public void DeleteAllReceitas()
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            connection.DeleteAll<Receita>(); // Apaga todos os registros da tabela Receita
+        }
+
+
         // Adicionando o método GetDespesas
         public List<Gasto> GetDespesas()
         {
@@ -102,18 +110,8 @@ namespace FinancaPlus.Helpers
             _db.Insert(despesa);
         }
 
-        // Outros métodos existentes...
-
-        public void RemoverReceita(Receita receita)
-        {
-            if (_db == null)
-                throw new InvalidOperationException("Banco de dados não inicializado.");
-
-            if (receita == null)
-                throw new ArgumentException("Receita inválida!");
-
-            _db.Delete(receita);
-        }
+         
+       
 
         // Atualizar senha do usuário
         public void AtualizarSenha(string email, string novaSenha)
@@ -137,6 +135,21 @@ namespace FinancaPlus.Helpers
             {
                 Console.WriteLine($"Erro ao atualizar senha: {ex.Message}");
             }
+        }
+        public void ResetarSaldoPorCategoria(string categoria)
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            var receitas = connection.Table<Receita>().Where(r => r.Categoria == categoria).ToList();
+            foreach (var receita in receitas)
+            {
+                receita.Valor = 0;
+                connection.Update(receita);
+            }
+        }
+        public void DeleteReceitasPorCategoria(string categoria)
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            connection.Table<Receita>().Delete(r => r.Categoria == categoria);
         }
     }
 }
