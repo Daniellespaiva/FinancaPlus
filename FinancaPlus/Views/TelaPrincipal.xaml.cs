@@ -112,11 +112,12 @@ public partial class TelaPrincipal : ContentPage
         {
             await Navigation.PushAsync(new AdicionarDespesas());
         }
-        catch
+        catch (Exception ex)
         {
-
+            await DisplayAlert("Erro", $"Falha ao abrir a tela de despesas: {ex.Message}", "OK");
         }
     }
+    
 
     private async void BTN_definirMetas_Clicked(object sender, EventArgs e)
     {

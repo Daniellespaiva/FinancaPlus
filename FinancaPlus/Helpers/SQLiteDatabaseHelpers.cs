@@ -12,10 +12,13 @@ namespace FinancaPlus.Helpers
 
         public SQLiteDatabaseHelpers()
         {
-            _dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "usuarios.db3");
+            _dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "usuario.db3"); // Define o caminho do banco de dados
             _db = new SQLiteConnection(_dbPath);
-            _db.CreateTable<Usuario>(); // Certifique-se de que a classe Usuario está definida no namespace correto
+            _db.CreateTable<Usuario>(); // Cria a tabela de usuários
+            _db.CreateTable<Gasto>(); // Cria a tabela de despesas
+            _db.CreateTable<Receita>(); // Cria a tabela de receitas
         }
+
 
         // Adicionar usuário com senha criptografada
         public void AddUsuario(Usuario usuario, string senha)
@@ -71,7 +74,7 @@ namespace FinancaPlus.Helpers
         public void UpdateUsuario(Usuario usuario)
         {
             if (usuario == null)
-                throw new  ArgumentException("Usuário inválido!");
+                throw new ArgumentException("Usuário inválido!");
 
 
             _db.Update(usuario);
@@ -98,20 +101,7 @@ namespace FinancaPlus.Helpers
         }
 
 
-        // Adicionando o método GetDespesas
-        public List<Gasto> GetDespesas()
-        {
-            return _db.Table<Gasto>().ToList();
-        }
 
-        // Adicionando o método AddDespesa
-        public void AddDespesa(Gasto despesa)
-        {
-            _db.Insert(despesa);
-        }
-
-         
-       
 
         // Atualizar senha do usuário
         public void AtualizarSenha(string email, string novaSenha)
@@ -151,6 +141,22 @@ namespace FinancaPlus.Helpers
             using var connection = new SQLiteConnection(_dbPath);
             connection.Table<Receita>().Delete(r => r.Categoria == categoria);
         }
+    
+    
+        // Adicionando o método GetDespesas
+        public List<Gasto> GetDespesas()
+        {
+            return _db.Table<Gasto>().ToList();
+        }
+
+        // Adicionando o método AddDespesa
+        public void AddDespesa(Gasto despesa)
+        {
+            _db.Insert(despesa);
+        }
     }
 }
+
+
+    
 

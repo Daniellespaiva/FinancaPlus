@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SQLite;
 
 namespace FinancaPlus.Models
 {
     public class Gasto
     {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+        public string Nome { get; set; }
+
+        public decimal Valor { get; set; }
+
         public decimal SaldoInicial { get; set; }    
         public decimal TotalDespesas { get; set; }
         public decimal Saldo => SaldoInicial - TotalDespesas;
