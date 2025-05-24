@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.CategoriasPage"
+             Title="CategoriasPage">
+
+    <VerticalStackLayout Padding="20">
+        <Label Text="Minhas Categorias"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"/>
+
+        <!-- Categorias Fixas -->
+        <Frame BorderColor="Blue" CornerRadius="10" Padding="15">
+            <VerticalStackLayout>
+                <Label Text="Categorias Fixas"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="Blue"/>
+
+                <ListView x:Name="ListViewCategoriasFixas"
+                          ItemsSource="{Binding CategoriasFixas}"
+                          HasUnevenRows="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame BorderColor="LightBlue" Padding="10">
+                                    <HorizontalStackLayout>
+                                        <Label Text="{Binding Nome}" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" TextColor="Blue"/>
+                                    </HorizontalStackLayout>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Categorias Variáveis -->
+        <Frame BorderColor="Orange" CornerRadius="10" Padding="15" Margin="0,20,0,0">
+            <VerticalStackLayout>
+                <Label Text="Categorias Variáveis"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="Orange"/>
+
+                <ListView x:Name="ListViewCategoriasVariaveis"
+                          ItemsSource="{Binding CategoriasVariaveis}"
+                          HasUnevenRows="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame BorderColor="LightSalmon" Padding="10">
+                                    <HorizontalStackLayout>
+                                        <Label Text="{Binding Nome}" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" TextColor="Orange"/>
+                                    </HorizontalStackLayout>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Botão para Adicionar Categoria -->
+        <Button x:Name="BTN_AdicionarCategoria"
+                Text="Adicionar Nova Categoria"
+                BackgroundColor="Green"
+                TextColor="White"
+                CornerRadius="10"
+                HeightRequest="50"
+                Clicked="BTN_AdicionarCategoria_Clicked"/>
+    </VerticalStackLayout>
+</ContentPage>

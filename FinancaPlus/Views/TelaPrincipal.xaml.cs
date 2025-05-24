@@ -116,17 +116,7 @@ public partial class TelaPrincipal : ContentPage
         }
     }
 
-    private async void BTN_despesas_Clicked(object sender, EventArgs e)
-    {
-        try
-        {
-            await Navigation.PushAsync(new DefinirReceitas());
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erro", $"Falha ao abrir a tela de despesas: {ex.Message}", "OK");
-        }
-    }
+    
 
 
     private async void BTN_definirMetas_Clicked(object sender, EventArgs e)
@@ -157,6 +147,18 @@ public partial class TelaPrincipal : ContentPage
     private void Logout_Clicked(object sender, EventArgs e)
     {
         Navigation.PopToRootAsync();
+    }
+
+    private async void BTN_Categorias_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            await Navigation.PushAsync(new CategoriasPage());
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", $"Falha ao abrir a tela de despesas: {ex.Message}", "OK");
+        }
     }
 }
 

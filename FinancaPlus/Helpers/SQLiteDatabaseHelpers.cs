@@ -7,6 +7,7 @@ namespace FinancaPlus.Helpers
 {
     public class SQLiteDatabaseHelpers
     {
+
         private readonly SQLiteConnection _db;
         private readonly string _dbPath; // Adicionado para armazenar o caminho do banco de dados
 
@@ -18,7 +19,8 @@ namespace FinancaPlus.Helpers
             _db.CreateTable<Usuario>(); // Cria a tabela de usuários
             _db.CreateTable<Despesa>(); // Cria a tabela de despesas
             _db.CreateTable<Receita>(); // Cria a tabela de receitas
-            
+            _db.CreateTable<Categoria>(); // Cria a tabela de categorias
+
         }
 
 
@@ -143,8 +145,8 @@ namespace FinancaPlus.Helpers
             using var connection = new SQLiteConnection(_dbPath);
             connection.Table<Receita>().Delete(r => r.Categoria == categoria);
         }
-    
-    
+
+
         // Adicionando o método GetDespesas
         public List<Despesa> GetDespesas()
         {
@@ -156,9 +158,19 @@ namespace FinancaPlus.Helpers
         {
             _db.Insert(despesa);
         }
+
+        public List<Categoria> GetCategoriasFixas()
+        {
+            using var conexao = new SQLiteConnection(_dbPath);
+            return conexao.Query<Categoria>("SELECT * FROM Categorias WHERE Tipo = 'Fixa'");
+        }
+
+        public List<Categoria> GetCategoriasVariaveis()
+        {
+            using var conexao = new SQLiteConnection(_dbPath);
+            return conexao.Query<Categoria>("SELECT * FROM Categorias WHERE Tipo = 'Variável'");
+        }
+
     }
 }
-
-
-    
 

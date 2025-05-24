@@ -69,10 +69,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\AdicionarDespesas.xaml">
+	  <MauiXaml Update="Views\CadastroLogin.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\CadastroLogin.xaml">
+	  <MauiXaml Update="Views\CategoriasPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ConfiguracaoPage.xaml">

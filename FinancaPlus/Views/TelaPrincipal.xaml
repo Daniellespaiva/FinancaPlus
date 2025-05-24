@@ -45,12 +45,12 @@
         </Frame>
 
         <!-- Botões organizados com transparência e tamanho aprimorado -->
-        <HorizontalStackLayout Grid.Row="3" Padding="5" Spacing="15" HorizontalOptions="Center">
+        <HorizontalStackLayout Grid.Row="3" Padding="5" Spacing="15" VerticalOptions="Fill">
             <Button Text="Receitas" BackgroundColor="DarkBlue" TextColor="White" 
             Clicked="BTN_receitas_Clicked" WidthRequest="110" HeightRequest="30" CornerRadius="10"/>
 
-            <Button Text="Despesas" BackgroundColor="DarkRed" TextColor="White"  
-            Clicked="BTN_despesas_Clicked" WidthRequest="110" HeightRequest="45" CornerRadius="10"/>
+            <Button Text="Categorias" x:Name="BTN_Categorias"  BackgroundColor="DarkRed" TextColor="White"  
+            Clicked="BTN_Categorias_Clicked" WidthRequest="110" HeightRequest="45" CornerRadius="10"/>
 
             <Button Text="Metas" BackgroundColor="DarkGreen" TextColor="White" 
             Clicked="BTN_definirMetas_Clicked" WidthRequest="110" HeightRequest="45" CornerRadius="10"/>

@@ -6,70 +6,58 @@
              NavigationPage.HasNavigationBar="False"
              Title="Login">
 
-    <VerticalStackLayout Padding="10" Spacing="10"
-                         VerticalOptions="Center"
-                         HorizontalOptions="Center">
-
-        <!-- Logo do App -->
-        <Label Text="FINANÇAPLUS +" 
-               FontSize="30"
-               FontAttributes="Bold"
-               TextColor="DarkBlue"
-               HorizontalOptions="Center"/>
-
-        <!-- Imagem do logo -->
-        <Image Source="img_logo.png"
+    <VerticalStackLayout Padding="30" Spacing="20">
+        <!-- Logo -->
+        <Image Source="logo_f.png"
                HeightRequest="100"
-               WidthRequest="100"
                HorizontalOptions="Center"/>
 
-        <!-- Título da Tela -->
-        <Label Text="Acesse sua conta"
-               FontSize="20"
+        <Label Text="FinançaPlus"
+               FontSize="24"
                FontAttributes="Bold"
-               TextColor="Black"
                HorizontalOptions="Center"/>
 
-        <!-- Campo de E-mail -->
-        <Label Text="E-mail" FontSize="14"/>
-        <Entry x:Name="txt_email" Placeholder="Digite seu e-mail"
-               Keyboard="Email"
-               TextColor="Black"
-               BackgroundColor="White"/>
+        <Label Text="Controle financeiro inteligente"
+               FontSize="16"
+               HorizontalOptions="Center"/>
 
-        <!-- Campo de Senha -->
-        <Label Text="Senha" FontSize="14"/>
-        <Entry x:Name="txt_senha" Placeholder="Digite sua senha"
-               IsPassword="True"
-               TextColor="Black"
-               BackgroundColor="White"/>
+        <!-- Campos de Login -->
+        <Entry x:Name="txt_email"
+               Placeholder="Email"
+               Keyboard="Email"
+               Margin="0,10,0,0"/>
+
+        <Entry x:Name="txt_senha"
+               Placeholder="Senha"
+               IsPassword="True"/>
 
         <!-- Botão de Login -->
-        <Button Text="Entrar" 
-                x:Name="BTN_Entrar"
-                BackgroundColor="DarkBlue"
+        <Button x:Name="BTN_Entrar"
+                Text="ENTRAR"
+                BackgroundColor="Green"
                 TextColor="White"
-                FontAttributes="Bold"
-               Clicked="BTN_Entrar_Clicked" />
+                Clicked="BTN_Entrar_Clicked"/>
 
-        <!-- Botão de Registro -->
-        <Button Text="Criar Conta"
-                x:Name="BTN_Registrar"
-                BackgroundColor="Gray"
-                TextColor="White"
-                FontAttributes="Bold"
-                Clicked="BTN_Registrar_Clicked" />
+        <!-- Recuperação de Senha -->
+        <Button x:Name="BTN_RecuperarSenha"
+         Text="Esqueci minha senha"
+         BackgroundColor="Transparent"
+         TextColor="Red"
+         Clicked="BTN_RecuperarSenha_Clicked"/>
 
-        <!-- Link para recuperação de senha -->
-        <Button Text="Esqueci minha senha"
-                x:Name="BTN_RecuperarSenha"
+        <!-- Cadastro -->
+        <Label Text="Não tem uma conta?"
+               HorizontalOptions="Center"/>
+        <Button x:Name="BTN_Registrar"
+                Text="CADASTRE-SE"
                 BackgroundColor="Transparent"
-                TextColor="DarkBlue"
-                FontAttributes="Italic"
-                Clicked="BTN_RecuperarSenha_Clicked"/>
+                TextColor="Blue"
+                Clicked="BTN_Registrar_Clicked"/>
+
 
     </VerticalStackLayout>
 </ContentPage>
+
       
                 
 
