@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using FinancaPlus.Helpers;
 using FinancaPlus.Models;
 using MauiAppFinancaPlus.Moldes;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Timers;
@@ -28,16 +29,14 @@ public partial class TelaPrincipal : ContentPage
 
 
         BindingContext = _viewModel; // Define corretamente a Binding
-
-
-        BindingContext = _viewModel;
-
+        
 
         // Certifique-se de que os nomes das Labels correspondem aos IDs definidos no arquivo XAML
         LBL_NomeUsuario = this.FindByName<Label>("LBL_NomeUsuario");
         LBL_Saldo = this.FindByName<Label>("LBL_SaldoDisponivel"); // Adiciona a referência correta para LBL_Saldo
         LBL_Despesas = this.FindByName<Label>("LBL_TotalDespesas"); // Adiciona a referência correta para LBL_Despesas
         LBL_Receita = this.FindByName<Label>("LBL_Receita");
+        
         CarregarNomeUsuario();
         // **Atualiza a Label automaticamente quando o saldo for modificado**
         _viewModel.PropertyChanged += (sender, e) =>
@@ -254,8 +253,11 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
 
     // Propriedade não anulável inicializada no construtor
     public Usuario UsuarioLogado { get; set; } = new Usuario();
-    public Models.Despesa Gasto { get; set; } = new Models.Despesa(); // Inicializa os gastos
-    public Dictionary<string, float> GastosPorCategoria { get; set; }
+    public Despesa Gasto { get; set; } = new Despesa(); // Inicializa os gastos
+
+    public ObservableCollection<GastoCategoria> GastosPorCategoria { get; set; }
+    public ObservableCollection<Transacao> TransacoesRecentes { get; set; }
+
 
 
     public TelaPrincipalViewModel(string email)
@@ -269,9 +271,31 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         };
         SaldoDisponivel = ObterSaldoDoBancoDeDados();
         ReceitaAtual = ObterTotalDespesas();
-        GastosPorCategoria = new Dictionary<string, float>();
         TotalDespesas = ObterTotalDespesas();
+
+        GastosPorCategoria = new ObservableCollection<GastoCategoria>
+    {
+        new GastoCategoria { Nome = "Moradia", Percentual = 0f, CategoriaCor = "Blue" },
+        new GastoCategoria { Nome = "Supermercado", Percentual = 0f, CategoriaCor = "Green" },
+        new GastoCategoria { Nome = "Saúde", Percentual = 0f, CategoriaCor = "Yellow" },
+        new GastoCategoria { Nome = "Educação", Percentual = 0f, CategoriaCor = "Green" },
+        new GastoCategoria { Nome = "Transporte", Percentual = 0f, CategoriaCor = "Red" },
+        new GastoCategoria { Nome = "Outros", Percentual = 0.20f, CategoriaCor = "Purple" }
+    };
+
+        TransacoesRecentes = new ObservableCollection<Transacao>
+        {
+            new Transacao { Descricao = "Supermercado", Valor = -150.00m, CorValor = "Red" },
+            new Transacao { Descricao = "Salário", Valor = 3000.00m, CorValor = "Green" }
+        };
+
     }
+   
+    
+
+    
+
+    
 
 
 
@@ -285,5 +309,7 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
+
 }
 

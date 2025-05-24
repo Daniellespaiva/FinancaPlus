@@ -20,7 +20,8 @@ namespace FinancaPlus.Helpers
             _db.CreateTable<Despesa>(); // Cria a tabela de despesas
             _db.CreateTable<Receita>(); // Cria a tabela de receitas
             _db.CreateTable<Categoria>(); // Cria a tabela de categorias
-
+            _db.CreateTable<Transacao>();
+            _db.CreateTable<GastoCategoria>();
         }
 
 

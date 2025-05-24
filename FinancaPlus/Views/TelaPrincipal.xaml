@@ -6,10 +6,10 @@
              NavigationPage.HasNavigationBar="False"
              Title="Tela Principal">
 
-    <Grid RowDefinitions="Auto, Auto, Auto, *, Auto">
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, *">
 
         <!-- Cabeçalho -->
-        <Frame Padding="10" HeightRequest="70" BackgroundColor="Green" CornerRadius="10" Margin="5">
+        <Frame  Grid.Row="0" Padding="10" HeightRequest="70" BackgroundColor="Green" CornerRadius="10" Margin="5">
             <VerticalStackLayout>
                 <Label Text="Olá, " FontSize="14" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
                 <Label x:Name="LBL_NomeUsuario" Text="{Binding NomeUsuario}" FontSize="14" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
@@ -26,7 +26,7 @@
                 <Label x:Name="LBL_Saldo" Text="{Binding SaldoDisponivel, StringFormat='Saldo disponível: R$ {0:N2}'}"
                FontSize="20" FontAttributes="Bold" TextColor="DarkGreen" HorizontalOptions="Start"/>
 
-                <!-- Receita e Despesas Lado a Lado -->
+                <!-- Receita e Despesas Lado a Lado-->
                 <HorizontalStackLayout Spacing="210" HorizontalOptions="Start">
                     <VerticalStackLayout HorizontalOptions="Center">
                         <Label Text="Receita" FontSize="16" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Center"/>
@@ -45,22 +45,68 @@
         </Frame>
 
         <!-- Botões organizados com transparência e tamanho aprimorado -->
-        <HorizontalStackLayout Grid.Row="3" Padding="5" Spacing="15" VerticalOptions="Fill">
+        <HorizontalStackLayout Grid.Row="2" Spacing="10">
+
+
             <Button Text="Receitas" BackgroundColor="DarkBlue" TextColor="White" 
-            Clicked="BTN_receitas_Clicked" WidthRequest="110" HeightRequest="30" CornerRadius="10"/>
+            Clicked="BTN_receitas_Clicked"  CornerRadius="10"/>
 
             <Button Text="Categorias" x:Name="BTN_Categorias"  BackgroundColor="DarkRed" TextColor="White"  
-            Clicked="BTN_Categorias_Clicked" WidthRequest="110" HeightRequest="45" CornerRadius="10"/>
+            Clicked="BTN_Categorias_Clicked"  CornerRadius="10"/>
 
             <Button Text="Metas" BackgroundColor="DarkGreen" TextColor="White" 
-            Clicked="BTN_definirMetas_Clicked" WidthRequest="110" HeightRequest="45" CornerRadius="10"/>
+            Clicked="BTN_definirMetas_Clicked"  CornerRadius="10"/>
+
         </HorizontalStackLayout>
+
+        <!-- Seção de Gastos por Categoria -->
+        <Frame Grid.Row="3" Padding="10" BackgroundColor="White" CornerRadius="10" Margin="5">
+            <VerticalStackLayout>
+                <Label Text="Gastos por Categoria" FontSize="18" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Center"/>
+
+                <!-- Layout com lista de categorias + gráfico -->
+                <HorizontalStackLayout Spacing="10">
+                    <!-- Lista de Categorias e Percentuais -->
+                    <CollectionView ItemsSource="{Binding GastosPorCategoria}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Nome}" FontSize="16" TextColor="{Binding CategoriaCor}"/>
+                                    <Label Text="{Binding Percentual, StringFormat='{0:P2}'}" FontSize="16" TextColor="DarkRed"/>
+                                </StackLayout>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!-- Imagem do Gráfico de Pizza -->
+                    <Image Source=" " WidthRequest="120" HeightRequest="120"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Seção de Transações Recentes -->
+        <Frame Grid.Row="4" Padding="10" BackgroundColor="White" CornerRadius="10" Margin="5">
+            <VerticalStackLayout>
+                <Label Text="Transações Recentes" FontSize="18" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Center"/>
+                <CollectionView ItemsSource="{Binding TransacoesRecentes}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding Descricao}" FontSize="16"/>
+                                <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16" TextColor="{Binding CorValor}"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </Frame>
 
 
 
 
         <!-- Rodapé com barra de navegação -->
-        <Grid Grid.Row="5" HeightRequest="50" Padding="5"  BackgroundColor="Green" VerticalOptions="End">
+        <Grid Grid.Row="6" HeightRequest="50" Padding="5"  BackgroundColor="Green" VerticalOptions="End">
             <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
                 <Button Text="👤 Editar Perfil"  BackgroundColor="Transparent"  WidthRequest="40" HeightRequest="40" Clicked="IrParaPerfil_Clicked"/>
                 <Button Text="📊 Relatórios" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaRelatorios_Clicked"/>
