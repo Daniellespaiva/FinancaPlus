@@ -6,42 +6,67 @@
              NavigationPage.HasNavigationBar="False"
              Title="Tela Principal">
 
-    <Grid RowDefinitions="Auto, *, Auto">
+    <Grid RowDefinitions="Auto, Auto, Auto, *, Auto">
 
         <!-- Cabeçalho -->
-        <VerticalStackLayout Padding="20">
-            <Label x:Name="LBL_NomeUsuario" Text="Olá, Usuário!" FontSize="22" FontAttributes="Bold"/>
-            <HorizontalStackLayout Spacing="30">
-                <Label x:Name="LBL_Saldo" Text="{Binding SaldoInicial, StringFormat='Saldo: R$ {0:N2}'}" FontSize="18" TextColor="DarkGreen"/>
-                <Label x:Name="LBL_Despesas" Text="{Binding TotalDespesas, StringFormat='Despesas: R$ {0:N2}'}" FontSize="18" TextColor="DarkRed"/>
-            </HorizontalStackLayout>
+        <Frame Padding="10" HeightRequest="70" BackgroundColor="Green" CornerRadius="10" Margin="5">
+            <VerticalStackLayout>
+                <Label Text="Olá, " FontSize="14" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                <Label x:Name="LBL_NomeUsuario" Text="{Binding NomeUsuario}" FontSize="14" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                <Label x:Name="LBL_Data" Text="{Binding DataAtual, StringFormat='Data: {0:dd/MM/yyyy}'}" FontSize="10" TextColor="Gray" HorizontalOptions="End"/>
+                <Label x:Name="LBL_Hora" Text="{Binding HoraAtual, StringFormat='Hora: {0:HH:mm}'}" FontSize="10" TextColor="Gray" HorizontalOptions="Start"/>
+            </VerticalStackLayout>
+        </Frame>
 
-        </VerticalStackLayout>
+        <!-- Informações Financeiras em uma Única Frame -->
+        <Frame Grid.Row="1" Padding="10" BackgroundColor="LightGray" CornerRadius="10" Margin="5">
+            <VerticalStackLayout Spacing="10">
 
-        <!-- Conteúdo Principal -->
-        <ScrollView Grid.Row="1">
-            <VerticalStackLayout Padding="20" Spacing="15">
+                <!-- Saldo -->
+                <Label x:Name="LBL_Saldo" Text="{Binding SaldoDisponivel, StringFormat='Saldo disponível: R$ {0:N2}'}"
+               FontSize="20" FontAttributes="Bold" TextColor="DarkGreen" HorizontalOptions="Start"/>
 
-                <!-- Botões de ação -->
-                <HorizontalStackLayout Spacing="10">
-                    <Button Text="Receitas" BackgroundColor="DarkGreen" TextColor="White" Clicked="BTN_receitas_Clicked"/>
-                    <Button Text="Despesas" BackgroundColor="DarkRed" TextColor="White" Clicked="BTN_despesas_Clicked"/>
-                    <Button Text="Metas" BackgroundColor="Purple" TextColor="White" Clicked="BTN_definirMetas_Clicked"/>
+                <!-- Receita e Despesas Lado a Lado -->
+                <HorizontalStackLayout Spacing="210" HorizontalOptions="Start">
+                    <VerticalStackLayout HorizontalOptions="Center">
+                        <Label Text="Receita" FontSize="16" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Center"/>
+                        <Label x:Name="LBL_Receita" Text="{Binding ReceitaAtual, StringFormat='R$ {0:N2}'}"
+                       FontSize="18" TextColor="DarkGreen" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout HorizontalOptions="Center">
+                        <Label Text="Despesas" FontSize="16" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Center"/>
+                        <Label x:Name="LBL_Despesas" Text="{Binding TotalDespesas, StringFormat='R$ {0:N2}'}"
+                       FontSize="18" TextColor="DarkRed" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
                 </HorizontalStackLayout>
 
-               
-
             </VerticalStackLayout>
-        </ScrollView>
+        </Frame>
+
+        <!-- Botões organizados com transparência e tamanho aprimorado -->
+        <HorizontalStackLayout Grid.Row="3" Padding="5" Spacing="15" HorizontalOptions="Center">
+            <Button Text="Receitas" BackgroundColor="DarkBlue" TextColor="White" 
+            Clicked="BTN_receitas_Clicked" WidthRequest="110" HeightRequest="30" CornerRadius="10"/>
+
+            <Button Text="Despesas" BackgroundColor="DarkRed" TextColor="White"  
+            Clicked="BTN_despesas_Clicked" WidthRequest="110" HeightRequest="45" CornerRadius="10"/>
+
+            <Button Text="Metas" BackgroundColor="DarkGreen" TextColor="White" 
+            Clicked="BTN_definirMetas_Clicked" WidthRequest="110" HeightRequest="45" CornerRadius="10"/>
+        </HorizontalStackLayout>
+
+
+
 
         <!-- Rodapé com barra de navegação -->
-        <Grid Grid.Row="2" Padding="10" BackgroundColor="Navy">
+        <Grid Grid.Row="5" HeightRequest="50" Padding="5"  BackgroundColor="Green" VerticalOptions="End">
             <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
                 <Button Text="👤 Editar Perfil"  BackgroundColor="Transparent"  WidthRequest="40" HeightRequest="40" Clicked="IrParaPerfil_Clicked"/>
                 <Button Text="📊 Relatórios" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaRelatorios_Clicked"/>
                 <Button Text="⚙️ Configurações"  BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaConfig_Clicked"/>
             </HorizontalStackLayout>
         </Grid>
-
     </Grid>
+
 </ContentPage>

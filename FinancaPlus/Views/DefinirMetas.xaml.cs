@@ -11,4 +11,14 @@ public partial class DefinirMetas : ContentPage
     {
 
     }
+
+    private void BTN_ResetarSaldoCategoria_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void BTN_ApagarHistoricoCategoria_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }

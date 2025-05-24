@@ -17,17 +17,15 @@
 
             <!-- Campo de Nome da Despesa -->
             <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
-                <Entry x:Name="EntryNomeDespesa" Placeholder="Nome da Despesa" FontSize="16"/>
+                <Entry Text="{Binding NomeDespesa}" Placeholder="Nome da Despesa" FontSize="16"/>
             </Frame>
 
-            <!-- Campo de Valor -->
             <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
-                <Entry x:Name="EntryValorDespesa" Placeholder="Valor (R$)" Keyboard="Numeric" FontSize="16"/>
+                <Entry Text="{Binding ValorDespesa}" Placeholder="Valor (R$)" Keyboard="Numeric" FontSize="16"/>
             </Frame>
 
-            <!-- Seletor de Categoria -->
             <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
-                <Picker x:Name="PickerCategoria" Title="Escolha uma categoria">
+                <Picker SelectedItem="{Binding CategoriaSelecionada}" Title="Escolha uma categoria">
                     <Picker.Items>
                         <x:String>Moradia</x:String>
                         <x:String>Alimentação</x:String>
@@ -38,6 +36,8 @@
                     </Picker.Items>
                 </Picker>
             </Frame>
+
+
 
             <!-- Seletor de Data -->
             <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
@@ -54,6 +54,55 @@
                     Padding="10"
                     Clicked="BTN_AdicionarDespesa_Clicked"/>
 
+            <!-- Seção de gerenciamento de saldo e histórico -->
+            <Label Text="Gerenciar Saldo e Histórico"
+        FontSize="20"
+        FontAttributes="Bold"
+        HorizontalOptions="Center"
+        Margin="20,10,0,10"/>
+
+            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
+                <Picker x:Name="PickerCategoriaReset" Title="Escolha uma categoria para resetar saldo">
+                    <Picker.Items>
+                        <x:String>Moradia</x:String>
+                        <x:String>Alimentação</x:String>
+                        <x:String>Transporte</x:String>
+                        <x:String>Saúde</x:String>
+                        <x:String>Educação</x:String>
+                        <x:String>Outros</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Border>
+
+            <Button Text="Resetar Saldo por Categoria"
+         x:Name="BTN_ResetarSaldoCategoria"
+         BackgroundColor="Orange"
+         TextColor="White"
+         FontSize="18"
+         CornerRadius="20"
+         Padding="10"
+         Clicked="BTN_ResetarSaldoCategoria_Clicked"/>
+
+            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
+                <Picker x:Name="PickerCategoriaExcluir" Title="Escolha uma categoria para excluir">
+                    <Picker.Items>
+                        <x:String>Salário</x:String>
+                        <x:String>Freelance</x:String>
+                        <x:String>Investimentos</x:String>
+                        <x:String>Outros</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Border>
+
+            <Button Text="Apagar Histórico por Categoria"
+         x:Name="BTN_ApagarHistoricoCategoria"
+         BackgroundColor="Red"
+         TextColor="White"
+         FontSize="18"
+         CornerRadius="20"
+         Padding="10"
+         Clicked="BTN_ApagarHistoricoCategoria_Clicked"/>
+
             <!-- Lista de despesas cadastradas -->
             <Label Text="Minhas Despesas"
                    FontSize="20"
@@ -61,20 +110,23 @@
                    HorizontalOptions="Center"
                    Margin="0,20,0,10" />
 
-            <CollectionView x:Name="DespesasListView">
+            <CollectionView x:Name="DespesaListView" BackgroundColor="#F0F0F5">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Padding="10" BorderColor="LightGray" CornerRadius="10">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold"/>
+                        <Frame BackgroundColor="White" CornerRadius="10" Padding="10" BorderColor="LightGray" HasShadow="True">
+                            <HorizontalStackLayout Spacing="10">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold"/>
                                 <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"/>
                                 <Label Text="{Binding Categoria}" FontSize="14" TextColor="Gray"/>
                                 <Label Text="{Binding Data, StringFormat='{0:dd/MM/yyyy}'}" FontSize="14" TextColor="Gray"/>
-                            </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
 
         </VerticalStackLayout>
     </ScrollView>

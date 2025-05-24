@@ -11,44 +11,60 @@ namespace FinancaPlus.Views;
 public partial class DefinirReceitas : ContentPage
 {
     private readonly SQLiteDatabaseHelpers _dbHelpers;
-    private readonly DefinirReceitasViewModel _viewModel; // Adiciona o ViewModel como um campo privado
+    private readonly DefinirReceitasViewModel _viewModel;
+
+    private readonly List<string> _categoriasReceita = new()
+    {
+        "Salario", "Freelance","Investimento","Outros"
+    };
+
+    private readonly List<string> _categoriasDespesa = new()
+    {
+        "Moradia","Supermercado","Saúde","Educação","Entretenimento", "Roupas", "Transporte", "Outros"
+    };
 
     public ObservableCollection<Receita> ListaReceitas { get; set; } = new ObservableCollection<Receita>();
-
     public ICommand DeleteCommand { get; private set; } = null!;
 
     public DefinirReceitas()
     {
         _dbHelpers = new SQLiteDatabaseHelpers();
-        _viewModel = new DefinirReceitasViewModel(); // Inicializa o ViewModel
-
-        BindingContext = _viewModel; // Define o BindingContext para o ViewModel
-
+        _viewModel = new DefinirReceitasViewModel();
+        BindingContext = _viewModel;
 
         try
         {
             ListaReceitas = new ObservableCollection<Receita>(_dbHelpers.GetReceitas());
+
             InitializeComponent();
 
-            EntryNomeReceita = this.FindByName<Entry>("EntryNomeReceita");
-            EntryValorReceita = this.FindByName<Entry>("EntryValorReceita");
-            PickerCategoria = this.FindByName<Picker>("PickerCategoria");
+            EntryNomeReceita = this.FindByName<Entry>("EntryNomeReceita") ?? throw new Exception("EntryNomeReceita não encontrado.");
+            EntryValorReceita = this.FindByName<Entry>("EntryValorReceita") ?? throw new Exception("EntryValorReceita não encontrado.");
+            PickerCategoria = this.FindByName<Picker>("PickerCategoria") ?? throw new Exception("PickerCategoria não encontrado.");
 
 
-            if (ReceitasListView != null)
-            {
-                ReceitasListView.ItemsSource = ListaReceitas;
-            }
-            else
-            {
-                throw new Exception("Erro ao encontrar ListView 'ReceitasListView'. Verifique o nome no XAML.");
-            }
+
+            // Inicializa Picker com categorias de receita
+            PickerCategoria.ItemsSource = _categoriasReceita;
         }
         catch (Exception ex)
         {
             DisplayAlert("Erro", $"Ocorreu um erro na inicialização: {ex.Message}", "OK");
         }
     }
+
+    private void Tipo_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if (RB_Receita.IsChecked)
+        {
+            PickerCategoria.ItemsSource = _categoriasReceita;
+        }
+        else if (RB_Despesa.IsChecked)
+        {
+            PickerCategoria.ItemsSource = _categoriasDespesa;
+        }
+    }
+
 
     private async void BTN_AdicionarReceita_Clicked(object sender, EventArgs e)
     {
@@ -100,8 +116,17 @@ public partial class DefinirReceitas : ContentPage
 
     }
 
-    // Crie uma classe para encapsular a mensagem
-    public class AtualizarSaldoMessage
+    private async void BTN_SalvarReceita_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new TelaPrincipal("example@example.com"));
+    }
+    
+
+    
+}
+
+// Crie uma classe para encapsular a mensagem
+public class AtualizarSaldoMessage
     {
         public decimal Valor { get; }
 
@@ -113,59 +138,23 @@ public partial class DefinirReceitas : ContentPage
 
 
 
-    private async void BTN_ResetarSaldoCategoria_Clicked(object sender, EventArgs e)
-    {
-        if (PickerCategoriaReset.SelectedItem == null)
-        {
-            await DisplayAlert("Erro", "Selecione uma categoria para resetar saldo!", "OK");
-            return;
-        }
-
-        string categoriaSelecionada = PickerCategoriaReset.SelectedItem.ToString();
-
-        bool confirmacao = await DisplayAlert("Confirmação", $"Deseja realmente resetar o saldo da categoria '{categoriaSelecionada}'?", "Sim", "Cancelar");
-        if (!confirmacao) return;
-
-        _dbHelpers.ResetarSaldoPorCategoria(categoriaSelecionada);
-
-        await DisplayAlert("Sucesso", $"Saldo da categoria '{categoriaSelecionada}' resetado para R$ 0,00!", "OK");
-    }
-
-    private async void BTN_ApagarHistoricoCategoria_Clicked(object sender, EventArgs e)
-    {
-        if (PickerCategoriaExcluir.SelectedItem == null)
-        {
-            await DisplayAlert("Erro", "Selecione uma categoria para excluir!", "OK");
-            return;
-        }
-
-        string categoriaSelecionada = PickerCategoriaExcluir.SelectedItem.ToString();
-
-        bool confirmacao = await DisplayAlert("Confirmação", $"Deseja apagar todas as receitas da categoria '{categoriaSelecionada}'?", "Sim", "Cancelar");
-        if (!confirmacao) return;
-
-        _dbHelpers.DeleteReceitasPorCategoria(categoriaSelecionada);
-
-        ListaReceitas = new ObservableCollection<Receita>(_dbHelpers.GetReceitas()); // Atualiza a lista exibida
-        ReceitasListView.ItemsSource = ListaReceitas; // Atualiza o ListView na interface
-
-        await DisplayAlert("Sucesso", $"Receitas da categoria '{categoriaSelecionada}' apagadas!", "OK");
-    }
-}
+    
+    
 public class DefinirReceitasViewModel : INotifyPropertyChanged
 {
-    private decimal _saldoInicial;
+    private decimal _saldoDisponivel;
     private decimal _totalDespesas;
 
-    public decimal SaldoInicial
+    public decimal SaldoDisponivel
     {
-        get => _saldoInicial;
+        get => _saldoDisponivel;
         set
         {
-            _saldoInicial = value;
+            _saldoDisponivel = value;
             OnPropertyChanged();
         }
     }
+    
 
     public decimal TotalDespesas
     {

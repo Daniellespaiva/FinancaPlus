@@ -1,4 +1,5 @@
 ﻿using FinancaPlus.Models;
+using FinancaPlus.Views;
 using MauiAppFinancaPlus.Moldes;
 using SQLite;
 
@@ -15,8 +16,9 @@ namespace FinancaPlus.Helpers
             _dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "usuario.db3"); // Define o caminho do banco de dados
             _db = new SQLiteConnection(_dbPath);
             _db.CreateTable<Usuario>(); // Cria a tabela de usuários
-            _db.CreateTable<Gasto>(); // Cria a tabela de despesas
+            _db.CreateTable<Despesa>(); // Cria a tabela de despesas
             _db.CreateTable<Receita>(); // Cria a tabela de receitas
+            
         }
 
 
@@ -144,13 +146,13 @@ namespace FinancaPlus.Helpers
     
     
         // Adicionando o método GetDespesas
-        public List<Gasto> GetDespesas()
+        public List<Despesa> GetDespesas()
         {
-            return _db.Table<Gasto>().ToList();
+            return _db.Table<Despesa>().ToList();
         }
 
         // Adicionando o método AddDespesa
-        public void AddDespesa(Gasto despesa)
+        public void AddDespesa(Despesa despesa)
         {
             _db.Insert(despesa);
         }

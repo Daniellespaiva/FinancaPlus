@@ -1,120 +1,59 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FinancaPlus.Views.DefinirReceitas"
-             BackgroundColor="#F5F5F5"
-             Title="Minhas Receitas">
+             x:Class="FinancaPlus.Views.DefinirReceitas">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+    <VerticalStackLayout Padding="20">
+        <Label Text="Nova Transação"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"/>
 
-            <!-- Título -->
-            <Label Text="Adicionar Nova Receita"
-                   FontSize="22"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   Margin="0,10,0,10" />
+        <!-- Tabs Receita/Despesa -->
+        <HorizontalStackLayout HorizontalOptions="Center"  Spacing="10" >
+            <Button x:Name="BTN_Receita" Text="RECEITA" BackgroundColor="LightGreen" WidthRequest="160"/> 
+            <Button x:Name="BTN_Despesa" Text="DESPESA" BackgroundColor="LightCoral" WidthRequest="160"/>
+        </HorizontalStackLayout>
 
-            <!-- Campos de entrada -->
-            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
-                <Entry x:Name="EntryNomeReceita" Placeholder="Nome da Receita" FontSize="16"/>
-            </Border>
+        <!-- Campos do formulário -->
+        <Frame BorderColor="Gray" Padding="10">
+            <VerticalStackLayout>
+                <Label Text="Valor:" FontAttributes="Bold"/>
+                <Entry x:Name="EntryValorReceita" Placeholder="R$ 0,00"/>
 
-            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
-                <Entry x:Name="EntryValorReceita" Placeholder="Valor (R$)" Keyboard="Numeric" FontSize="16"/>
-            </Border>
+                <Label Text="Descrição:" FontAttributes="Bold"/>
+                <Entry x:Name="EntryNomeReceita" Placeholder="Ex: Salário, Aluguel, Compras..."/>
 
-            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
-                <Picker x:Name="PickerCategoria" Title="Escolha uma categoria">
-                    <Picker.Items>
-                        <x:String>Salário</x:String>
-                        <x:String>Freelance</x:String>
-                        <x:String>Investimentos</x:String>
-                        <x:String>Outros</x:String>
-                    </Picker.Items>
-                </Picker>
-            </Border>
+                <!-- Tipo de transação -->
+                <Label Text="Tipo:" FontAttributes="Bold"/>
+                <HorizontalStackLayout>
+                    <RadioButton x:Name="RB_Receita"
+                                 Content="Receita"
+                                 CheckedChanged="Tipo_CheckedChanged"/>
+                    <RadioButton x:Name="RB_Despesa"
+                                 Content="Despesa"
+                                 CheckedChanged="Tipo_CheckedChanged"/>
+                </HorizontalStackLayout>
 
-            <!-- Botão para adicionar receita -->
-            <Button Text="Adicionar Receita"
-                    x:Name="BTN_AdicionarReceita"
-                    BackgroundColor="RoyalBlue"
-                    TextColor="White"
-                    FontSize="18"
-                    CornerRadius="20"
-                    Padding="10"
-                    Clicked="BTN_AdicionarReceita_Clicked"/>
+                <!-- Categoria da transação -->
+                <Label Text="Categoria:" FontAttributes="Bold"/>
+                <Picker x:Name="PickerCategoria"
+                        Title="Selecione a Categoria"/>
 
-            <!-- Seção de gerenciamento de saldo e histórico -->
-            <Label Text="Gerenciar Saldo e Histórico"
-                   FontSize="20"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   Margin="20,10,0,10"/>
+                <Label Text="Data:" FontAttributes="Bold"/>
+                <DatePicker x:Name="DP_DataReceita" Date="2025-04-12"/>
 
-            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
-                <Picker x:Name="PickerCategoriaReset" Title="Escolha uma categoria para resetar saldo">
-                    <Picker.Items>
-                        <x:String>Salário</x:String>
-                        <x:String>Freelance</x:String>
-                        <x:String>Investimentos</x:String>
-                        <x:String>Outros</x:String>
-                    </Picker.Items>
-                </Picker>
-            </Border>
+                <Label Text="Tipo:" FontAttributes="Bold"/>
+                <HorizontalStackLayout>
+                    <RadioButton x:Name="RB_Fixa" Content="Fixa"/>
+                    <RadioButton x:Name="RB_Variavel" Content="Variável"/>
+                </HorizontalStackLayout>
 
-            <Button Text="Resetar Saldo por Categoria"
-                    x:Name="BTN_ResetarSaldoCategoria"
-                    BackgroundColor="Orange"
-                    TextColor="White"
-                    FontSize="18"
-                    CornerRadius="20"
-                    Padding="10"
-                    Clicked="BTN_ResetarSaldoCategoria_Clicked"/>
-
-            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
-                <Picker x:Name="PickerCategoriaExcluir" Title="Escolha uma categoria para excluir">
-                    <Picker.Items>
-                        <x:String>Salário</x:String>
-                        <x:String>Freelance</x:String>
-                        <x:String>Investimentos</x:String>
-                        <x:String>Outros</x:String>
-                    </Picker.Items>
-                </Picker>
-            </Border>
-
-            <Button Text="Apagar Histórico por Categoria"
-                    x:Name="BTN_ApagarHistoricoCategoria"
-                    BackgroundColor="Red"
-                    TextColor="White"
-                    FontSize="18"
-                    CornerRadius="20"
-                    Padding="10"
-                    Clicked="BTN_ApagarHistoricoCategoria_Clicked"/>
-
-            <!-- Lista de receitas cadastradas -->
-            <Label Text="Minhas Receitas"
-                   FontSize="20"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   Margin="0,20,0,10" />
-
-            <CollectionView x:Name="ReceitasListView" BackgroundColor="#F0F0F5">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame BackgroundColor="White" CornerRadius="10" Padding="10" BorderColor="LightGray" HasShadow="True">
-                            <HorizontalStackLayout Spacing="10">
-                                <VerticalStackLayout>
-                                    <Label Text="{Binding Nome}" FontSize="14" FontAttributes="Bold" TextColor="DarkSlateGray"/>
-                                    <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="14" TextColor="Green"/>
-                                    <Label Text="{Binding Categoria}" FontSize="12" TextColor="Gray"/>
-                                </VerticalStackLayout>
-                            </HorizontalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-        </VerticalStackLayout>
-    </ScrollView>
+                <Button x:Name="BTN_SalvarReceita"
+                        Text="SALVAR"
+                        BackgroundColor="Green"
+                        TextColor="White"
+                        Clicked="BTN_SalvarReceita_Clicked"/>
+            </VerticalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
 </ContentPage>

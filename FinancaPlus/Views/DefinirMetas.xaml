@@ -53,6 +53,55 @@
                     Padding="10"
                     Clicked="BTN_AdicionarMeta_Clicked"/>
 
+            <!-- Seção de gerenciamento de saldo e histórico -->
+            <Label Text="Gerenciar Saldo e Histórico"
+FontSize="20"
+FontAttributes="Bold"
+HorizontalOptions="Center"
+Margin="20,10,0,10"/>
+
+            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
+                <Picker x:Name="PickerCategoriaReset" Title="Escolha uma categoria para resetar saldo">
+                    <Picker.Items>
+                        <x:String>Moradia</x:String>
+                        <x:String>Alimentação</x:String>
+                        <x:String>Transporte</x:String>
+                        <x:String>Saúde</x:String>
+                        <x:String>Educação</x:String>
+                        <x:String>Outros</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Border>
+
+            <Button Text="Resetar Saldo por Categoria"
+ x:Name="BTN_ResetarSaldoCategoria"
+ BackgroundColor="Orange"
+ TextColor="White"
+ FontSize="18"
+ CornerRadius="20"
+ Padding="10"
+ Clicked="BTN_ResetarSaldoCategoria_Clicked"/>
+
+            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
+                <Picker x:Name="PickerCategoriaExcluir" Title="Escolha uma categoria para excluir">
+                    <Picker.Items>
+                        <x:String>Salário</x:String>
+                        <x:String>Freelance</x:String>
+                        <x:String>Investimentos</x:String>
+                        <x:String>Outros</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Border>
+
+            <Button Text="Apagar Histórico por Categoria"
+                   x:Name="BTN_ApagarHistoricoCategoria"
+                    BackgroundColor="Red"
+                    TextColor="White"
+                    FontSize="18"
+                    CornerRadius="20"
+                    Padding="10"
+                    Clicked="BTN_ApagarHistoricoCategoria_Clicked"/>
+
             <!-- Lista de metas cadastradas -->
             <Label Text="Metas Definidas"
                    FontSize="20"
