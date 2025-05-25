@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.Messaging;
 using FinancaPlus.Helpers;
 using FinancaPlus.Models;
+using Microsoft.Maui.ApplicationModel.Communication;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -30,6 +31,7 @@ public partial class DefinirReceitas : ContentPage
     {
         _dbHelpers = new SQLiteDatabaseHelpers();
         _viewModel = new DefinirReceitasViewModel();
+       
         BindingContext = _viewModel;
 
         try
@@ -105,29 +107,33 @@ public partial class DefinirReceitas : ContentPage
         }
     }
 
-    private void IrParaPerfil_Clicked(object sender, EventArgs e)
+   
+
+    private async void IrParaRelatorios_Clicked(object sender, EventArgs e)
     {
-
-    }
-
-    private void IrParaRelatorios_Clicked(object sender, EventArgs e)
-    {
-
+        await Navigation.PushAsync(new GerarRelatorio()); // Abre tela de relatórios
     }
 
     private void IrParaConfig_Clicked(object sender, EventArgs e)
     {
-
+        Navigation.PushAsync(new ConfiguracaoPage());
     }
 
-    private void IrParaMinhasFinancas_Clicked(object sender, EventArgs e)
+    private async void IrParaMinhasFinancas_Clicked(object sender, EventArgs e)
     {
-
+        try
+        {
+            await Navigation.PushAsync(new MinhaFinancas());
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", $"Falha ao abrir a tela de finanças: {ex.Message}", "OK");
+        }
     }
 
-    private void IrParaTelaInicial_Clicked(object sender, EventArgs e)
+    private async void IrParaTelaInicial_Clicked(object sender, EventArgs e)
     {
-
+        await Navigation.PushAsync(new TelaPrincipal("email@exemplo.com")); // Abre a tela principal
     }
 }
 

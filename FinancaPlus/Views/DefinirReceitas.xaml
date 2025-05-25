@@ -67,7 +67,7 @@
         <!-- Rodapé fixo -->
         <Grid Grid.Row="1" HeightRequest="50"  BackgroundColor="Green" VerticalOptions="End">
             <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">                
-                <Button Text="👤 Editar Perfil" x:Name="IrParaPerfil" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaPerfil_Clicked"/>
+                
                 <Button Text="📊 Relatórios" x:Name="IrParaRelatorios" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaRelatorios_Clicked"/>
                <Button Text="🏠 Tela Inicial" x:Name="IrParaTelaInicial" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaTelaInicial_Clicked"/>
                 <Button Text="⚙️ Configurações" x:Name="IrParaConfig" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaConfig_Clicked"/>
