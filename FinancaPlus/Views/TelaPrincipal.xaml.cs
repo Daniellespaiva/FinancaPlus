@@ -21,6 +21,7 @@ public partial class TelaPrincipal : ContentPage
         _dbHelpers = new SQLiteDatabaseHelpers();
         _viewModel = new TelaPrincipalViewModel(email);
 
+
         _viewModel.UsuarioLogado = _dbHelpers.GetUsuario(email) ?? new Usuario();
         _viewModel.SaldoDisponivel = decimal.TryParse(Preferences.Get("SaldoDisponivel", "0"), out decimal saldo) ? saldo : 0m;
         _viewModel.NomeUsuario = "Usuário Teste"; // Valor de teste
@@ -29,7 +30,7 @@ public partial class TelaPrincipal : ContentPage
 
 
         BindingContext = _viewModel; // Define corretamente a Binding
-        
+    
 
         // Certifique-se de que os nomes das Labels correspondem aos IDs definidos no arquivo XAML
         LBL_NomeUsuario = this.FindByName<Label>("LBL_NomeUsuario");
@@ -53,6 +54,7 @@ public partial class TelaPrincipal : ContentPage
 
        
     }
+
     private void CarregarNomeUsuario()
     {
         if (LBL_NomeUsuario != null && _viewModel.UsuarioLogado != null)
@@ -156,7 +158,18 @@ public partial class TelaPrincipal : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Erro", $"Falha ao abrir a tela de despesas: {ex.Message}", "OK");
+            await DisplayAlert("Erro", $"Falha ao abrir a tela de categoria: {ex.Message}", "OK");
+        }
+    }
+
+    private async void IrParaMinhasFinancas_Clicked(object sender, EventArgs e)
+    {
+        try { 
+            await Navigation.PushAsync(new MinhaFinancas());
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", $"Falha ao abrir a tela de finanças: {ex.Message}", "OK");
         }
     }
 }
@@ -290,17 +303,6 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         };
 
     }
-   
-    
-
-    
-
-    
-
-
-
-
-
     private static decimal ObterSaldoDoBancoDeDados() => 0m;
     private static decimal ObterReceita() => 0m;
     private static decimal ObterTotalDespesas() => 0m;

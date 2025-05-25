@@ -1,59 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinancaPlus.Views.DefinirReceitas">
 
-    <VerticalStackLayout Padding="20">
-        <Label Text="Nova Transação"
-               FontSize="24"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"/>
+    <Grid RowDefinitions="Auto,Auto,Auto">
 
-        <!-- Tabs Receita/Despesa -->
-        <HorizontalStackLayout HorizontalOptions="Center"  Spacing="10" >
-            <Button x:Name="BTN_Receita" Text="RECEITA" BackgroundColor="LightGreen" WidthRequest="160"/> 
-            <Button x:Name="BTN_Despesa" Text="DESPESA" BackgroundColor="LightCoral" WidthRequest="160"/>
-        </HorizontalStackLayout>
+        <!-- Seção principal -->
+        <Grid RowDefinitions="Auto,Auto" Grid.Row="0">
+            <VerticalStackLayout >
+                <Label Text="Nova Transação"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
 
-        <!-- Campos do formulário -->
-        <Frame BorderColor="Gray" Padding="10">
-            <VerticalStackLayout>
-                <Label Text="Valor:" FontAttributes="Bold"/>
-                <Entry x:Name="EntryValorReceita" Placeholder="R$ 0,00"/>
-
-                <Label Text="Descrição:" FontAttributes="Bold"/>
-                <Entry x:Name="EntryNomeReceita" Placeholder="Ex: Salário, Aluguel, Compras..."/>
-
-                <!-- Tipo de transação -->
-                <Label Text="Tipo:" FontAttributes="Bold"/>
-                <HorizontalStackLayout>
-                    <RadioButton x:Name="RB_Receita"
-                                 Content="Receita"
-                                 CheckedChanged="Tipo_CheckedChanged"/>
-                    <RadioButton x:Name="RB_Despesa"
-                                 Content="Despesa"
-                                 CheckedChanged="Tipo_CheckedChanged"/>
+                <!-- Tabs Receita/Despesa -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10" >
+                    <Button x:Name="BTN_Receita" Text="RECEITA" BackgroundColor="LightGreen" WidthRequest="160"/>
+                    <Button x:Name="BTN_Despesa" Text="DESPESA" BackgroundColor="LightCoral" WidthRequest="160"/>
                 </HorizontalStackLayout>
 
-                <!-- Categoria da transação -->
-                <Label Text="Categoria:" FontAttributes="Bold"/>
-                <Picker x:Name="PickerCategoria"
-                        Title="Selecione a Categoria"/>
+                <!-- Campos do formulário -->
+                <Frame BorderColor="Gray">
+                    <VerticalStackLayout>
+                        <Label Text="Valor:" FontAttributes="Bold"/>
+                        <Entry x:Name="EntryValorReceita" Placeholder="R$ 0,00"/>
 
-                <Label Text="Data:" FontAttributes="Bold"/>
-                <DatePicker x:Name="DP_DataReceita" Date="2025-04-12"/>
+                        <Label Text="Descrição:" FontAttributes="Bold"/>
+                        <Entry x:Name="EntryNomeReceita" Placeholder="Ex: Salário, Aluguel, Compras..."/>
 
-                <Label Text="Tipo:" FontAttributes="Bold"/>
-                <HorizontalStackLayout>
-                    <RadioButton x:Name="RB_Fixa" Content="Fixa"/>
-                    <RadioButton x:Name="RB_Variavel" Content="Variável"/>
-                </HorizontalStackLayout>
+                        <!-- Tipo de transação -->
+                        <Label Text="Tipo:" FontAttributes="Bold"/>
+                        <HorizontalStackLayout>
+                            <RadioButton x:Name="RB_Receita"
+                                         Content="Receita"
+                                         CheckedChanged="Tipo_CheckedChanged"/>
+                            <RadioButton x:Name="RB_Despesa"
+                                         Content="Despesa"
+                                         CheckedChanged="Tipo_CheckedChanged"/>
+                        </HorizontalStackLayout>
 
-                <Button x:Name="BTN_SalvarReceita"
-                        Text="SALVAR"
-                        BackgroundColor="Green"
-                        TextColor="White"
-                        Clicked="BTN_SalvarReceita_Clicked"/>
+                        <!-- Categoria da transação -->
+                        <Label Text="Categoria:" FontAttributes="Bold"/>
+                        <Picker x:Name="PickerCategoria"
+                                Title="Selecione a Categoria"/>
+
+                        <Label Text="Data:" FontAttributes="Bold"/>
+                        <DatePicker x:Name="DP_DataReceita" Date="2025-04-12"/>
+
+                        <Label Text="Tipo:" FontAttributes="Bold"/>
+                        <HorizontalStackLayout>
+                            <RadioButton x:Name="RB_Fixa" Content="Fixa"/>
+                            <RadioButton x:Name="RB_Variavel" Content="Variável"/>
+                        </HorizontalStackLayout>
+
+                        <Button x:Name="BTN_SalvarReceita"
+                                Text="SALVAR"
+                                BackgroundColor="Transparent"
+                                TextColor="DarkGreen"
+                                FontSize="Body"
+                                Clicked="BTN_SalvarReceita_Clicked"/>
+                    </VerticalStackLayout>
+                </Frame>
             </VerticalStackLayout>
-        </Frame>
-    </VerticalStackLayout>
+        </Grid>
+
+        <!-- Rodapé fixo -->
+        <Grid Grid.Row="1" HeightRequest="50"  BackgroundColor="Green" VerticalOptions="End">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">                
+                <Button Text="👤 Editar Perfil" x:Name="IrParaPerfil" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaPerfil_Clicked"/>
+                <Button Text="📊 Relatórios" x:Name="IrParaRelatorios" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaRelatorios_Clicked"/>
+               <Button Text="🏠 Tela Inicial" x:Name="IrParaTelaInicial" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaTelaInicial_Clicked"/>
+                <Button Text="⚙️ Configurações" x:Name="IrParaConfig" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaConfig_Clicked"/>
+                <Button Text="💰 Minhas Finanças" x:Name="IrParaMinhasFinancas" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaMinhasFinancas_Clicked"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+    </Grid>
+
 </ContentPage>

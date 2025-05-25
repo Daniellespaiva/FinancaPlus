@@ -42,17 +42,16 @@
         <Button x:Name="BTN_RecuperarSenha"
          Text="Esqueci minha senha"
          BackgroundColor="Transparent"
-         TextColor="Red"
+         TextColor="Red"                
          Clicked="BTN_RecuperarSenha_Clicked"/>
 
         <!-- Cadastro -->
-        <Label Text="Não tem uma conta?"
-               HorizontalOptions="Center"/>
-        <Button x:Name="BTN_Registrar"
-                Text="CADASTRE-SE"
-                BackgroundColor="Transparent"
-                TextColor="Blue"
-                Clicked="BTN_Registrar_Clicked"/>
+        <FlexLayout Direction="Row" JustifyContent="Center" AlignItems="Center">
+            <Label Text="Não tem uma conta?" />
+            <Button x:Name="BTN_Registrar" Text="CADASTRE-SE"
+            BackgroundColor="Transparent" TextColor="Blue"
+            Clicked="BTN_Registrar_Clicked"/>
+        </FlexLayout>
 
 
     </VerticalStackLayout>

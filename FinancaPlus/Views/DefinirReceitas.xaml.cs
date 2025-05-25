@@ -66,63 +66,69 @@ public partial class DefinirReceitas : ContentPage
     }
 
 
-    private async void BTN_AdicionarReceita_Clicked(object sender, EventArgs e)
-    {
-        try
-        {
-            if (string.IsNullOrWhiteSpace(EntryNomeReceita.Text) || string.IsNullOrWhiteSpace(EntryValorReceita.Text) || PickerCategoria.SelectedItem == null)
-            {
-                await DisplayAlert("Erro", "Preencha todos os campos!", "Fechar");
-                return;
-            }
-
-            if (!decimal.TryParse(EntryValorReceita.Text, out decimal valorReceita))
-            {
-                await DisplayAlert("Erro", "Insira um valor válido!", "Fechar");
-                return;
-            }
-
-            var categoriaSelecionada = PickerCategoria.SelectedItem?.ToString();
-            if (categoriaSelecionada == null)
-            {
-                await DisplayAlert("Erro", "Selecione uma categoria válida!", "Fechar");
-                return;
-            }
-
-            var novaReceita = new Receita
-            {
-                Nome = EntryNomeReceita.Text,
-                Valor = valorReceita,
-                Categoria = categoriaSelecionada
-            };
-
-            _dbHelpers.AddReceita(novaReceita);
-            ListaReceitas.Add(novaReceita);
-
-            // **Envia mensagem para atualizar o saldo na TelaPrincipal**
-            WeakReferenceMessenger.Default.Send(new AtualizarSaldoMessage(valorReceita));
-            await DisplayAlert("Sucesso", $"Receita '{novaReceita.Nome}' adicionada!", "OK");
-
-            EntryNomeReceita.Text = string.Empty;
-            EntryValorReceita.Text = string.Empty;
-            PickerCategoria.SelectedItem = null;
-
-            await Navigation.PushAsync(new TelaPrincipal("example@example.com"));
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erro", $"Ocorreu um erro ao adicionar a receita: {ex.Message}", "OK");
-        }
-
-    }
 
     private async void BTN_SalvarReceita_Clicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new TelaPrincipal("example@example.com"));
-    }
-    
+        try
+        {
+            string nome = EntryNomeReceita.Text;
+            string categoria = PickerCategoria.SelectedItem?.ToString();
+            decimal valor = decimal.TryParse(EntryValorReceita.Text, out decimal resultado) ? resultado : 0;
+            bool isReceita = RB_Receita.IsChecked;
 
-    
+            if (string.IsNullOrEmpty(nome) || categoria == null || valor <= 0)
+            {
+                await DisplayAlert("Erro", "Preencha todos os campos corretamente!", "OK");
+                return;
+            }
+
+            if (isReceita)
+            {
+                _dbHelpers.AddReceita(new Receita { Nome = nome, Categoria = categoria, Valor = valor });
+            }
+            else
+            {
+                _dbHelpers.AddDespesa(new Despesa { Nome = nome, Categoria = categoria, Valor = valor });
+            }
+
+            // Enviar mensagem para atualizar saldo na tela Minhas Finanças
+            WeakReferenceMessenger.Default.Send(new AtualizarSaldoMessage(valor));
+
+            await DisplayAlert("Sucesso", "Informação adicionada!", "OK");
+
+            // Navegar para a página Minhas Finanças
+            await Navigation.PushAsync(new MinhaFinancas());
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", $"Ocorreu um erro ao salvar: {ex.Message}", "OK");
+        }
+    }
+
+    private void IrParaPerfil_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void IrParaRelatorios_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void IrParaConfig_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void IrParaMinhasFinancas_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void IrParaTelaInicial_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }
 
 // Crie uma classe para encapsular a mensagem

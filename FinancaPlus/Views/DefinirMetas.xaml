@@ -55,10 +55,10 @@
 
             <!-- Seção de gerenciamento de saldo e histórico -->
             <Label Text="Gerenciar Saldo e Histórico"
-FontSize="20"
-FontAttributes="Bold"
-HorizontalOptions="Center"
-Margin="20,10,0,10"/>
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    Margin="20,10,0,10"/>
 
             <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
                 <Picker x:Name="PickerCategoriaReset" Title="Escolha uma categoria para resetar saldo">
@@ -74,13 +74,13 @@ Margin="20,10,0,10"/>
             </Border>
 
             <Button Text="Resetar Saldo por Categoria"
- x:Name="BTN_ResetarSaldoCategoria"
- BackgroundColor="Orange"
- TextColor="White"
- FontSize="18"
- CornerRadius="20"
- Padding="10"
- Clicked="BTN_ResetarSaldoCategoria_Clicked"/>
+                    x:Name="BTN_ResetarSaldoCategoria"
+                    BackgroundColor="Orange"
+                    TextColor="White"
+                    FontSize="18"
+                    CornerRadius="20"
+                    Padding="10"
+                    Clicked="BTN_ResetarSaldoCategoria_Clicked"/>
 
             <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
                 <Picker x:Name="PickerCategoriaExcluir" Title="Escolha uma categoria para excluir">

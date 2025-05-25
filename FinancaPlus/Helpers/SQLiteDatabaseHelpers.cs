@@ -19,11 +19,12 @@ namespace FinancaPlus.Helpers
             _db.CreateTable<Usuario>(); // Cria a tabela de usuários
             _db.CreateTable<Despesa>(); // Cria a tabela de despesas
             _db.CreateTable<Receita>(); // Cria a tabela de receitas
-            _db.CreateTable<Categoria>(); // Cria a tabela de categorias
             _db.CreateTable<Transacao>();
             _db.CreateTable<GastoCategoria>();
+            _db.CreateTable<Categoria>(); // Cria a tabela de categorias
         }
 
+        
 
         // Adicionar usuário com senha criptografada
         public void AddUsuario(Usuario usuario, string senha)
@@ -131,22 +132,7 @@ namespace FinancaPlus.Helpers
                 Console.WriteLine($"Erro ao atualizar senha: {ex.Message}");
             }
         }
-        public void ResetarSaldoPorCategoria(string categoria)
-        {
-            using var connection = new SQLiteConnection(_dbPath);
-            var receitas = connection.Table<Receita>().Where(r => r.Categoria == categoria).ToList();
-            foreach (var receita in receitas)
-            {
-                receita.Valor = 0;
-                connection.Update(receita);
-            }
-        }
-        public void DeleteReceitasPorCategoria(string categoria)
-        {
-            using var connection = new SQLiteConnection(_dbPath);
-            connection.Table<Receita>().Delete(r => r.Categoria == categoria);
-        }
-
+        
 
         // Adicionando o método GetDespesas
         public List<Despesa> GetDespesas()
@@ -172,6 +158,17 @@ namespace FinancaPlus.Helpers
             return conexao.Query<Categoria>("SELECT * FROM Categorias WHERE Tipo = 'Variável'");
         }
 
+        public void DeleteCategoriaReceita(string categoria)
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            connection.Execute("DELETE FROM Receita WHERE Categoria = ?", categoria);
+        }
+
+        public void DeleteReceitasPorCategoria(string categoria)
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            connection.Execute("DELETE FROM Receita WHERE Categoria = ?", categoria);
+        }
     }
 }
 

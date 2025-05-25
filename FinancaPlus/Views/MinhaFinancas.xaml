@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.MinhaFinancas"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="WhiteSmoke"
+             Title="MinhaFinancas">
+    <ScrollView>
+        <VerticalStackLayout Padding="18" Spacing="15">
+
+            <!-- Cabeçalho -->
+            <Label Text="Gerenciamento das Minhas Finanças" BackgroundColor="Green" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+            <!-- Saldo disponível -->
+            <Label Text="{Binding SaldoDisponivel, StringFormat='Saldo disponível: R$ {0:N2}'}"
+                    FontSize="16"
+                     FontAttributes="Bold"
+                     TextColor="DarkGreen"
+                     HorizontalOptions="Center"
+                      Margin="10,5"/>
+
+            <Border>
+                <ScrollView>
+
+                    <!-- Tabelas com histórico de receitas e despesas -->
+                    <Grid ColumnDefinitions="Auto,Auto" Padding="10">
+
+                        <!-- Receitas -->
+                        <!-- Receitas -->
+                        <ScrollView Grid.Column="0" WidthRequest="200">
+                            <VerticalStackLayout>
+                                <Label Text="Histórico de Receitas" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                <CollectionView ItemsSource="{Binding ListaReceitas}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <HorizontalStackLayout>
+                                                <Label Text="{Binding Nome}" FontSize="12" FontAttributes="Bold"/>
+                                                <Label Text="{Binding Valor, StringFormat=' R$ {0:N2}'}" FontSize="12"/>
+                                                <Label Text="{Binding Categoria}" FontSize="12" TextColor="Gray"/>
+                                            </HorizontalStackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </VerticalStackLayout>
+                        </ScrollView>
+
+                        <!-- Despesas -->
+                        <ScrollView Grid.Column="1" WidthRequest="210">
+                            <VerticalStackLayout>
+                                <Label Text="Histórico de Despesas" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                <CollectionView ItemsSource="{Binding ListaDespesas}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <HorizontalStackLayout>
+                                                <Label Text="{Binding Nome}" FontSize="12" FontAttributes="Bold"/>
+                                                <Label Text="{Binding Valor, StringFormat=' R$ {0:N2}'}" FontSize="12"/>
+                                                <Label Text="{Binding Categoria}" FontSize="12" TextColor="Gray"/>
+                                                <Label Text="{Binding DataConclusao, StringFormat='{0:dd/MM/yyyy}'}" FontSize="12" TextColor="Gray"/>
+                                            </HorizontalStackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </VerticalStackLayout>
+                        </ScrollView>
+
+                    </Grid>
+                </ScrollView>
+            </Border>
+            <!-- Seção de gerenciamento de  histórico -->
+            <Label Text="Gerenciar Histórico"
+                   BackgroundColor="Green"
+         FontSize="20"
+         FontAttributes="Bold"
+         HorizontalOptions="Center"
+         Margin="20,10,0,10"/>
+
+            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
+                <Picker x:Name="PickerCategoriaReset" Title="Escolha uma categoria para excluir">
+                    <Picker.Items>
+                        <x:String>Salário</x:String>
+                        <x:String>Freelance</x:String>
+                        <x:String>Investimentos</x:String>
+                        <x:String>Outros</x:String>
+
+                    </Picker.Items>
+                </Picker>
+            </Border>
+
+            <Button Text="Apagar Receita por Categoria"
+                    x:Name="BTN_ApagarReceitaCategoria"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                     FontSize="18"
+                     CornerRadius="20"
+                      Padding="10"
+                      Clicked="BTN_ApagarReceitaCategoria_Clicked"/>
+
+            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
+                <Picker x:Name="PickerCategoriaExcluir" Title="Escolha uma categoria para excluir">
+                    <Picker.Items>
+                        <x:String>Moradia</x:String>
+                        <x:String>Supermercado</x:String>
+                        <x:String>Alimentação</x:String>
+                        <x:String>Transporte</x:String>
+                        <x:String>Saúde</x:String>
+                        <x:String>Educação</x:String>
+                        <x:String>Outros</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Border>
+
+            <Button Text="Apagar Despesa por Categoria"
+                     x:Name="BTN_ApagarDespesaCategoria"
+                     BackgroundColor="Green"
+                     TextColor="White"
+                     FontSize="18"
+                     CornerRadius="20"
+                     Padding="10"
+                     Clicked="BTN_ApagarDespesaCategoria_Clicked"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+    
+
+
+</ContentPage>
