@@ -5,7 +5,6 @@ using MauiAppFinancaPlus.Moldes;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Timers;
 
 
 namespace FinancaPlus.Views;
@@ -30,7 +29,20 @@ public partial class TelaPrincipal : ContentPage
 
 
         BindingContext = _viewModel; // Define corretamente a Binding
-    
+
+        // **Registrar mensagens para atualização de saldo e despesas**
+        WeakReferenceMessenger.Default.Register<AtualizarSaldoMessage>(this, (recipient, message) =>
+        {
+            _viewModel.SaldoDisponivel = message.Valor; // Correção!
+        });
+
+
+        WeakReferenceMessenger.Default.Register<AtualizarDespesasMessage>(this, (recipient, message) =>
+        {
+            _viewModel.TotalDespesas = message.Value;
+        });
+
+
 
         // Certifique-se de que os nomes das Labels correspondem aos IDs definidos no arquivo XAML
         LBL_NomeUsuario = this.FindByName<Label>("LBL_NomeUsuario");
@@ -39,12 +51,17 @@ public partial class TelaPrincipal : ContentPage
         LBL_Receita = this.FindByName<Label>("LBL_Receita");
         
         CarregarNomeUsuario();
+
         // **Atualiza a Label automaticamente quando o saldo for modificado**
         _viewModel.PropertyChanged += (sender, e) =>
         {
             if (e.PropertyName == nameof(_viewModel.SaldoDisponivel))
             {
-                LBL_Saldo.Text = $"Saldo: R$ {_viewModel.SaldoDisponivel:N2}";
+                LBL_Saldo.Text = $"Saldo disponível: R$ {_viewModel.SaldoDisponivel:N2}";
+            }
+            else if (e.PropertyName == nameof(_viewModel.ReceitaAtual))
+            {
+                LBL_Receita.Text = $"Receita: R$ {_viewModel.ReceitaAtual:N2}";
             }
             else if (e.PropertyName == nameof(_viewModel.TotalDespesas))
             {
@@ -52,7 +69,7 @@ public partial class TelaPrincipal : ContentPage
             }
         };
 
-       
+
     }
 
     private void CarregarNomeUsuario()
@@ -258,11 +275,6 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
 
     // Saldo calculado dinamicamente
     public decimal Saldo => SaldoDisponivel - TotalDespesas;
-
-
-
-
-
 
     // Propriedade não anulável inicializada no construtor
     public Usuario UsuarioLogado { get; set; } = new Usuario();

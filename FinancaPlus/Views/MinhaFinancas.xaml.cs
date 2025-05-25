@@ -24,10 +24,9 @@ public partial class MinhaFinancas : ContentPage
         InitializeComponent();
         _dbHelpers = new SQLiteDatabaseHelpers();
         _viewModel = new MinhaFinancasViewModel();
-
-
         BindingContext = _viewModel; // Definir Binding corretamen
         // Registrar para receber atualização do saldo
+
         WeakReferenceMessenger.Default.Register<AtualizarSaldoMessage>(this, (recipient, message) =>
         {
             _viewModel.SaldoDisponivel += message.Valor;
@@ -67,9 +66,6 @@ public partial class MinhaFinancas : ContentPage
     public class MinhaFinancasViewModel : INotifyPropertyChanged
     {
         private readonly SQLiteDatabaseHelpers _dbHelpers;
-        public ObservableCollection<Receita> ListaReceitas { get; set; }
-        public ObservableCollection<Despesa> ListaDespesas { get; set; }
-
         private decimal _saldoDisponivel;
         public decimal SaldoDisponivel
         {
@@ -81,46 +77,27 @@ public partial class MinhaFinancas : ContentPage
             }
         }
 
-        public MinhaFinancasViewModel()
-        {
-            _dbHelpers = new SQLiteDatabaseHelpers();
-            ListaReceitas = new ObservableCollection<Receita>(_dbHelpers.GetReceitas());
-            ListaDespesas = new ObservableCollection<Despesa>(_dbHelpers.GetDespesas());
-
-            AtualizarSaldo(); // Inicializa o saldo com base nas receitas e despesas
-        }
+        public ObservableCollection<Receita> ListaReceitas { get; set; } = new ObservableCollection<Receita>();
+        public ObservableCollection<Despesa> ListaDespesas { get; set; } = new ObservableCollection<Despesa>();
 
         public event PropertyChangedEventHandler? PropertyChanged;
-
-        public void OnPropertyChanged(string nomePropriedade)
+        protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nomePropriedade));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        // Calcula o saldo com base nas receitas e despesas
         public void AtualizarSaldo()
         {
-            decimal totalReceitas = ListaReceitas.Sum(r => r.Valor);
-            decimal totalDespesas = ListaDespesas.Sum(d => d.Valor);
-            SaldoDisponivel = totalReceitas - totalDespesas;
-
-            OnPropertyChanged(nameof(SaldoDisponivel));
-            OnPropertyChanged(nameof(ListaReceitas));
-            OnPropertyChanged(nameof(ListaDespesas));
+            SaldoDisponivel = ListaReceitas.Sum(r => r.Valor) - ListaDespesas.Sum(d => d.Valor);
         }
+
         public void ApagarReceitaPorCategoria(string categoria)
         {
-            if (string.IsNullOrEmpty(categoria)) return;
-
             var receitasParaExcluir = ListaReceitas.Where(r => r.Categoria == categoria).ToList();
-
             foreach (var receita in receitasParaExcluir)
             {
                 ListaReceitas.Remove(receita);
             }
-
-            _dbHelpers.DeleteReceitasPorCategoria(categoria); // Apaga do banco de dados
-
-            OnPropertyChanged(nameof(ListaReceitas)); // Atualiza a UI
+            AtualizarSaldo();
         }
 
         public void ApagarDespesaPorCategoria(string categoria)
@@ -132,6 +109,20 @@ public partial class MinhaFinancas : ContentPage
             }
             AtualizarSaldo();
         }
+    
+
+
+    public MinhaFinancasViewModel()
+        {
+            _dbHelpers = new SQLiteDatabaseHelpers();
+            ListaReceitas = new ObservableCollection<Receita>(_dbHelpers.GetReceitas());
+            ListaDespesas = new ObservableCollection<Despesa>(_dbHelpers.GetDespesas());
+
+            AtualizarSaldo(); // Inicializa o saldo com base nas receitas e despesas
+        }
+
+       
+       
 
 
     private ObservableCollection<Receita> _listaReceitasFiltradas = new ObservableCollection<Receita>();
@@ -190,40 +181,32 @@ public partial class MinhaFinancas : ContentPage
 
     private void BTN_ApagarReceitaCategoria_Clicked(object sender, EventArgs e)
     {
-        string categoriaSelecionada = PickerCategoriaReset.SelectedItem?.ToString();
+        var categoriaSelecionada = PickerCategoriaReset.SelectedItem?.ToString();
         if (!string.IsNullOrEmpty(categoriaSelecionada))
         {
-            _dbHelpers.DeleteReceitasPorCategoria(categoriaSelecionada); // Nome correto do método
+            _viewModel.ApagarReceitaPorCategoria(categoriaSelecionada);
 
-            _viewModel.ListaReceitas = new ObservableCollection<Receita>(_dbHelpers.GetReceitas()); // Atualiza a lista na interface
-
-            DisplayAlert("Receitas Excluídas", $"Todas as receitas da categoria '{categoriaSelecionada}' foram apagadas.", "OK");
-
-            _viewModel.OnPropertyChanged(nameof(_viewModel.ListaReceitas)); // Atualiza a interface
+            // Atualizar lista após remoção
+            _viewModel.ListaReceitas = new ObservableCollection<Receita>(_dbHelpers.GetReceitas());
+            OnPropertyChanged(nameof(_viewModel.ListaReceitas)); // Atualiza a interface
         }
         else
         {
             DisplayAlert("Erro", "Selecione uma categoria!", "OK");
         }
     }
+
+
 
     private void BTN_ApagarDespesaCategoria_Clicked(object sender, EventArgs e)
     {
-        string categoriaSelecionada = PickerCategoriaExcluir.SelectedItem?.ToString();
+        var categoriaSelecionada = PickerCategoriaExcluir.SelectedItem?.ToString();
         if (!string.IsNullOrEmpty(categoriaSelecionada))
         {
             _viewModel.ApagarDespesaPorCategoria(categoriaSelecionada);
-            _viewModel.ListaDespesas = new ObservableCollection<Despesa>(_dbHelpers.GetDespesas()); // Atualiza a lista
-
-            DisplayAlert("Despesas Excluídas", $"Todas as despesas da categoria '{categoriaSelecionada}' foram apagadas.", "OK");
-
-            _viewModel.OnPropertyChanged(nameof(_viewModel.ListaDespesas)); // Atualiza a interface
-        }
-        else
-        {
-            DisplayAlert("Erro", "Selecione uma categoria!", "OK");
         }
     }
+
 }
 
 

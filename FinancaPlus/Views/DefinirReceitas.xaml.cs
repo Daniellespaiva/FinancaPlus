@@ -15,7 +15,7 @@ public partial class DefinirReceitas : ContentPage
 
     private readonly List<string> _categoriasReceita = new()
     {
-        "Salario", "Freelance","Investimento","Outros"
+        "Salário", "Freelance","Investimento","Outros"
     };
 
     private readonly List<string> _categoriasDespesa = new()
