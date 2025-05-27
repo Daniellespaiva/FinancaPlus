@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.Messaging;
 using FinancaPlus.Helpers;
 using FinancaPlus.Models;
-using Microsoft.Maui.ApplicationModel.Communication;
+using MauiAppFinancaPlus.Moldes;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -13,6 +13,8 @@ public partial class DefinirReceitas : ContentPage
 {
     private readonly SQLiteDatabaseHelpers _dbHelpers;
     private readonly DefinirReceitasViewModel _viewModel;
+    private Usuario usuario; // Declaração da variável usuário
+    
 
     private readonly List<string> _categoriasReceita = new()
     {
@@ -28,17 +30,21 @@ public partial class DefinirReceitas : ContentPage
     public ICommand DeleteCommand { get; private set; } = null!;
 
     public DefinirReceitas()
-    {
+    { 
+        InitializeComponent();
         _dbHelpers = new SQLiteDatabaseHelpers();
         _viewModel = new DefinirReceitasViewModel();
-       
-        BindingContext = _viewModel;
+        usuario = new Usuario(); // Inicialização correta da variável
+    
+
+
+          BindingContext = _viewModel;
 
         try
         {
             ListaReceitas = new ObservableCollection<Receita>(_dbHelpers.GetReceitas());
 
-            InitializeComponent();
+           
 
             EntryNomeReceita = this.FindByName<Entry>("EntryNomeReceita") ?? throw new Exception("EntryNomeReceita não encontrado.");
             EntryValorReceita = this.FindByName<Entry>("EntryValorReceita") ?? throw new Exception("EntryValorReceita não encontrado.");
@@ -98,8 +104,9 @@ public partial class DefinirReceitas : ContentPage
 
             await DisplayAlert("Sucesso", "Informação adicionada!", "OK");
 
-            // Navegar para a página Minhas Finanças
-            await Navigation.PushAsync(new MinhaFinancas());
+            // Navegar para a página Tela inicial
+            
+            await Navigation.PushAsync(new TelaPrincipal(usuario.Email));
         }
         catch (Exception ex)
         {
@@ -119,17 +126,7 @@ public partial class DefinirReceitas : ContentPage
         Navigation.PushAsync(new ConfiguracaoPage());
     }
 
-    private async void IrParaMinhasFinancas_Clicked(object sender, EventArgs e)
-    {
-        try
-        {
-            await Navigation.PushAsync(new MinhaFinancas());
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erro", $"Falha ao abrir a tela de finanças: {ex.Message}", "OK");
-        }
-    }
+    
 
     private async void IrParaTelaInicial_Clicked(object sender, EventArgs e)
     {

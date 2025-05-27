@@ -2,6 +2,9 @@
 using FinancaPlus.Views;
 using MauiAppFinancaPlus.Moldes;
 using SQLite;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace FinancaPlus.Helpers
 {
@@ -22,6 +25,7 @@ namespace FinancaPlus.Helpers
             _db.CreateTable<Transacao>();
             _db.CreateTable<GastoCategoria>();
             _db.CreateTable<Categoria>(); // Cria a tabela de categorias
+            _db.CreateTable<Meta>(); // Cria a tabela de metas
         }
 
         
@@ -169,6 +173,29 @@ namespace FinancaPlus.Helpers
             using var connection = new SQLiteConnection(_dbPath);
             connection.Execute("DELETE FROM Receita WHERE Categoria = ?", categoria);
         }
+
+        public List<Meta> GetMetas()
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            return connection.Table<Meta>().ToList();
+        }
+        public void AddMeta(Meta meta)
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            connection.Insert(meta);
+        }
+        public void DeleteMetasPorCategoria(string categoria)
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            connection.Execute("DELETE FROM Meta WHERE Categoria = ?", categoria);
+        }
+
+        public void ResetarSaldoPorCategoria(string categoria)
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            connection.Execute("UPDATE Meta SET Valor = 0 WHERE Categoria = ?", categoria);
+        }
+
     }
 }
 

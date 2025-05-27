@@ -71,8 +71,7 @@
                 <Button Text="📊 Relatórios" x:Name="IrParaRelatorios" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaRelatorios_Clicked"/>
                <Button Text="🏠 Tela Inicial" x:Name="IrParaTelaInicial" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaTelaInicial_Clicked"/>
                 <Button Text="⚙️ Configurações" x:Name="IrParaConfig" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaConfig_Clicked"/>
-                <Button Text="💰 Minhas Finanças" x:Name="IrParaMinhasFinancas" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaMinhasFinancas_Clicked"/>
-            </HorizontalStackLayout>
+             </HorizontalStackLayout>
         </Grid>
 
     </Grid>

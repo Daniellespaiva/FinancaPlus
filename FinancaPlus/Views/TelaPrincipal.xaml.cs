@@ -84,10 +84,6 @@ public partial class TelaPrincipal : ContentPage
         }
     }
 
-
-
-
-
     private async void IrParaPerfil_Clicked(object sender, EventArgs e)
     {
         string emailUsuario = _viewModel.UsuarioLogado?.Email ?? "email@exemplo.com";
@@ -110,16 +106,8 @@ public partial class TelaPrincipal : ContentPage
     {
         await Navigation.PushAsync(new GerarRelatorio()); // Abre tela de relatórios
     }
+      
 
-    private async void IrParaMetas_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new DefinirMetas()); // Abre metas
-    }
-
-    private async void IrParaLogout_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PopToRootAsync(); // Faz logout e retorna à tela inicial
-    }
 
     private async void BTN_receitas_Clicked(object sender, EventArgs e)
     {
@@ -131,11 +119,8 @@ public partial class TelaPrincipal : ContentPage
         catch
         {
 
-        }
+        }  
     }
-
-    
-
 
     private async void BTN_definirMetas_Clicked(object sender, EventArgs e)
     {
@@ -149,45 +134,9 @@ public partial class TelaPrincipal : ContentPage
         }
     }
 
-    private async void BTN_relatorios_Clicked(object sender, EventArgs e)
+    private async void IrParaMetas_Clicked(object sender, EventArgs e)
     {
-        try
-        {
-            await Navigation.PushAsync(new GerarRelatorio());
-
-        }
-        catch
-        {
-
-        }
-    }
-
-    private void Logout_Clicked(object sender, EventArgs e)
-    {
-        Navigation.PopToRootAsync();
-    }
-
-    private async void BTN_Categorias_Clicked(object sender, EventArgs e)
-    {
-        try
-        {
-            await Navigation.PushAsync(new CategoriasPage());
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erro", $"Falha ao abrir a tela de categoria: {ex.Message}", "OK");
-        }
-    }
-
-    private async void IrParaMinhasFinancas_Clicked(object sender, EventArgs e)
-    {
-        try { 
-            await Navigation.PushAsync(new MinhaFinancas());
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erro", $"Falha ao abrir a tela de finanças: {ex.Message}", "OK");
-        }
+        await Navigation.PushAsync(new DefinirMetas());
     }
 }
 

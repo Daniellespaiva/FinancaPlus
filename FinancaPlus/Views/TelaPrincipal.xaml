@@ -110,8 +110,9 @@
                 <Button Text="👤 Editar Perfil" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaPerfil_Clicked"/>
                 <Button Text="📊 Relatórios" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaRelatorios_Clicked"/>
                 <Button Text="⚙️ Configurações" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaConfig_Clicked"/>
-                <Button Text="💰 Minhas Finanças" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaMinhasFinancas_Clicked"/>
+                <Button Text="🎯 Metas" BackgroundColor= "Transparent"  WidthRequest="40" x:Name="IrParaMetas" HeightRequest="40" Clicked="IrParaMetas_Clicked"/>
             </HorizontalStackLayout>
+
         </Grid>
     </Grid>
 
