@@ -24,7 +24,7 @@ namespace FinancaPlus.Helpers
             _db.CreateTable<Receita>(); // Cria a tabela de receitas
             _db.CreateTable<Transacao>();
             _db.CreateTable<GastoCategoria>();
-            _db.CreateTable<Categoria>(); // Cria a tabela de categorias
+            _db.CreateTable<CategoriaDespesa>(); // Cria a tabela de categorias
             _db.CreateTable<Meta>(); // Cria a tabela de metas
         }
 
@@ -150,16 +150,16 @@ namespace FinancaPlus.Helpers
             _db.Insert(despesa);
         }
 
-        public List<Categoria> GetCategoriasFixas()
+        public List<CategoriaDespesa> GetCategoriasFixas()
         {
             using var conexao = new SQLiteConnection(_dbPath);
-            return conexao.Query<Categoria>("SELECT * FROM Categorias WHERE Tipo = 'Fixa'");
+            return conexao.Query<CategoriaDespesa>("SELECT * FROM Categorias WHERE Tipo = 'Fixa'");
         }
 
-        public List<Categoria> GetCategoriasVariaveis()
+        public List<CategoriaDespesa> GetCategoriasVariaveis()
         {
             using var conexao = new SQLiteConnection(_dbPath);
-            return conexao.Query<Categoria>("SELECT * FROM Categorias WHERE Tipo = 'Variável'");
+            return conexao.Query<CategoriaDespesa>("SELECT * FROM Categorias WHERE Tipo = 'Variável'");
         }
 
         public void DeleteCategoriaReceita(string categoria)
@@ -196,6 +196,37 @@ namespace FinancaPlus.Helpers
             connection.Execute("UPDATE Meta SET Valor = 0 WHERE Categoria = ?", categoria);
         }
 
+        public void ExcluirTransacao(Transacao transacao)
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            connection.Delete(transacao);
+        }
+
+        public void ResetarSaldo()
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            connection.Execute("UPDATE Receita SET Valor = 0");
+        }
+
+        public void ResetarDespesas()
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            connection.Execute("UPDATE Despesa SET Valor = 0");
+        }
+        public decimal ObterTotalDespesas()
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            var resultado = connection.ExecuteScalar<decimal>("SELECT SUM(Valor) FROM Despesa");
+            return resultado;
+        }
+
+        public decimal ObterTotalReceita()
+        {
+            using var connection = new SQLiteConnection(_dbPath);
+            var resultado = connection.ExecuteScalar<decimal>("SELECT COALESCE(SUM(Valor), 0) FROM Receita");
+            return resultado;
+        }
     }
+
 }
 

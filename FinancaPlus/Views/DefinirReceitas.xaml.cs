@@ -79,16 +79,23 @@ public partial class DefinirReceitas : ContentPage
     {
         try
         {
-            string nome = EntryNomeReceita.Text;
+            string nome = EntryNomeReceita.Text?.Trim();
             string categoria = PickerCategoria.SelectedItem?.ToString();
-            decimal valor = decimal.TryParse(EntryValorReceita.Text, out decimal resultado) ? resultado : 0;
+            decimal valor = decimal.TryParse(EntryValorReceita.Text, out decimal resultado) ? resultado : 0m;
             bool isReceita = RB_Receita.IsChecked;
 
-            if (string.IsNullOrEmpty(nome) || categoria == null || valor <= 0)
+            if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(categoria) || valor <= 0)
             {
                 await DisplayAlert("Erro", "Preencha todos os campos corretamente!", "OK");
                 return;
             }
+
+            var novaTransacao = new Transacao
+            {
+                Descricao = nome,
+                Valor = valor,
+                CorValor = isReceita ? "Verde" : "Vermelho"
+            };
 
             if (isReceita)
             {
@@ -99,22 +106,20 @@ public partial class DefinirReceitas : ContentPage
                 _dbHelpers.AddDespesa(new Despesa { Nome = nome, Categoria = categoria, Valor = valor });
             }
 
-            // Enviar mensagem para atualizar saldo na tela Minhas Finanças
-            WeakReferenceMessenger.Default.Send(new AtualizarSaldoMessage(valor));
+            // **Recuperar os valores do banco**
+            decimal novaReceita = _dbHelpers.ObterTotalReceita();
+            decimal novaDespesa = _dbHelpers.ObterTotalDespesas();
 
-            await DisplayAlert("Sucesso", "Informação adicionada!", "OK");
+            // **Enviar mensagem para Tela Principal atualizar os valores**
+            WeakReferenceMessenger.Default.Send(new AtualizarFinanceiroMessage(novaReceita, novaDespesa));
 
-            // Navegar para a página Tela inicial
-            
-            await Navigation.PushAsync(new TelaPrincipal(usuario.Email));
+            await DisplayAlert("Sucesso", "Transação salva!", "OK");
         }
         catch (Exception ex)
         {
             await DisplayAlert("Erro", $"Ocorreu um erro ao salvar: {ex.Message}", "OK");
         }
     }
-
-   
 
     private async void IrParaRelatorios_Clicked(object sender, EventArgs e)
     {

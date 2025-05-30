@@ -19,29 +19,16 @@ public partial class TelaPrincipal : ContentPage
         InitializeComponent();
         _dbHelpers = new SQLiteDatabaseHelpers();
         _viewModel = new TelaPrincipalViewModel(email);
-
-
+        
+        BindingContext = _viewModel; // Define o contexto de dados para a ViewModel
         _viewModel.UsuarioLogado = _dbHelpers.GetUsuario(email) ?? new Usuario();
-        _viewModel.SaldoDisponivel = decimal.TryParse(Preferences.Get("SaldoDisponivel", "0"), out decimal saldo) ? saldo : 0m;
-        _viewModel.NomeUsuario = "Usuário Teste"; // Valor de teste
-        _viewModel.DataAtual = DateTime.Now;
-        _viewModel.HoraAtual = DateTime.Now;
 
-
-        BindingContext = _viewModel; // Define corretamente a Binding
-
-        // **Registrar mensagens para atualização de saldo e despesas**
-        WeakReferenceMessenger.Default.Register<AtualizarSaldoMessage>(this, (recipient, message) =>
+        // **Registrar mensagem para atualização automática**
+        WeakReferenceMessenger.Default.Register<AtualizarFinanceiroMessage>(this, (recipient, message) =>
         {
-            _viewModel.SaldoDisponivel = message.Valor; // Correção!
+            _viewModel.ReceitaAtual = message.NovaReceita;
+            _viewModel.TotalDespesas = message.NovaDespesa;
         });
-
-
-        WeakReferenceMessenger.Default.Register<AtualizarDespesasMessage>(this, (recipient, message) =>
-        {
-            _viewModel.TotalDespesas = message.Value;
-        });
-
 
 
         // Certifique-se de que os nomes das Labels correspondem aos IDs definidos no arquivo XAML
@@ -52,24 +39,7 @@ public partial class TelaPrincipal : ContentPage
         
         CarregarNomeUsuario();
 
-        // **Atualiza a Label automaticamente quando o saldo for modificado**
-        _viewModel.PropertyChanged += (sender, e) =>
-        {
-            if (e.PropertyName == nameof(_viewModel.SaldoDisponivel))
-            {
-                LBL_Saldo.Text = $"Saldo disponível: R$ {_viewModel.SaldoDisponivel:N2}";
-            }
-            else if (e.PropertyName == nameof(_viewModel.ReceitaAtual))
-            {
-                LBL_Receita.Text = $"Receita: R$ {_viewModel.ReceitaAtual:N2}";
-            }
-            else if (e.PropertyName == nameof(_viewModel.TotalDespesas))
-            {
-                LBL_Despesas.Text = $"Despesas: R$ {_viewModel.TotalDespesas:N2}";
-            }
-        };
-
-
+        
     }
 
     private void CarregarNomeUsuario()
@@ -138,18 +108,18 @@ public partial class TelaPrincipal : ContentPage
     {
         await Navigation.PushAsync(new DefinirMetas());
     }
+
+    private async void BTN_Despesas_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new TelaCategorizacao());
+    }
 }
 
 public partial class TelaPrincipalViewModel : INotifyPropertyChanged
 {
     private readonly SQLiteDatabaseHelpers _dbHelpers;
-     private decimal _saldoDisponivel = 0m ;
-    private decimal _receitaAtual = 0m;
-    private decimal _totalDespesas = 0m ;
-    private DateTime _dataAtual;
-    private DateTime _horaAtual;
-   
-
+    private decimal _receitaAtual;
+    private decimal _totalDespesas;
 
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -165,41 +135,6 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         }
     }
 
-    public DateTime DataAtual
-    {
-        get => _dataAtual;
-        set
-        {
-            _dataAtual = value;
-            OnPropertyChanged(nameof(DataAtual));
-        }
-    }
-
-    public DateTime HoraAtual
-    {
-        get => _horaAtual;
-        set
-        {
-            _horaAtual = value;
-            OnPropertyChanged(nameof(HoraAtual));
-        }
-    }
-
-
-
-    // Binding do saldo disponível
-    public decimal SaldoDisponivel
-    {
-        get => _saldoDisponivel;
-        set
-        {
-            _saldoDisponivel = value;
-            OnPropertyChanged(nameof(SaldoDisponivel));
-            OnPropertyChanged(nameof(Saldo));
-        }
-    }
-
-    // Binding da receita atual
     public decimal ReceitaAtual
     {
         get => _receitaAtual;
@@ -207,10 +142,10 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         {
             _receitaAtual = value;
             OnPropertyChanged(nameof(ReceitaAtual));
+            AtualizarSaldo();
         }
     }
 
-    // Binding das despesas
     public decimal TotalDespesas
     {
         get => _totalDespesas;
@@ -218,18 +153,35 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         {
             _totalDespesas = value;
             OnPropertyChanged(nameof(TotalDespesas));
-            OnPropertyChanged(nameof(Saldo)); // Atualiza automaticamente
+            AtualizarSaldo();
         }
     }
 
-    // Saldo calculado dinamicamente
-    public decimal Saldo => SaldoDisponivel - TotalDespesas;
+    public decimal SaldoDisponivel => ReceitaAtual - TotalDespesas;
+
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private void AtualizarSaldo()
+    {
+        OnPropertyChanged(nameof(SaldoDisponivel));
+    }
+
+
+
+    
+
+   
+
 
     // Propriedade não anulável inicializada no construtor
     public Usuario UsuarioLogado { get; set; } = new Usuario();
     public Despesa Gasto { get; set; } = new Despesa(); // Inicializa os gastos
 
     public ObservableCollection<GastoCategoria> GastosPorCategoria { get; set; }
+    public ObservableCollection<CategoriaDespesa> CategoriasDespesas { get; }
     public ObservableCollection<Transacao> TransacoesRecentes { get; set; }
 
 
@@ -243,9 +195,7 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
             Nome = string.Empty,
             Email = string.Empty
         };
-        SaldoDisponivel = ObterSaldoDoBancoDeDados();
-        ReceitaAtual = ObterTotalDespesas();
-        TotalDespesas = ObterTotalDespesas();
+       
 
         GastosPorCategoria = new ObservableCollection<GastoCategoria>
     {
@@ -257,6 +207,9 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         new GastoCategoria { Nome = "Outros", Percentual = 0.20f, CategoriaCor = "Purple" }
     };
 
+       
+
+
         TransacoesRecentes = new ObservableCollection<Transacao>
         {
             new Transacao { Descricao = "Supermercado", Valor = -150.00m, CorValor = "Red" },
@@ -264,14 +217,8 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         };
 
     }
-    private static decimal ObterSaldoDoBancoDeDados() => 0m;
-    private static decimal ObterReceita() => 0m;
-    private static decimal ObterTotalDespesas() => 0m;
-
-    protected void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+  
+    
 
 
 }

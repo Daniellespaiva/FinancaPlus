@@ -60,6 +60,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Models\AtualizarDespesasMessage.cs" />
+	  <Compile Remove="Models\AtualizarSaldoMessage.cs" />
 	  <Compile Remove="Views\MinhaFinancas.xaml.cs" />
 	</ItemGroup>
 
@@ -107,9 +109,16 @@
 	  <MauiXaml Update="Views\RecuperarSenha.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\TelaCategorizacao.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\TelaPrincipal.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="ViewModels\" />
 	</ItemGroup>
 
 </Project>

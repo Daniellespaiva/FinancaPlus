@@ -5,67 +5,72 @@
              BackgroundColor="#F5F5F5"
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False"
-                Title="Tela Principal">
+             Title="Tela Principal">
 
-    <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, *" >
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, *">
 
         <!-- Cabeçalho -->
-        <Frame  Grid.Row="0" Padding="10" HeightRequest="70" BackgroundColor="Green" CornerRadius="10" Margin="5">
-            <VerticalStackLayout>
-                <Label Text="Olá, " FontSize="14" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
-                <Label x:Name="LBL_NomeUsuario" Text="{Binding NomeUsuario}" FontSize="14" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
-                <Label x:Name="LBL_Data" Text="{Binding DataAtual, StringFormat='Data: {0:dd/MM/yyyy}'}" FontSize="10" TextColor="Gray" HorizontalOptions="End"/>
-                <Label x:Name="LBL_Hora" Text="{Binding HoraAtual, StringFormat='Hora: {0:HH:mm}'}" FontSize="10" TextColor="Gray" HorizontalOptions="Start"/>
-            </VerticalStackLayout>
+        <Frame Grid.Row="0" Padding="10" HeightRequest="70" BackgroundColor="Green" CornerRadius="10" Margin="5">
+            <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+
+                <!-- Botão Editar Perfil -->
+                <Button Text="👤 Editar Perfil" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40"
+                        Clicked="IrParaPerfil_Clicked" HorizontalOptions="Start"/>
+
+                <!-- Informações do Usuário -->
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Olá," FontSize="14" FontAttributes="Bold" TextColor="White"/>
+                    <Label x:Name="LBL_NomeUsuario" Text="{Binding NomeUsuario}" FontSize="14"
+                           FontAttributes="Bold" TextColor="White"/>
+                </VerticalStackLayout>
+
+            </HorizontalStackLayout>
         </Frame>
 
-        <!-- Informações Financeiras em uma Única Frame -->
+        <!-- Informações Financeiras -->
         <Frame Grid.Row="1" Padding="10" BackgroundColor="LightGray" HeightRequest="90" CornerRadius="10" Margin="5">
             <VerticalStackLayout Spacing="10">
 
                 <!-- Saldo -->
-                <Label x:Name="LBL_Saldo" Text="{Binding SaldoDisponivel, StringFormat='Saldo disponível: R$ {0:N2}'}"
-               FontSize="16" FontAttributes="Bold" TextColor="DarkGreen" HorizontalOptions="Start"/>
+                <Label x:Name="LBL_Saldo" Text="{Binding SaldoDisponivel, StringFormat='R$ {0:N2}'}"
+                       FontSize="16" FontAttributes="Bold" TextColor="DarkGreen" HorizontalOptions="Start"/>
 
-                <!-- Receita e Despesas Lado a Lado-->
+                <!-- Receita e Despesas Lado a Lado -->
                 <HorizontalStackLayout Spacing="210" HorizontalOptions="Start">
                     <VerticalStackLayout HorizontalOptions="Center">
-                        <Label Text="Receita" FontSize="14" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Center"/>
+                        <Label Text="Receita" FontSize="14" FontAttributes="Bold" TextColor="Black"/>
                         <Label x:Name="LBL_Receita" Text="{Binding ReceitaAtual, StringFormat='R$ {0:N2}'}"
-                       FontSize="14" TextColor="DarkGreen" HorizontalOptions="Center"/>
+                               FontSize="14" TextColor="DarkGreen"/>
                     </VerticalStackLayout>
 
                     <VerticalStackLayout HorizontalOptions="Center">
-                        <Label Text="Despesas" FontSize="14" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Center"/>
+                        <Label Text="Despesas" FontSize="14" FontAttributes="Bold" TextColor="Black"/>
                         <Label x:Name="LBL_Despesas" Text="{Binding TotalDespesas, StringFormat='R$ {0:N2}'}"
-                       FontSize="14" TextColor="DarkRed" HorizontalOptions="Center"/>
+                               FontSize="14" TextColor="DarkRed"/>
                     </VerticalStackLayout>
                 </HorizontalStackLayout>
 
             </VerticalStackLayout>
         </Frame>
 
-        <!-- Botões organizados com transparência e tamanho aprimorado -->
+        <!-- Botões de Navegação -->
         <HorizontalStackLayout Grid.Row="2" Spacing="20" HorizontalOptions="Center">
+            <Button Text="Receitas" BackgroundColor="DarkGreen" WidthRequest="100" TextColor="White"
+                    Clicked="BTN_receitas_Clicked" CornerRadius="10"/>
 
+            <Button Text="Metas" BackgroundColor="DarkGreen" WidthRequest="100" TextColor="White"
+                    Clicked="BTN_definirMetas_Clicked" CornerRadius="10"/>
 
-            <Button Text="Receitas" BackgroundColor="DarkGreen" WidthRequest="100"  TextColor="White" 
-            Clicked="BTN_receitas_Clicked"  CornerRadius="10"/>
-
-           <Button Text="Metas" BackgroundColor="DarkGreen" WidthRequest="100" TextColor="White" 
-            Clicked="BTN_definirMetas_Clicked"  CornerRadius="10"/>
-
+            <Button Text="Despesas" BackgroundColor="White" WidthRequest="100" TextColor="Black"
+                    Clicked="BTN_Despesas_Clicked" CornerRadius="10"/>
         </HorizontalStackLayout>
 
-        <!-- Seção de Gastos por Categoria -->
+        <!-- Gastos por Categoria -->
         <Frame Grid.Row="3" Padding="10" BackgroundColor="White" CornerRadius="10" Margin="5">
             <VerticalStackLayout>
                 <Label Text="Gastos por Categoria" FontSize="18" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Center"/>
 
-                <!-- Layout com lista de categorias + gráfico -->
                 <Grid ColumnDefinitions="2*, 1*" Padding="5" VerticalOptions="FillAndExpand">
-
-                    <!-- Lista de Categorias e Percentuais -->
                     <CollectionView Grid.Column="0" ItemsSource="{Binding GastosPorCategoria}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -78,14 +83,16 @@
                     </CollectionView>
 
                     <!-- Imagem do Gráfico de Pizza -->
-                    <Image Grid.Column="1" Source="img_grafico.png" WidthRequest="150" HeightRequest="150" 
+                    <Image Grid.Column="1" Source="img_grafico.png" WidthRequest="150" HeightRequest="150"
                            VerticalOptions="Center" HorizontalOptions="Center"/>
                 </Grid>
             </VerticalStackLayout>
         </Frame>
+
         
-        <!-- Seção de Transações Recentes -->
-        <Frame Grid.Row="4" Padding="10" BackgroundColor="White" CornerRadius="10" Margin="5">
+
+        <!-- Transações Recentes -->
+        <Frame Grid.Row="5" Padding="10" BackgroundColor="White" CornerRadius="10" Margin="5">
             <VerticalStackLayout>
                 <Label Text="Transações Recentes" FontSize="18" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Center"/>
                 <CollectionView ItemsSource="{Binding TransacoesRecentes}">
@@ -101,20 +108,20 @@
             </VerticalStackLayout>
         </Frame>
 
-
-
-
-        <!-- Rodapé com barra de navegação -->
+        <!-- Rodapé -->
         <Grid Grid.Row="6" HeightRequest="50" Padding="5" BackgroundColor="Green" VerticalOptions="End">
             <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
-                <Button Text="👤 Editar Perfil" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaPerfil_Clicked"/>
-                <Button Text="📊 Relatórios" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaRelatorios_Clicked"/>
-                <Button Text="⚙️ Configurações" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40" Clicked="IrParaConfig_Clicked"/>
-                <Button Text="🎯 Metas" BackgroundColor= "Transparent"  WidthRequest="40" x:Name="IrParaMetas" HeightRequest="40" Clicked="IrParaMetas_Clicked"/>
+                <Button Text="📊 Relatórios" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40"
+                        Clicked="IrParaRelatorios_Clicked"/>
+
+                <Button Text="⚙️ Configurações" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40"
+                        Clicked="IrParaConfig_Clicked"/>
+
+                <Button Text="🎯 Metas" BackgroundColor="Transparent" WidthRequest="40" HeightRequest="40"
+                        Clicked="IrParaMetas_Clicked"/>
             </HorizontalStackLayout>
-
         </Grid>
-    </Grid>
 
+    </Grid>
 
 </ContentPage>

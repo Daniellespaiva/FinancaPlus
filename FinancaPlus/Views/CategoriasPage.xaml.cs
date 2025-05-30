@@ -1,5 +1,4 @@
 using FinancaPlus.Helpers;
-using FinancaPlus.Models;
 using System.Collections.ObjectModel;
 
 namespace FinancaPlus.Views;
@@ -16,9 +15,13 @@ public partial class CategoriasPage : ContentPage
         InitializeComponent();
         _dbHelpers = new SQLiteDatabaseHelpers();
 
-        // Carrega os dados do banco
-        CategoriasFixas = new ObservableCollection<Categoria>(_dbHelpers.GetCategoriasFixas());
-        CategoriasVariaveis = new ObservableCollection<Categoria>(_dbHelpers.GetCategoriasVariaveis());
+        // Carrega os dados do banco com conversão de tipos
+        CategoriasFixas = new ObservableCollection<Categoria>(
+            _dbHelpers.GetCategoriasFixas().Select(c => new Categoria { Nome = c.Nome, Icone = c.Icone })
+        );
+        CategoriasVariaveis = new ObservableCollection<Categoria>(
+            _dbHelpers.GetCategoriasVariaveis().Select(c => new Categoria { Nome = c.Nome, Icone = c.Icone })
+        );
 
         BindingContext = this;
     }

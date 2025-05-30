@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinancaPlus.Views.GerarRelatorio"
@@ -13,11 +12,13 @@
                    FontSize="22"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
-                   Margin="0,10,0,10"/>
+                   TextColor="White"
+                   BackgroundColor="DarkGreen"
+                   Padding="10"/>
 
             <!-- Seletor de Período -->
-            <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
-                <HorizontalStackLayout>
+            <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" BackgroundColor="White">
+                <HorizontalStackLayout Spacing="10">
                     <Label Text="Período:" FontSize="16"/>
                     <Picker x:Name="PickerPeriodo" Title="Escolha um período">
                         <Picker.Items>
@@ -32,17 +33,39 @@
 
             <!-- Gráfico de Relatório -->
             <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" BackgroundColor="White">
-                <Image x:Name="GraficoRelatorio" HeightRequest="200"/>
+                <VerticalStackLayout>
+                    <Image x:Name="GraficoRelatorio" HeightRequest="200"/>
+                    <Label Text="Gráfico de Gastos por Categoria" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
             </Frame>
+            <!-- Categorias das Despesas -->
+            <Label Text="Categorias de Despesas"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="10"/>
+
+            <CollectionView x:Name="ListaCategorias" ItemsSource="{Binding CategoriasDespesas}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" BorderColor="LightGray" CornerRadius="10">
+                            <HorizontalStackLayout Spacing="10">
+                                <Image Source="{Binding Icone}" WidthRequest="30" HeightRequest="30"/>
+                                <Label Text="{Binding Nome}" FontSize="16" TextColor="Black"/>
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
             <!-- Lista de Transações -->
             <Label Text="Detalhamento de Transações"
                    FontSize="20"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
-                   Margin="0,20,0,10"/>
+                   Margin="10"/>
 
-            <CollectionView x:Name="TransacoesListView">
+            <CollectionView x:Name="TransacoesListView" ItemsSource="{Binding Transacoes}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame Padding="10" BorderColor="LightGray" CornerRadius="10">
@@ -56,16 +79,18 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <!-- Botão para gerar relatório -->
-            <Button Text="Gerar Relatório"
-                    x:Name="BTN_GerarRelatorio"
-                    BackgroundColor="DarkBlue"
-                    TextColor="White"
-                    FontSize="18"
-                    CornerRadius="20"
-                    Padding="10"
-                    Clicked="BTN_GerarRelatorio_Clicked"/>
+            <!-- Botões de ação -->
+            <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                <Button Text="📊 Gerar Relatório" BackgroundColor="DarkGreen" TextColor="White" FontSize="16"
+                        WidthRequest="150" HeightRequest="50" x:Name="BTN_GerarRelatorio"
+                        Clicked="BTN_GerarRelatorio_Clicked"/>
+
+                <Button Text="🔄 Resetar Dados" BackgroundColor="Red" TextColor="White" FontSize="16"
+                        WidthRequest="150" HeightRequest="50" x:Name="BTN_ResetarDados"
+                        Clicked="BTN_ResetarDados_Clicked"/>
+            </HorizontalStackLayout>
 
         </VerticalStackLayout>
     </ScrollView>
+
 </ContentPage>

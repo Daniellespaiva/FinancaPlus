@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancaPlus.Views.TelaCategorizacao"
+             Title="TelaCategorizacao"
+    BackgroundColor="White">
+
+    <VerticalStackLayout Padding="20">
+
+        <!-- Título -->
+        <Label Text="Tela de Categorização" FontSize="24" FontAttributes="Bold"
+               HorizontalOptions="Center" TextColor="White" BackgroundColor="DarkGreen" Padding="10"/>
+
+        <!-- Lista de Receitas e Despesas -->
+        <CollectionView x:Name="ListaTransacoes" ItemsSource="{Binding Transacoes}" SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="5" BackgroundColor="LightGreen" CornerRadius="10">
+                        <HorizontalStackLayout>
+
+                            <!-- Nome da Transação -->
+                            <Label Text="{Binding Nome}" FontSize="16" FontAttributes="Bold" TextColor="Black"
+                                   VerticalOptions="Center"/>
+
+                            <!-- Valor -->
+                            <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"
+                                   TextColor="{Binding CorValor}" VerticalOptions="Center"/>
+
+                            <!-- Botões de ação -->
+                            <HorizontalStackLayout HorizontalOptions="End" Spacing="5">
+                                
+                                <ImageButton Source="icon_excluir.png" WidthRequest="30" HeightRequest="30"
+                                             BackgroundColor="Transparent" x:Name="ExcluirTransacao" Clicked="ExcluirTransacao_Clicked"/>
+                            </HorizontalStackLayout>
+
+                        </HorizontalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Botões de Reset -->
+        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+
+            <Button Text="🔄 Resetar Saldo" BackgroundColor="DarkGreen" TextColor="White" FontSize="16"
+                    WidthRequest="150" HeightRequest="50" x:Name="ResetarSaldo" Clicked="ResetarSaldo_Clicked"/>
+
+            <Button Text="🔄 Resetar Despesas" BackgroundColor="Red" TextColor="White" FontSize="16"
+                    WidthRequest="150" HeightRequest="50" x:Name="ResetarDespesas" Clicked="ResetarDespesas_Clicked"/>
+
+        </HorizontalStackLayout>
+
+    </VerticalStackLayout>
+
+
+</ContentPage>
