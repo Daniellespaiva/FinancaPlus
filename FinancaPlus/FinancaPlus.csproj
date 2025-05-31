@@ -60,6 +60,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="ViewModels\**" />
+	  <Compile Remove="ViewModels\**" />
+	  <EmbeddedResource Remove="ViewModels\**" />
+	  <MauiCss Remove="ViewModels\**" />
+	  <MauiXaml Remove="ViewModels\**" />
+	  <None Remove="ViewModels\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Remove="Models\AtualizarDespesasMessage.cs" />
 	  <Compile Remove="Models\AtualizarSaldoMessage.cs" />
 	  <Compile Remove="Views\MinhaFinancas.xaml.cs" />
@@ -80,9 +89,6 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\CadastroLogin.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\CategoriasPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ConfiguracaoPage.xaml">
@@ -115,10 +121,6 @@
 	  <MauiXaml Update="Views\TelaPrincipal.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="ViewModels\" />
 	</ItemGroup>
 
 </Project>
