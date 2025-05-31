@@ -114,6 +114,7 @@ public partial class DefinirReceitas : ContentPage
             WeakReferenceMessenger.Default.Send(new AtualizarFinanceiroMessage(novaReceita, novaDespesa));
 
             await DisplayAlert("Sucesso", "Transação salva!", "OK");
+            await Navigation.PushAsync(new TelaPrincipal(usuario.Email));
         }
         catch (Exception ex)
         {
