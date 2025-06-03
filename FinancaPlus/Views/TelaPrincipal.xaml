@@ -21,7 +21,8 @@
                 <VerticalStackLayout VerticalOptions="Center">
                     <Label Text="Olá," FontSize="14" FontAttributes="Bold" TextColor="White"/>
                     <Label x:Name="LBL_NomeUsuario" Text="{Binding NomeUsuario}" FontSize="14"
-                           FontAttributes="Bold" TextColor="White"/>
+                   FontAttributes="Bold" TextColor="White"/>
+
                 </VerticalStackLayout>
 
             </HorizontalStackLayout>
@@ -34,6 +35,7 @@
                 <!-- Saldo -->
                 <Label x:Name="LBL_Saldo" Text="{Binding SaldoDisponivel, StringFormat='Saldo disponível: R$ {0:N2}'}"
                        FontSize="16" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Start"/>
+              
 
                 <!-- Receita e Despesas Lado a Lado -->
                 <HorizontalStackLayout Spacing="210" HorizontalOptions="Start">
@@ -61,7 +63,7 @@
             <Button Text="Metas" BackgroundColor="DarkGreen" WidthRequest="100" TextColor="White"
                     Clicked="BTN_definirMetas_Clicked" CornerRadius="10"/>
 
-            <Button Text="Despesas" BackgroundColor="White" WidthRequest="100" TextColor="Black"
+            <Button Text="Despesas" BackgroundColor="DarkGreen" WidthRequest="100" TextColor="White"
                     Clicked="BTN_Despesas_Clicked" CornerRadius="10"/>
         </HorizontalStackLayout>
 

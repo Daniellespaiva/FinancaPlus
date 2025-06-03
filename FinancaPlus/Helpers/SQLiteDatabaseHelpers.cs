@@ -2,9 +2,6 @@
 using FinancaPlus.Views;
 using MauiAppFinancaPlus.Moldes;
 using SQLite;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace FinancaPlus.Helpers
 {

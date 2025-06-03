@@ -12,7 +12,7 @@ public partial class TelaPrincipal : ContentPage
 {
     private readonly TelaPrincipalViewModel _viewModel;
     private readonly SQLiteDatabaseHelpers _dbHelpers;
-
+  
 
     public TelaPrincipal(string email)
     {
@@ -23,24 +23,32 @@ public partial class TelaPrincipal : ContentPage
         BindingContext = _viewModel; // Define o contexto de dados para a ViewModel
         _viewModel.UsuarioLogado = _dbHelpers.GetUsuario(email) ?? new Usuario();
 
-        // **Registrar mensagem para atualização automática**
+        _viewModel.AtualizarSaldo(); // Atualiza valores assim que a tela abrir
+
+
+
         WeakReferenceMessenger.Default.Register<AtualizarFinanceiroMessage>(this, (recipient, message) =>
         {
-            _viewModel.ReceitaAtual = message.NovaReceita;
-            _viewModel.TotalDespesas = message.NovaDespesa;
+            if (recipient is TelaPrincipal telaPrincipal)
+            {
+                telaPrincipal._viewModel.SaldoDisponivel = message.NovaReceita - message.NovaDespesa;
+                telaPrincipal._viewModel.ReceitaAtual = message.NovaReceita;
+                telaPrincipal._viewModel.TotalDespesas = message.NovaDespesa;
+            }
         });
-
 
         // Certifique-se de que os nomes das Labels correspondem aos IDs definidos no arquivo XAML
         LBL_NomeUsuario = this.FindByName<Label>("LBL_NomeUsuario");
         LBL_Saldo = this.FindByName<Label>("LBL_SaldoDisponivel"); // Adiciona a referência correta para LBL_Saldo
         LBL_Despesas = this.FindByName<Label>("LBL_TotalDespesas"); // Adiciona a referência correta para LBL_Despesas
-        LBL_Receita = this.FindByName<Label>("LBL_Receita");
-        
-        CarregarNomeUsuario();
+        LBL_Receita = this.FindByName<Label>("LBL_Receita"); // Adiciona a referência correta para LBL_Receita
+      
 
-        
+        CarregarNomeUsuario();
+      
     }
+
+    
 
     private void CarregarNomeUsuario()
     {
@@ -120,9 +128,48 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
     private readonly SQLiteDatabaseHelpers _dbHelpers;
     private decimal _receitaAtual;
     private decimal _totalDespesas;
+    private string _categoriaSelecionada;
+    private decimal _saldoDisponivel;
 
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    public decimal SaldoDisponivel
+    {
+        get => _saldoDisponivel;
+        set
+        {
+            _saldoDisponivel = value;
+            OnPropertyChanged(nameof(SaldoDisponivel));
+        }
+    }
+
+    public decimal ReceitaAtual
+    {
+        get => _receitaAtual;
+        set
+        {
+            _receitaAtual = value;
+            OnPropertyChanged(nameof(ReceitaAtual));
+        }
+    }
+
+    public decimal TotalDespesas
+    {
+        get => _totalDespesas;
+        set
+        {
+            _totalDespesas = value;
+            OnPropertyChanged(nameof(TotalDespesas));
+        }
+    }
+
+
+
     // Binding do nome do usuário
     private string _nomeUsuario;
     public string NomeUsuario
@@ -135,45 +182,26 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         }
     }
 
-    public decimal ReceitaAtual
+    public string CategoriaSelecionada
     {
-        get => _receitaAtual;
+        get => _categoriaSelecionada;
         set
         {
-            _receitaAtual = value;
-            OnPropertyChanged(nameof(ReceitaAtual));
-            AtualizarSaldo();
+            _categoriaSelecionada = value;
+            OnPropertyChanged(nameof(CategoriaSelecionada));
         }
     }
 
-    public decimal TotalDespesas
+
+
+    public void AtualizarSaldo()
     {
-        get => _totalDespesas;
-        set
-        {
-            _totalDespesas = value;
-            OnPropertyChanged(nameof(TotalDespesas));
-            AtualizarSaldo();
-        }
+        ReceitaAtual = _dbHelpers.ObterTotalReceita();
+        TotalDespesas = _dbHelpers.ObterTotalDespesas();
+        SaldoDisponivel = ReceitaAtual - TotalDespesas;
+
     }
 
-    public decimal SaldoDisponivel => ReceitaAtual - TotalDespesas;
-
-    protected void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    private void AtualizarSaldo()
-    {
-        OnPropertyChanged(nameof(SaldoDisponivel));
-    }
-
-
-
-    
-
-   
 
 
     // Propriedade não anulável inicializada no construtor

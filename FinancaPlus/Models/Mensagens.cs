@@ -6,12 +6,14 @@ namespace FinancaPlus.Models
     {
         public decimal NovaReceita { get; }
         public decimal NovaDespesa { get; }
+        public string Categoria { get; }
 
-        public AtualizarFinanceiroMessage(decimal receita, decimal despesa)
+        public AtualizarFinanceiroMessage(decimal novaReceita, decimal novaDespesa, string categoria)
         {
-            NovaReceita = receita;
-            NovaDespesa = despesa;
+            NovaReceita = novaReceita;
+            NovaDespesa = novaDespesa;
+            Categoria = categoria;
         }
-
     }
 }
+

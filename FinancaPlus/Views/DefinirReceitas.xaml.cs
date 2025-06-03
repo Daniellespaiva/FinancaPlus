@@ -4,6 +4,7 @@ using FinancaPlus.Models;
 using MauiAppFinancaPlus.Moldes;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
@@ -84,34 +85,35 @@ public partial class DefinirReceitas : ContentPage
             decimal valor = decimal.TryParse(EntryValorReceita.Text, out decimal resultado) ? resultado : 0m;
             bool isReceita = RB_Receita.IsChecked;
 
-            if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(categoria) || valor <= 0)
+            // Remova a exigência da descrição (nome pode ser nulo)
+            if (string.IsNullOrEmpty(categoria) || valor <= 0)
             {
                 await DisplayAlert("Erro", "Preencha todos os campos corretamente!", "OK");
                 return;
             }
 
-            var novaTransacao = new Transacao
-            {
-                Descricao = nome,
-                Valor = valor,
-                CorValor = isReceita ? "Verde" : "Vermelho"
-            };
-
             if (isReceita)
             {
-                _dbHelpers.AddReceita(new Receita { Nome = nome, Categoria = categoria, Valor = valor });
+                _dbHelpers.AddReceita(new Receita { Nome = nome ?? "Sem descrição", Categoria = categoria, Valor = valor });
             }
             else
             {
-                _dbHelpers.AddDespesa(new Despesa { Nome = nome, Categoria = categoria, Valor = valor });
+                _dbHelpers.AddDespesa(new Despesa { Nome = nome ?? "Sem descrição", Categoria = categoria, Valor = valor });
             }
 
-            // **Recuperar os valores do banco**
-            decimal novaReceita = _dbHelpers.ObterTotalReceita();
-            decimal novaDespesa = _dbHelpers.ObterTotalDespesas();
+            // Atualizar os valores no ViewModel imediatamente
+            _viewModel.ReceitaAtual = _dbHelpers.ObterTotalReceita();
+            _viewModel.TotalDespesas = _dbHelpers.ObterTotalDespesas();
+            _viewModel.SaldoDisponivel = _viewModel.ReceitaAtual - _viewModel.TotalDespesas;
 
-            // **Enviar mensagem para Tela Principal atualizar os valores**
-            WeakReferenceMessenger.Default.Send(new AtualizarFinanceiroMessage(novaReceita, novaDespesa));
+            // Enviar mensagem para atualizar a Tela Principal
+            WeakReferenceMessenger.Default.Send(new AtualizarFinanceiroMessage(
+                _dbHelpers.ObterTotalReceita(),
+                _dbHelpers.ObterTotalDespesas(),
+                  categoria
+                ));
+
+
 
             await DisplayAlert("Sucesso", "Transação salva!", "OK");
             await Navigation.PushAsync(new TelaPrincipal(usuario.Email));
@@ -159,6 +161,7 @@ public class DefinirReceitasViewModel : INotifyPropertyChanged
 {
     private decimal _saldoDisponivel;
     private decimal _totalDespesas;
+    private decimal _receitaAtual; // Propriedade adicionada
 
     public decimal SaldoDisponivel
     {
@@ -177,6 +180,16 @@ public class DefinirReceitasViewModel : INotifyPropertyChanged
         set
         {
             _totalDespesas = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public decimal ReceitaAtual // Nova propriedade
+    {
+        get => _receitaAtual;
+        set
+        {
+            _receitaAtual = value;
             OnPropertyChanged();
         }
     }
