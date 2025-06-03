@@ -78,11 +78,12 @@
                             <DataTemplate>
                                 <StackLayout Orientation="Horizontal" Padding="5">
                                     <Label Text="{Binding Nome}" FontSize="12" TextColor="{Binding CategoriaCor}" VerticalOptions="Center"/>
-                                    <Label Text="{Binding Percentual, StringFormat='{0:P2}'}" FontSize="10" TextColor="DarkRed" VerticalOptions="Center"/>
+                                    <Label Text="{Binding Percentual, StringFormat=  '{0:P2}'}" FontSize="10" TextColor="DarkRed" VerticalOptions="Center"/>
                                 </StackLayout>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
+
 
                     <!-- Imagem do Gráfico de Pizza -->
                     <Image Grid.Column="1" Source="img_grafico.png" WidthRequest="150" HeightRequest="150"

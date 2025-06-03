@@ -223,6 +223,38 @@ namespace FinancaPlus.Helpers
             var resultado = connection.ExecuteScalar<decimal>("SELECT COALESCE(SUM(Valor), 0) FROM Receita");
             return resultado;
         }
+
+        // Adicione este método para corrigir o erro
+        public Dictionary<string, decimal> ObterDespesasPorCategoria()
+        {
+            var despesasPorCategoria = new Dictionary<string, decimal>();
+
+            // Exemplo de lógica para preencher o dicionário com categorias e valores
+            var despesas = GetDespesas(); // Obtém todas as despesas
+            foreach (var despesa in despesas)
+            {
+                if (despesasPorCategoria.ContainsKey(despesa.Categoria))
+                {
+                    despesasPorCategoria[despesa.Categoria] += despesa.Valor;
+                }
+                else
+                {
+                    despesasPorCategoria[despesa.Categoria] = despesa.Valor;
+                }
+            }
+
+            return despesasPorCategoria;
+        }
+
+        // Adicione este método para corrigir o erro
+        public List<Transacao> ObterTransacoesRecentes()
+        {
+            // Exemplo de implementação: Retorna uma lista de transações recentes do banco de dados
+            return _db.Table<Transacao>()
+                      .OrderByDescending(t => t.Data)
+                      .Take(5) // Limita a 5 transações mais recentes
+                      .ToList();
+        }
     }
 
 }

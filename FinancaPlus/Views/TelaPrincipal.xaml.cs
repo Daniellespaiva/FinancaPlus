@@ -24,6 +24,9 @@ public partial class TelaPrincipal : ContentPage
         _viewModel.UsuarioLogado = _dbHelpers.GetUsuario(email) ?? new Usuario();
 
         _viewModel.AtualizarSaldo(); // Atualiza valores assim que a tela abrir
+        _viewModel.AtualizarGastosPorCategoria();
+
+        IniciarAtualizacaoAutomatica(); // Inicia a atualização automática dos valores
 
 
 
@@ -34,7 +37,13 @@ public partial class TelaPrincipal : ContentPage
                 telaPrincipal._viewModel.SaldoDisponivel = message.NovaReceita - message.NovaDespesa;
                 telaPrincipal._viewModel.ReceitaAtual = message.NovaReceita;
                 telaPrincipal._viewModel.TotalDespesas = message.NovaDespesa;
+                telaPrincipal._viewModel.AtualizarSaldo(); // Recarrega os dados após a atualização
+                telaPrincipal._viewModel.AtualizarGastosPorCategoria(); // Recalcula e exibe os percentuais das categorias em tempo real
+                telaPrincipal._viewModel.AtualizarTransacoesRecentes(); // Atualiza transações em tempo real
             }
+
+
+
         });
 
         // Certifique-se de que os nomes das Labels correspondem aos IDs definidos no arquivo XAML
@@ -48,8 +57,19 @@ public partial class TelaPrincipal : ContentPage
       
     }
 
-    
+    private async void IniciarAtualizacaoAutomatica()
+    {
+        while (true)
+        {
+            _viewModel.AtualizarSaldo(); // Atualiza os valores do banco
+            _viewModel.AtualizarTransacoesRecentes(); // Atualiza trans
+            await Task.Delay(1800000); // Aguarda 30 minutos antes da próxima atualização
+        }
+    }
 
+
+        
+    
     private void CarregarNomeUsuario()
     {
         if (LBL_NomeUsuario != null && _viewModel.UsuarioLogado != null)
@@ -200,6 +220,15 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         TotalDespesas = _dbHelpers.ObterTotalDespesas();
         SaldoDisponivel = ReceitaAtual - TotalDespesas;
 
+        AtualizarGastosPorCategoria(); // Chamar atualização de gastos por categoria sempre que o saldo mudar
+        AtualizarTransacoesRecentes(); // Atualiza a lista de transações
+
+
+        OnPropertyChanged(nameof(SaldoDisponivel));
+        OnPropertyChanged(nameof(ReceitaAtual));
+        OnPropertyChanged(nameof(TotalDespesas));
+
+
     }
 
 
@@ -245,9 +274,57 @@ public partial class TelaPrincipalViewModel : INotifyPropertyChanged
         };
 
     }
-  
-    
 
+    public void AtualizarTransacoesRecentes()
+    {
+        var transacoes = _dbHelpers.ObterTransacoesRecentes(); // Método que retorna a lista do banco
+        TransacoesRecentes.Clear(); // Limpa a lista antiga
 
+        foreach (var transacao in transacoes)
+        {
+            TransacoesRecentes.Add(new Transacao
+            {
+                Descricao = transacao.Descricao,
+                Valor = transacao.Valor,
+                CorValor = transacao.Valor < 0 ? "Red" : "Green" // Define cor conforme positivo/negativo
+            });
+        }
+
+        OnPropertyChanged(nameof(TransacoesRecentes)); // Notifica a interface para atualizar
+    }
+    public void AtualizarGastosPorCategoria()
+    {
+        var totalDespesas = _dbHelpers.ObterTotalDespesas();
+        var despesasPorCategoria = _dbHelpers.ObterDespesasPorCategoria(); // Método que retorna um dicionário {Categoria: Valor}
+
+        GastosPorCategoria.Clear();
+
+        foreach (var categoria in despesasPorCategoria)
+        {
+            decimal percentual = totalDespesas > 0 ? (categoria.Value / totalDespesas) * 100 : 0;
+            GastosPorCategoria.Add(new GastoCategoria
+            {
+                Nome = categoria.Key,
+                Percentual = (float)(percentual / 100), // Corrigido para conversão explícita de decimal para float
+                CategoriaCor = DefinirCorPorCategoria(categoria.Key)
+            });
+        }
+
+        OnPropertyChanged(nameof(GastosPorCategoria));
+    }
+
+    private string DefinirCorPorCategoria(string categoria)
+    {
+        return categoria switch
+        {
+            "Moradia" => "Blue",
+            "Supermercado" => "Green",
+            "Saúde" => "Yellow",
+            "Educação" => "Green",
+            "Transporte" => "Red",
+            "Outros" => "Purple",
+            _ => "Gray" // Cor padrão para categorias desconhecidas
+        };
+    }
 }
 
