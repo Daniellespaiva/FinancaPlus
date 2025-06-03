@@ -2,6 +2,7 @@
 using FinancaPlus.Views;
 using MauiAppFinancaPlus.Moldes;
 using SQLite;
+using CategoriaModel = FinancaPlus.Models.Categoria;
 
 namespace FinancaPlus.Helpers
 {
@@ -23,10 +24,10 @@ namespace FinancaPlus.Helpers
             _db.CreateTable<GastoCategoria>();
             _db.CreateTable<CategoriaDespesa>(); // Cria a tabela de categorias
             _db.CreateTable<Meta>(); // Cria a tabela de metas
+            _db.CreateTable<CategoriaModel>(); // Especifica explicitamente o namespace para resolver o conflito
+                        
         }
-
         
-
         // Adicionar usuário com senha criptografada
         public void AddUsuario(Usuario usuario, string senha)
         {
@@ -149,21 +150,16 @@ namespace FinancaPlus.Helpers
 
         public List<CategoriaDespesa> GetCategoriasFixas()
         {
-            using var conexao = new SQLiteConnection(_dbPath);
-            return conexao.Query<CategoriaDespesa>("SELECT * FROM Categorias WHERE Tipo = 'Fixa'");
+            using var connection = new SQLiteConnection(_dbPath);
+            return connection.Query<FinancaPlus.Models.CategoriaDespesa>("SELECT * FROM Categoria WHERE Tipo = ?", "Fixa");
         }
 
         public List<CategoriaDespesa> GetCategoriasVariaveis()
         {
-            using var conexao = new SQLiteConnection(_dbPath);
-            return conexao.Query<CategoriaDespesa>("SELECT * FROM Categorias WHERE Tipo = 'Variável'");
-        }
-
-        public void DeleteCategoriaReceita(string categoria)
-        {
             using var connection = new SQLiteConnection(_dbPath);
-            connection.Execute("DELETE FROM Receita WHERE Categoria = ?", categoria);
+            return connection.Query<FinancaPlus.Models.CategoriaDespesa>("SELECT * FROM Categoria WHERE Tipo = ?", "Variavel");
         }
+              
 
         public void DeleteReceitasPorCategoria(string categoria)
         {

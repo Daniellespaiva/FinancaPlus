@@ -41,47 +41,45 @@ public partial class DefinirMetas : ContentPage
         }
     }
 
-    private async void BTN_ApagarHistoricoCategoria_Clicked(object sender, EventArgs e)
+    
+
+    private async void IrParaRelatorios_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new GerarRelatorio()); // Abre tela de relatórios
+    }
+
+    private void IrParaConfig_Clicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new ConfiguracaoPage());
+    }
+
+
+
+    private async void IrParaTelaInicial_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new TelaPrincipal("email@exemplo.com")); // Abre a tela principal
+    }
+
+    private async void BTN_ExcluirMetaPorCategoria_Clicked(object sender, EventArgs e)
     {
         try
         {
-            string categoriaSelecionada = PickerCategoriaExcluir.SelectedItem?.ToString();
+            string categoriaSelecionada = PickerCategoria.SelectedItem?.ToString();
+
             if (string.IsNullOrEmpty(categoriaSelecionada))
             {
                 await DisplayAlert("Erro", "Selecione uma categoria para excluir!", "OK");
                 return;
             }
 
-            _viewModel.ApagarMetaPorCategoria(categoriaSelecionada);
+            _viewModel.ExcluirMetaPorCategoria(categoriaSelecionada);
             await DisplayAlert("Sucesso", "Metas excluídas com sucesso!", "OK");
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Erro", $"Erro ao excluir metas: {ex.Message}", "OK");
+            await DisplayAlert("Erro", $"Erro ao excluir meta: {ex.Message}", "OK");
         }
     }
-
-    private async void BTN_ResetarSaldoCategoria_Clicked(object sender, EventArgs e)
-    {
-        try
-        {
-            string categoriaSelecionada = PickerCategoriaReset.SelectedItem?.ToString();
-            if (string.IsNullOrEmpty(categoriaSelecionada))
-            {
-                await DisplayAlert("Erro", "Selecione uma categoria para resetar o saldo!", "OK");
-                return;
-            }
-
-            _viewModel.ResetarSaldoPorCategoria(categoriaSelecionada);
-            await DisplayAlert("Sucesso", "Saldo resetado com sucesso!", "OK");
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erro", $"Erro ao resetar saldo: {ex.Message}", "OK");
-        }
-
-    }
-
 }
 public partial class DefinirMetasViewModel : INotifyPropertyChanged
 {
@@ -122,15 +120,15 @@ public partial class DefinirMetasViewModel : INotifyPropertyChanged
         CarregarMetas();
     }
 
-    public void ApagarMetaPorCategoria(string categoria)
+    public void ExcluirMetaPorCategoria(string categoria)
     {
-        _dbHelpers.DeleteMetasPorCategoria(categoria);
-        CarregarMetas();
-    }
+        var metasParaExcluir = _dbHelpers.GetMetas().Where(m => m.Categoria == categoria).ToList();
+        
+        foreach (var meta in metasParaExcluir)
+        {
+            _dbHelpers.DeleteMetasPorCategoria(meta.Categoria); // Corrigido para usar o método correto
+        }
 
-    public void ResetarSaldoPorCategoria(string categoria)
-    {
-        _dbHelpers.ResetarSaldoPorCategoria(categoria);
+        CarregarMetas(); // Atualiza a lista após a exclusão
     }
-
 }

@@ -2,55 +2,82 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinancaPlus.Views.TelaCategorizacao"
-             Title="TelaCategorizacao"
-    BackgroundColor="White">
+             Title="Categorização"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#F5F5F5">
+    <!-- Fundo mais agradável -->
 
-    <VerticalStackLayout Padding="20">
+    <Grid RowDefinitions="Auto, 260">
 
-        <!-- Título -->
-        <Label Text="Tela de Categorização" FontSize="24" FontAttributes="Bold"
-               HorizontalOptions="Center" TextColor="White" BackgroundColor="DarkGreen" Padding="10"/>
+        <!-- Conteúdo Principal -->
+        <VerticalStackLayout Padding="20" Spacing="15" Grid.Row="0">
 
-        <!-- Lista de Receitas e Despesas -->
-        <CollectionView x:Name="ListaTransacoes" ItemsSource="{Binding Transacoes}" SelectionMode="Single">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Padding="10" Margin="5" BackgroundColor="LightGreen" CornerRadius="10">
-                        <HorizontalStackLayout>
+            <!-- Título -->
+            <Label Text="Controle de Gastos" FontSize="26" FontAttributes="Bold"
+               HorizontalOptions="Center" TextColor="White" BackgroundColor="DarkGreen" Padding="15"/>
 
-                            <!-- Nome da Transação -->
-                            <Label Text="{Binding Nome}" FontSize="16" FontAttributes="Bold" TextColor="Black"
-                                   VerticalOptions="Center"/>
+            <!-- Exibir Resumo do Saldo -->
+            <Frame BackgroundColor="White" Padding="15" CornerRadius="15" HasShadow="True">
+                <HorizontalStackLayout>
+                    <Label Text="Saldo Atual:" FontSize="18" FontAttributes="Bold"/>
+                    <Label Text="{Binding Saldo, StringFormat='R$ {0:N2}'}" FontSize="18" TextColor="{Binding CorSaldo}"/>
+                </HorizontalStackLayout>
 
-                            <!-- Valor -->
-                            <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"
-                                   TextColor="{Binding CorValor}" VerticalOptions="Center"/>
+            </Frame>
 
-                            <!-- Botões de ação -->
-                            <HorizontalStackLayout HorizontalOptions="End" Spacing="5">
-                                
+            <!-- Lista de Despesas do Usuário -->
+            <Label Text="Seus Gastos" FontSize="20" FontAttributes="Bold" Padding="5"/>
+            <CollectionView x:Name="ListaTransacoes" ItemsSource="{Binding Transacoes}" SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="12" Margin="5" BackgroundColor="#FA8072" CornerRadius="12" HasShadow="True">
+                            <HorizontalStackLayout>
+                                <Label Text="{Binding Nome}" FontSize="16" FontAttributes="Bold" TextColor="White"/>
+                                <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"
+                                    TextColor="White"/>
                                 <ImageButton Source="icon_excluir.png" WidthRequest="30" HeightRequest="30"
-                                             BackgroundColor="Transparent" x:Name="ExcluirTransacao" Clicked="ExcluirTransacao_Clicked"/>
+                                             BackgroundColor="Transparent" Clicked="ExcluirTransacao_Clicked"/>
                             </HorizontalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-                        </HorizontalStackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            <!-- Categorias e Valores Gastos -->
+            <Label Text="Categorias" FontSize="20" FontAttributes="Bold" Padding="5"/>
+            <CollectionView ItemsSource="{Binding CategoriasDespesas}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal" Padding="8">
+                            <Image Source="{Binding Icone}" WidthRequest="30" HeightRequest="30"/>
+                            <Label Text="{Binding Nome}" FontSize="16" FontAttributes="Bold"/>
+                            <Label Text="{Binding ValorGasto, StringFormat='R$ {0:N2}'}" FontSize="16" TextColor="Red"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-        <!-- Botões de Reset -->
-        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+            <!-- Botões de Ação -->
+            <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                <Button Text="🔄 Resetar Saldo" BackgroundColor="DarkGreen" TextColor="White" FontSize="16"
+                    WidthRequest="160" HeightRequest="50" Clicked="ResetarSaldo_Clicked"/>
+                <Button Text="🔄 Resetar Despesas" BackgroundColor="Red" TextColor="White" FontSize="16"
+                    WidthRequest="160" HeightRequest="50" Clicked="ResetarDespesas_Clicked"/>
+            </HorizontalStackLayout>
 
-            <Button Text="🔄 Resetar Saldo" BackgroundColor="DarkGreen" TextColor="White" FontSize="16"
-                    WidthRequest="150" HeightRequest="50" x:Name="ResetarSaldo" Clicked="ResetarSaldo_Clicked"/>
+        </VerticalStackLayout>
 
-            <Button Text="🔄 Resetar Despesas" BackgroundColor="Red" TextColor="White" FontSize="16"
-                    WidthRequest="150" HeightRequest="50" x:Name="ResetarDespesas" Clicked="ResetarDespesas_Clicked"/>
+        <!-- Rodapé -->
+        <Grid Grid.Row="1" HeightRequest="50" BackgroundColor="Green" VerticalOptions="End">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="50">
+                <Button Text="📊 Relatórios" x:Name="IrParaRelatorios" BackgroundColor="Transparent"
+                        WidthRequest="40" HeightRequest="40" Clicked="IrParaRelatorios_Clicked"/>
+                <Button Text="🏠 Tela Inicial" x:Name="IrParaTelaInicial" BackgroundColor="Transparent"
+                        WidthRequest="40" HeightRequest="40" Clicked="IrParaTelaInicial_Clicked"/>
+                <Button Text="⚙️ Configurações" x:Name="IrParaConfig" BackgroundColor="Transparent"
+                        WidthRequest="40" HeightRequest="40" Clicked="IrParaConfig_Clicked"/>
+            </HorizontalStackLayout>
+        </Grid>
 
-        </HorizontalStackLayout>
-
-    </VerticalStackLayout>
-
-
+    </Grid>
 </ContentPage>

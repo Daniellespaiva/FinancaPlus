@@ -60,11 +60,13 @@
             <Button Text="Receitas" BackgroundColor="DarkGreen" WidthRequest="100" TextColor="White"
                     Clicked="BTN_receitas_Clicked" CornerRadius="10"/>
 
+            <Button Text="Controle de Gasto" BackgroundColor="DarkGreen" WidthRequest="150" TextColor="White"
+                    Clicked="BTN_Despesas_Clicked" CornerRadius="10"/>
+
             <Button Text="Metas" BackgroundColor="DarkGreen" WidthRequest="100" TextColor="White"
                     Clicked="BTN_definirMetas_Clicked" CornerRadius="10"/>
 
-            <Button Text="Despesas" BackgroundColor="DarkGreen" WidthRequest="100" TextColor="White"
-                    Clicked="BTN_Despesas_Clicked" CornerRadius="10"/>
+
         </HorizontalStackLayout>
 
         <!-- Gastos por Categoria -->

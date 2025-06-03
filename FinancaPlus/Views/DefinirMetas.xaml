@@ -3,127 +3,102 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinancaPlus.Views.DefinirMetas"
              BackgroundColor="#F5F5F5"
+             NavigationPage.HasNavigationBar="False"
              Title="Minhas Metas">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+    <Grid RowDefinitions="Auto, Auto, 50">
 
-            <!-- Título -->
-            <Label Text="Definir Nova Meta"
-                   FontSize="22"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   Margin="0,10,0,10" />
+        <!-- Conteúdo Principal -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="10">
 
-            <!-- Campo Nome da Meta -->
-            <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
-                <Entry x:Name="EntryNomeMeta" Placeholder="Nome da Meta" FontSize="16"/>
-            </Frame>
+                <!-- Título -->
+                <Label Text="Definir Nova Meta"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       Margin="0,10,0,10" />
 
-            <!-- Campo Valor da Meta -->
-            <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
-                <Entry x:Name="EntryValorMeta" Placeholder="Valor (R$)" Keyboard="Numeric" FontSize="16"/>
-            </Frame>
+                <!-- Campos de entrada -->
+                <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
+                    <Entry x:Name="EntryNomeMeta" Placeholder="Nome da Meta" FontSize="16"/>
+                </Frame>
 
-            <!-- Seletor de Categoria -->
-            <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
-                <Picker x:Name="PickerCategoria" Title="Escolha uma categoria">
-                    <Picker.Items>
-                        <x:String>Viagem</x:String>
-                        <x:String>Casa</x:String>
-                        <x:String>Carro</x:String>
-                        <x:String>Investimento</x:String>
-                        <x:String>Outros</x:String>
-                    </Picker.Items>
-                </Picker>
-            </Frame>
+                <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
+                    <Entry x:Name="EntryValorMeta" Placeholder="Valor (R$)" Keyboard="Numeric" FontSize="16"/>
+                </Frame>
 
-            <!-- Seletor de Data de Conclusão -->
-            <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" BackgroundColor="White">
-                <DatePicker x:Name="PickerDataMeta" Format="dd/MM/yyyy"/>
-            </Frame>
+                <!-- Seletor de Categoria e Botões -->
+                <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" BackgroundColor="White">
+                    <VerticalStackLayout Spacing="10">
+                        <Picker x:Name="PickerCategoria" Title="Escolha uma categoria">
+                            <Picker.Items>
+                                <x:String>Viagem</x:String>
+                                <x:String>Casa</x:String>
+                                <x:String>Carro</x:String>
+                                <x:String>Investimento</x:String>
+                                <x:String>Outros</x:String>
+                            </Picker.Items>
+                        </Picker>
 
-            <!-- Botão para adicionar meta -->
-            <Button Text="Adicionar Meta"
-                    x:Name="BTN_AdicionarMeta"
-                    BackgroundColor="DarkGreen"
-                    TextColor="White"
-                    FontSize="18"
-                    CornerRadius="20"
-                    Padding="10"
-                    Clicked="BTN_AdicionarMeta_Clicked"/>
+                        <DatePicker x:Name="PickerDataMeta" />
 
-            <!-- Seção de gerenciamento de saldo e histórico -->
-            <Label Text="Gerenciar Saldo e Histórico"
-                    FontSize="20"
-                    FontAttributes="Bold"
-                    HorizontalOptions="Center"
-                    Margin="20,10,0,10"/>
+                        <HorizontalStackLayout Spacing="15">
+                            <Button Text="✅ Adicionar Meta"
+                                    x:Name="BTN_AdicionarMeta"
+                                    BackgroundColor="DarkGreen"
+                                    TextColor="White"
+                                    FontSize="16"
+                                    WidthRequest="150"
+                                    Clicked="BTN_AdicionarMeta_Clicked"/>
 
-            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
-                <Picker x:Name="PickerCategoriaReset" Title="Escolha uma categoria para resetar saldo">
-                    <Picker.Items>
-                        <x:String>Moradia</x:String>
-                        <x:String>Alimentação</x:String>
-                        <x:String>Transporte</x:String>
-                        <x:String>Saúde</x:String>
-                        <x:String>Educação</x:String>
-                        <x:String>Outros</x:String>
-                    </Picker.Items>
-                </Picker>
-            </Border>
+                            <Button Text="🗑 Excluir Meta"
+                                    x:Name="BTN_ExcluirMetaPorCategoria"
+                                    BackgroundColor="Red"
+                                    TextColor="White"
+                                    FontSize="16"
+                                    WidthRequest="150"
+                                    Clicked="BTN_ExcluirMetaPorCategoria_Clicked"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
 
-            <Button Text="Resetar Saldo por Categoria"
-                    x:Name="BTN_ResetarSaldoCategoria"
-                    BackgroundColor="Orange"
-                    TextColor="White"
-                    FontSize="18"
-                    CornerRadius="20"
-                    Padding="10"
-                    Clicked="BTN_ResetarSaldoCategoria_Clicked"/>
+                <!-- Lista de metas cadastradas -->
+                <Label Text="Metas Definidas"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       Margin="0,20,0,10" />
 
-            <Border Stroke="LightGray" StrokeShape="RoundRectangle10" Padding="5" BackgroundColor="White">
-                <Picker x:Name="PickerCategoriaExcluir" Title="Escolha uma categoria para excluir">
-                    <Picker.Items>
-                        <x:String>Salário</x:String>
-                        <x:String>Freelance</x:String>
-                        <x:String>Investimentos</x:String>
-                        <x:String>Outros</x:String>
-                    </Picker.Items>
-                </Picker>
-            </Border>
+                <CollectionView x:Name="MetasListView">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="10" BorderColor="LightGray" CornerRadius="10">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold"/>
+                                    <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"/>
+                                    <Label Text="{Binding Categoria}" FontSize="14" TextColor="Gray"/>
+                                    <Label Text="{Binding DataConclusao, StringFormat='{0:dd/MM/yyyy}'}" FontSize="14" TextColor="Gray"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-            <Button Text="Apagar Histórico por Categoria"
-                   x:Name="BTN_ApagarHistoricoCategoria"
-                    BackgroundColor="Red"
-                    TextColor="White"
-                    FontSize="18"
-                    CornerRadius="20"
-                    Padding="10"
-                    Clicked="BTN_ApagarHistoricoCategoria_Clicked"/>
+            </VerticalStackLayout>
+        </ScrollView>
 
-            <!-- Lista de metas cadastradas -->
-            <Label Text="Metas Definidas"
-                   FontSize="20"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   Margin="0,20,0,10" />
+        <!-- Rodapé Fixo -->
+        <Grid Grid.Row="2" HeightRequest="50" BackgroundColor="Green" VerticalOptions="End">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
+                <Button Text="📊 Relatórios" x:Name="IrParaRelatorios" BackgroundColor="Transparent"
+                        WidthRequest="40" HeightRequest="40" Clicked="IrParaRelatorios_Clicked"/>
+                <Button Text="🏠 Tela Inicial" x:Name="IrParaTelaInicial" BackgroundColor="Transparent"
+                        WidthRequest="40" HeightRequest="40" Clicked="IrParaTelaInicial_Clicked"/>
+                <Button Text="⚙️ Configurações" x:Name="IrParaConfig" BackgroundColor="Transparent"
+                        WidthRequest="40" HeightRequest="40" Clicked="IrParaConfig_Clicked"/>
+            </HorizontalStackLayout>
+        </Grid>
 
-            <CollectionView x:Name="MetasListView">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Padding="10" BorderColor="LightGray" CornerRadius="10">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold"/>
-                                <Label Text="{Binding Valor, StringFormat='R$ {0:N2}'}" FontSize="16"/>
-                                <Label Text="{Binding Categoria}" FontSize="14" TextColor="Gray"/>
-                                <Label Text="{Binding DataConclusao, StringFormat='{0:dd/MM/yyyy}'}" FontSize="14" TextColor="Gray"/>
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-        </VerticalStackLayout>
-    </ScrollView>
+    </Grid>
 </ContentPage>
